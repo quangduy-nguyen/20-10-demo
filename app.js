@@ -114,17 +114,23 @@ function loadCurrentRecipient() {
     };
   }
 
-  // Điền thông tin sự kiện
+  // Điền thông tin sự kiện an toàn
   if (typeof EVENT_INFO !== 'undefined') {
-    document.getElementById('event-title').textContent = EVENT_INFO.title;
-    document.getElementById('event-subtitle').textContent = EVENT_INFO.subtitle;
-    document.getElementById('event-date').textContent = EVENT_INFO.date_text;
-    document.getElementById('event-location-name').textContent = EVENT_INFO.location_name;
-    document.getElementById('event-location-address').textContent = EVENT_INFO.location_address;
-    document.getElementById('event-dresscode').textContent = EVENT_INFO.dress_code;
+    const elTitle = document.getElementById('event-title');
+    if (elTitle) elTitle.textContent = EVENT_INFO.title;
+    const elSub = document.getElementById('event-subtitle');
+    if (elSub) elSub.textContent = EVENT_INFO.subtitle;
+    const elDate = document.getElementById('event-date');
+    if (elDate) elDate.textContent = EVENT_INFO.date_text;
+    const elLocName = document.getElementById('event-location-name');
+    if (elLocName) elLocName.innerHTML = 'Nhà hàng<br>Maison Sen Buffet';
+    const elLocAddr = document.getElementById('event-location-address');
+    if (elLocAddr) elLocAddr.innerHTML = '61 Trần Hưng Đạo,<br>P. Phan Chu Trinh,<br>Q. Hoàn Kiếm, Hà Nội';
+    const elDress = document.getElementById('event-dresscode');
+    if (elDress) elDress.innerHTML = 'Hồng Pastel<br>/ Trắng / Thanh lịch';
 
     const mapsBtn = document.getElementById('btn-google-maps');
-    if (mapsBtn) mapsBtn.href = EVENT_INFO.google_maps_url;
+    if (mapsBtn && EVENT_INFO.google_maps_url) mapsBtn.href = EVENT_INFO.google_maps_url;
   }
 
   // Cấu hình link Google Calendar
@@ -295,10 +301,16 @@ function playBackgroundMusic() {
   const icon = document.getElementById('music-icon');
   if (!audio) return;
 
-  audio.play().then(() => {
-    isMusicPlaying = true;
-    if (icon) icon.classList.add('spin-slow');
-  }).catch(() => {});
+  audio.volume = 0.85;
+  const playPromise = audio.play();
+  if (playPromise !== undefined) {
+    playPromise.then(() => {
+      isMusicPlaying = true;
+      if (icon) icon.classList.add('spin-slow');
+    }).catch(err => {
+      console.log('Chờ tương tác người dùng để phát nhạc:', err);
+    });
+  }
 }
 
 function toggleBackgroundMusic() {
