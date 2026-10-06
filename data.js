@@ -1,4 +1,4 @@
-// Dữ liệu được tự động đồng bộ từ file DanhSach_30_ChiEm.xlsx
+// Dữ liệu được chuẩn hoá tự động
 const EVENT_INFO = {
   "title": "DẠ TIỆC TÔN VINH PHÁI ĐẸP 20/10",
   "subtitle": "\"Rạng Rỡ Như Hoa - Tỏa Sáng Yêu Thương\"",
@@ -16,7 +16,7 @@ const EVENT_INFO = {
 const RECIPIENTS_DATA = [
   {
     "id": "chi_nga",
-    "ho_ten": "Nguyen Thị Thuý Nga",
+    "ho_ten": "Nguyễn Thị Thuý Nga",
     "chuc_danh": "Ban Tài chính - Kế toán",
     "email": "lan.nt@company.com",
     "sdt": "0901234001",
