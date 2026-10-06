@@ -370,3 +370,51 @@ body {
   transform: translateY(-2px) scale(1.02);
   box-shadow: 0 12px 25px -6px rgba(225, 29, 72, 0.35);
 }
+
+/* ==================== PHONG CÁCH HOA HỒNG & RSVP NÂNG CẤP ==================== */
+.rose-card-container {
+  background: radial-gradient(circle at 50% 10%, #fff7f9 0%, #fff0f3 50%, #ffe4e8 100%);
+  border: 1.5px solid #fecdd3;
+  box-shadow: 0 25px 50px -12px rgba(225, 29, 72, 0.22), 0 0 0 1px rgba(255, 255, 255, 0.8);
+  position: relative;
+}
+
+/* Trang trí hoa hồng ở các góc */
+.rose-corner-tl {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 90px;
+  height: 90px;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.rose-corner-br {
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+  width: 90px;
+  height: 90px;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+/* Tùy chỉnh nút Radio RSVP */
+.rsvp-card-option {
+  transition: all 0.25s ease;
+  border-width: 2px;
+}
+
+.rsvp-card-option.is-selected {
+  border-color: #f43f5e !important;
+  background-color: #fff1f2 !important;
+  box-shadow: 0 6px 16px -2px rgba(244, 63, 94, 0.25);
+  transform: translateY(-2px);
+}
+
+.rsvp-card-option.is-selected .check-circle {
+  background-color: #e11d48 !important;
+  border-color: #e11d48 !important;
+  color: #ffffff !important;
+}

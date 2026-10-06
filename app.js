@@ -286,6 +286,22 @@ function setupEventListeners() {
     musicToggle.addEventListener('click', toggleBackgroundMusic);
   }
 
+  // Đổi trạng thái hiển thị của 2 nút Sẽ tham dự / Không tham dự
+  const radios = document.querySelectorAll('input[name="rsvp_status"]');
+  radios.forEach(radio => {
+    radio.addEventListener('change', () => {
+      const optYes = document.getElementById('opt-yes-label');
+      const optNo = document.getElementById('opt-no-label');
+      if (radio.value === 'Sẽ tham dự') {
+        if (optYes) optYes.classList.add('is-selected');
+        if (optNo) optNo.classList.remove('is-selected');
+      } else {
+        if (optYes) optYes.classList.remove('is-selected');
+        if (optNo) optNo.classList.add('is-selected');
+      }
+    });
+  });
+
   // Form xác nhận tham dự
   const rsvpForm = document.getElementById('rsvp-form');
   if (rsvpForm) {
