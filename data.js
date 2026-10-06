@@ -1,4 +1,4 @@
-// Dữ liệu tự động đồng bộ từ file CSV
+// Dữ liệu được tự động đồng bộ từ file DanhSach_30_ChiEm.xlsx
 const EVENT_INFO = {
   "title": "DẠ TIỆC TÔN VINH PHÁI ĐẸP 20/10",
   "subtitle": "\"Rạng Rỡ Như Hoa - Tỏa Sáng Yêu Thương\"",
@@ -10,21 +10,19 @@ const EVENT_INFO = {
   "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Maison+Sen+Buffet+61+Tr%E1%BA%A7n+H%C6%B0ng+%C4%90%E1%BA%A1o+Ho%C3%A0n+Ki%E1%BA%BFm+H%C3%A0+N%E1%BB%99i",
   "dress_code": "Hồng Pastel / Trắng / Thanh lịch (Trang phục dạ tiệc)",
   "hotline": "090 123 4567 (Ban Tổ Chức)",
-  "description": "Kính mời toàn thể các chị em tham dự bữa tiệc buffet ấm cúng, sang trọng nhân ngày Phụ nữ Việt Nam 20/10 với nhiều tiết mục văn nghệ đặc biệt và quà tặng bất ngờ từ phái nam công ty!"
+  "description": "Kính mời toàn thể các chị em tham dự bữa tiệc buffet ấm cúng, sang trọng nhân ngày Phụ nữ Việt Nam 20/10!"
 };
 
 const RECIPIENTS_DATA = [
   {
-    "id": "chi_lan",
-    "ho_ten": "Nguyễn Thị Lan",
-    "chuc_danh": "Trưởng phòng Kế toán",
+    "id": "chi_nga",
+    "ho_ten": "Nguyen Thị Thuý Nga",
+    "chuc_danh": "Ban Tài chính - Kế toán",
     "email": "lan.nt@company.com",
     "sdt": "0901234001",
-    "link_anh": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
-    "loi_chuc": "Nhân ngày 20/10, chúc chị Lan luôn xinh đẹp rạng rỡ, nhiều sức khỏe và hạnh phúc viên mãn bên gia đình. Chúc chị luôn vững tay chèo và số liệu sổ sách lúc nào cũng cân đối trọn vẹn ạ!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=chi_lan",
-    "ai_poem": "Kế toán sổ sách vẹn toàn,\nChị Lan xinh đẹp chứa chan nụ cười.\nTháng mười rực rỡ muôn nơi,\nChúc chị hạnh phúc trọn đời an yên!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Nguyễn Thị Lan (Trưởng phòng Kế toán) on Vietnamese Women's Day 20-10"
+    "link_anh": "https://drive.google.com/file/d/1YWp42SWgpEiiz9uFwYYrLjYatsIcoo7t/view?usp=sharing",
+    "loi_chuc": "Anh em ban TCKT chúc chị Nga ngày 20/10 thật hạnh phúc, luôn sắc sảo, tự tin và giữ vững nụ cười tươi tắn trên môi mỗi ngày!",
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_nga"
   },
   {
     "id": "em_mai",
@@ -34,9 +32,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234002",
     "link_anh": "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc em Mai 20/10 luôn tràn đầy nhiệt huyết, ý tưởng sáng tạo không giới hạn và nhận được thật nhiều hoa cùng quà nhé! Cảm ơn em vì luôn mang lại năng lượng tích cực cho cả team!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=em_mai",
-    "ai_poem": "Marketing sáng tạo mê say,\nPhương Mai năng động mỗi ngày thêm duyên.\nNụ cười tỏa nắng dịu hiền,\nNgàn hoa đua nở mừng riêng em cười!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Trần Phương Mai (Marketing Specialist) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=em_mai"
   },
   {
     "id": "chi_huong",
@@ -46,9 +42,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234003",
     "link_anh": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc chị Hương 20/10 ngập tràn niềm vui, code mượt mà không một lỗi bug, dự án release thắng lợi và luôn giữ nét tươi trẻ, duyên dáng của nữ IT nhé!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=chi_huong",
-    "ai_poem": "Code dòng nào cũng tinh anh,\nChị Hương duyên dáng rạng danh IT.\nBug nào thấy chị cũng đi,\nChúc chị rạng rỡ, xuân thì mãi xanh!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Lê Thu Hương (Senior Developer) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_huong"
   },
   {
     "id": "ban_ngoc",
@@ -58,9 +52,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234004",
     "link_anh": "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc Bích Ngọc 20/10 thật hạnh phúc, luôn tươi tắn và giữ trọn sự chu đáo, gắn kết tuyệt vời cho đại gia đình văn phòng chúng ta nhé!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=ban_ngoc",
-    "ai_poem": "HR kết nối muôn nhà,\nBích Ngọc chu đáo, mặn mà nét duyên.\nChúc bạn hạnh phúc bình yên,\nCông việc hanh thông, vẹn nguyên nụ cười!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Phạm Bích Ngọc (HR Generalist) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=ban_ngoc"
   },
   {
     "id": "chi_thao",
@@ -70,9 +62,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234005",
     "link_anh": "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc chị Thảo ngày 20/10 thật nhiều niềm vui, luôn bản lĩnh, tỏa sáng và dẫn dắt tập thể gặt hái thêm nhiều thành công rực rỡ hơn nữa ạ!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=chi_thao",
-    "ai_poem": "Bản lĩnh chỉ đạo kiên cường,\nCOO Thu Thảo dẫn đường tiên phong.\nNgày vui rực rỡ đóa hồng,\nChúc chị luôn mãi sáng trong nụ cười!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Hoàng Thu Thảo (Giám đốc Vận hành (COO)) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_thao"
   },
   {
     "id": "em_linh",
@@ -82,9 +72,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234006",
     "link_anh": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc Mỹ Linh 20/10 thật nhiều cảm hứng nghệ thuật, vẽ nên những layout triệu like và luôn xinh xắn, ngọt ngào như hiện tại nhé!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=em_linh",
-    "ai_poem": "UI/UX vẽ sắc muôn màu,\nMỹ Linh khéo léo trước sau tuyệt vời.\nThiết kế lay động lòng người,\n20 tháng 10 rạng ngời ngát hương!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Vũ Mỹ Linh (UI/UX Designer) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=em_linh"
   },
   {
     "id": "chi_ha",
@@ -94,9 +82,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234007",
     "link_anh": "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc chị Hà ngày 20/10 ngập tràn sắc hoa, doanh số tháng nào cũng bùng nổ vượt KPI và cuộc sống luôn trọn vẹn yêu thương!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=chi_ha",
-    "ai_poem": "Kinh doanh chốt hợp đồng mau,\nChị Hà tài giỏi trước sau vẹn toàn.\nKPI thắng lợi hân hoan,\nChúc chị duyên dáng ngập tràn niềm vui!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Đặng Thanh Hà (Trưởng phòng Kinh doanh) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_ha"
   },
   {
     "id": "ban_trang",
@@ -106,9 +92,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234008",
     "link_anh": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc Quỳnh Trang 20/10 luôn tràn đầy năng lượng tươi mới, viết đâu viral đó và nhận được cơn mưa quà tặng từ những người thương yêu!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=ban_trang",
-    "ai_poem": "Content bay bổng từng lời,\nQuỳnh Trang câu chữ rạng ngời sắc xuân.\nTriệu view viral đến gần,\nChúc bạn hạnh phúc muôn phần thăng hoa!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Bùi Quỳnh Trang (Content Creator) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=ban_trang"
   },
   {
     "id": "chi_yen",
@@ -118,9 +102,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234009",
     "link_anh": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc chị Yến ngày 20/10 thật nhiều tiếng cười, công việc suôn sẻ, cuộc sống bình an và luôn giữ nét dịu dàng, chu đáo vốn có!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=chi_yen",
-    "ai_poem": "Kiểm thử từng lỗi tinh tường,\nHải Yến tận tụy, người thương người vì.\n20/10 vạn sự như ý,\nChúc chị tươi trẻ, xuân thì ngát hương!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Ngô Hải Yến (QA / Tester Lead) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_yen"
   },
   {
     "id": "em_anh",
@@ -130,9 +112,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234010",
     "link_anh": "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc Ngọc Ánh 20/10 luôn đáng yêu, pixel-perfect mọi giao diện và luôn nhận được sự cưng chiều hết mực từ người ấy nhé!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=em_anh",
-    "ai_poem": "Frontend giao diện đẹp xinh,\nNgọc Ánh duyên dáng, thông minh tuyệt vời.\nChúc em rạng rỡ nụ cười,\nBao nhiêu yêu dấu ngọt ngời đón em!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Dương Ngọc Ánh (Frontend Developer) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=em_anh"
   },
   {
     "id": "chi_dung",
@@ -142,9 +122,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234011",
     "link_anh": "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc chị Dung ngày 20/10 thật thư thái, nhận được nhiều lời chúc tốt đẹp nhất và luôn tươi vui, hạnh phúc bên gia đình nhỏ!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=chi_dung",
-    "ai_poem": "Tài chính chu đáo vẹn tròn,\nThùy Dung nét đẹp sắc son dịu dàng.\nChúc chị cuộc sống huy hoàng,\nHoa tươi quà ngập, thênh thang nụ cười!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Phan Thùy Dung (Phó phòng Kế toán) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_dung"
   },
   {
     "id": "ban_hien",
@@ -154,9 +132,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234012",
     "link_anh": "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc Thu Hiền 20/10 luôn xinh tươi, tuyển đâu trúng đó, nhân tài về nườm nượp và luôn rạng ngời sức trẻ nhé!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=ban_hien",
-    "ai_poem": "Tuyển dụng chiêu mộ anh tài,\nThu Hiền duyên dáng chẳng phai nụ cười.\nChúc bạn rực rỡ đôi mươi,\n20 tháng 10 thắm tươi sắc màu!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Tạ Thu Hiền (Chuyên viên Tuyển dụng) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=ban_hien"
   },
   {
     "id": "chi_van",
@@ -166,9 +142,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234013",
     "link_anh": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc chị Vân 20/10 nhận trọn 5 sao yêu thương từ khách hàng và cả văn phòng, luôn giữ chất giọng ngọt ngào và nụ cười ấm áp!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=chi_van",
-    "ai_poem": "Ngọt ngào chăm sóc ân cần,\nThanh Vân trao gửi muôn phần niềm vui.\nChúc chị 20/10 tươi,\nNụ cười rạng rỡ, cuộc đời bình an!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Lý Thanh Vân (Trưởng nhóm CSKH) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_van"
   },
   {
     "id": "em_nhung",
@@ -178,9 +152,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234014",
     "link_anh": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc Hồng Nhung 20/10 luôn duyên dáng, chốt hợp đồng liền tay và luôn là bông hoa ngát hương rực rỡ của phòng Account!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=em_nhung",
-    "ai_poem": "Account khéo léo tài hoa,\nHồng Nhung đằm thắm như hoa đầu cành.\nHợp đồng ký kết ngọt lành,\nChúc em rạng rỡ, chúc lành duyên may!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Trịnh Hồng Nhung (Account Executive) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=em_nhung"
   },
   {
     "id": "chi_oanh",
@@ -190,9 +162,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234015",
     "link_anh": "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc chị Oanh ngày 20/10 ngập tràn niềm vui, tính năng ra mắt người dùng mê mẩn và mọi điều ước đều thành hiện thực ạ!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=chi_oanh",
-    "ai_poem": "Product định hướng tài ba,\nKim Oanh nhiệt huyết như hoa mặt trời.\nChúc chị vạn sự đẹp tươi,\nNgày vui phụ nữ rạng ngời thành công!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Đỗ Kim Oanh (Product Owner) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_oanh"
   },
   {
     "id": "ban_giang",
@@ -202,9 +172,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234016",
     "link_anh": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc Hương Giang 20/10 thật hạnh phúc, biểu đồ sự nghiệp và tình duyên đều tăng trưởng dốc đứng theo cấp số nhân nhé!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=ban_giang",
-    "ai_poem": "Data biểu đồ rõ ràng,\nHương Giang phân tích nhịp nhàng thông minh.\nChúc bạn rạng rỡ lung linh,\nSự nghiệp dốc đứng, chuyện tình thăng hoa!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Hoàng Hương Giang (Data Analyst) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=ban_giang"
   },
   {
     "id": "chi_quyen",
@@ -214,9 +182,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234017",
     "link_anh": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc chị Quyên 20/10 luôn dịu dàng, an yên, văn phòng lúc nào cũng ấm áp nhờ bàn tay chăm chút chu đáo của chị ạ!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=chi_quyen",
-    "ai_poem": "Hành chính chăm chút sớm hôm,\nLệ Quyên khéo léo vẹn tròn việc công.\nChúc chị thắm đượm sắc hồng,\nGia đình hạnh phúc, ấm nồng yêu thương!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Vũ Lệ Quyên (Hành chính Nhân sự) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_quyen"
   },
   {
     "id": "em_tram",
@@ -226,9 +192,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234018",
     "link_anh": "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc Bảo Trâm 20/10 nhận được cơn mưa quà tặng, phong cách luôn dẫn đầu xu hướng và cuộc sống ngập tràn màu sắc rực rỡ!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=em_tram",
-    "ai_poem": "Đồ họa màu sắc lung linh,\nBảo Trâm cá tính, thông minh tuyệt vời.\nChúc em rực rỡ nụ cười,\nÝ tưởng tuôn chảy, cuộc đời thắm tươi!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Nguyễn Bảo Trâm (Graphic Designer) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=em_tram"
   },
   {
     "id": "chi_thuy",
@@ -238,9 +202,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234019",
     "link_anh": "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc chị Thủy ngày 20/10 ngập tràn năng lượng tích cực, sprint nào cũng về đích êm đềm và cuộc sống viên mãn như ý!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=chi_thuy",
-    "ai_poem": "Scrum điều phối nhịp nhàng,\nThanh Thủy bản lĩnh, dịu dàng sắc son.\nSprint nào kết quả cũng ngon,\nChúc chị luôn giữ nét xuân nụ cười!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Đoàn Thanh Thủy (Scrum Master) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_thuy"
   },
   {
     "id": "ban_quynh",
@@ -250,9 +212,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234020",
     "link_anh": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc Diễm Quỳnh 20/10 luôn giữ vị trí Top 1 Trending trong mắt những người yêu thương, trẻ trung và nhiều niềm vui!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=ban_quynh",
-    "ai_poem": "SEO đẩy thứ hạng vươn cao,\nDiễm Quỳnh năng động ngọt ngào đáng yêu.\nChúc bạn đón nhận thật nhiều,\nYêu thương, quà tặng, vạn điều bình an!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Lê Diễm Quỳnh (SEO Specialist) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=ban_quynh"
   },
   {
     "id": "chi_loan",
@@ -262,9 +222,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234021",
     "link_anh": "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc chị Loan ngày 20/10 thật hạnh phúc, luôn sắc sảo, tự tin và giữ vững nụ cười tươi tắn trên môi mỗi ngày!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=chi_loan",
-    "ai_poem": "Pháp lý sắc sảo thông tuệ,\nBích Loan mẫn cán, vẹn bề uy nghi.\nChúc chị hạnh phúc xuân thì,\n20/10 chúc điều gì cũng nên!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Phạm Bích Loan (Chuyên viên Pháp lý) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_loan"
   },
   {
     "id": "em_phuong",
@@ -274,21 +232,17 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234022",
     "link_anh": "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc Mai Phương 20/10 nhận được hàng ngàn lượt tim, xinh lung linh không cần filter và luôn là cây hài đáng yêu của công ty!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=em_phuong",
-    "ai_poem": "Social tương tác bão like,\nMai Phương vui tính, chẳng ai sánh bằng.\nNụ cười tươi tắn như trăng,\nChúc em rạng rỡ, tài năng vươn xa!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Hà Mai Phương (Social Media Executive) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=em_phuong"
   },
   {
-    "id": "chi_nga",
+    "id": "truong_thuy_nga",
     "ho_ten": "Trương Thúy Nga",
     "chuc_danh": "Backend Developer",
     "email": "nga.tt@company.com",
     "sdt": "0901234023",
     "link_anh": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc chị Nga ngày 20/10 tràn đầy niềm vui, hệ thống luôn ổn định 99.999% uptime và cuộc sống ngọt ngào như mong đợi!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=chi_nga",
-    "ai_poem": "Backend vững chãi an tâm,\nThúy Nga thầm lặng, cần mẫn từng ngày.\nHệ thống mượt mà hôm nay,\nChúc chị hạnh phúc đong đầy yêu thương!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Trương Thúy Nga (Backend Developer) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=truong_thuy_nga"
   },
   {
     "id": "ban_uyen",
@@ -298,9 +252,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234024",
     "link_anh": "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc Mỹ Uyên ngày 20/10 ngập tràn hoa tươi, luôn giữ được sự khéo léo, tinh tế và duyên dáng đốn tim mọi ánh nhìn!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=ban_uyen",
-    "ai_poem": "Khách quý mến mộ dài lâu,\nMỹ Uyên tinh tế trước sau ân cần.\nChúc bạn tỏa sáng ngàn lần,\n20 tháng 10 muôn phần hân hoan!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Lâm Mỹ Uyên (Chăm sóc khách hàng VIP) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=ban_uyen"
   },
   {
     "id": "chi_hue",
@@ -310,9 +262,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234025",
     "link_anh": "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc chị Huệ 20/10 thật nhiều niềm vui, luôn sắc bén và rạng rỡ, gia đình hạnh phúc ấm áp và vạn sự cát tường!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=chi_hue",
-    "ai_poem": "Kiểm toán minh bạch tinh anh,\nThị Huệ sắc sảo, trọn lành việc chung.\nChúc chị hạnh phúc muôn trùng,\nSắc xuân rực rỡ, vui cùng tháng năm!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Cao Thị Huệ (Kiểm toán nội bộ) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_hue"
   },
   {
     "id": "em_khanh",
@@ -322,9 +272,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234026",
     "link_anh": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc Ngọc Khánh 20/10 luôn tràn trề ý tưởng, render nhanh như chớp và cuộc sống có những thước phim tuyệt đẹp nhất!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=em_khanh",
-    "ai_poem": "Video góc máy tuyệt trần,\nNgọc Khánh sáng tạo muôn phần say mê.\nChúc em mọi bước đường về,\nNgập tràn hoa đẹp, say mê tháng ngày!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Nguyễn Ngọc Khánh (Video Editor) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=em_khanh"
   },
   {
     "id": "chi_tuyet",
@@ -334,9 +282,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234027",
     "link_anh": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc chị Tuyết ngày 20/10 ấm áp, server mát rượi, cuộc sống tràn ngập niềm vui và luôn là chỗ dựa vững chãi cho hạ tầng công ty!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=chi_tuyet",
-    "ai_poem": "Hạ tầng hệ thống an yên,\nÁnh Tuyết vững chãi, dịu hiền mến thương.\nChúc chị muôn nẻo dặm trường,\nBình an, hạnh phúc, ngát hương xuân nồng!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Võ Ánh Tuyết (Senior System Admin) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_tuyet"
   },
   {
     "id": "ban_thao",
@@ -346,9 +292,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234028",
     "link_anh": "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc Phương Thảo 20/10 nhận được thật nhiều hoa thơm, luôn truyền cảm hứng tích cực và rạng ngời như ánh ban mai!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=ban_thao",
-    "ai_poem": "Đào tạo truyền lửa say mê,\nPhương Thảo duyên dáng vẹn bề tài năng.\nChúc bạn rạng rỡ vầng trăng,\n20/10 nhận quà ngập tràn!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Đinh Phương Thảo (Chuyên viên Đào tạo (L&D)) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=ban_thao"
   },
   {
     "id": "chi_hien",
@@ -358,9 +302,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234029",
     "link_anh": "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc sếp Hiền ngày 20/10 thật nhiều sức khỏe, luôn tỏa sáng với thần thái đỉnh cao và đưa thương hiệu công ty vươn xa hơn nữa!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=chi_hien",
-    "ai_poem": "CMO chiến lược tài ba,\nThu Hiền rạng rỡ kiêu sa dẫn đầu.\nChúc sếp tâm đức bền lâu,\nĐưa thương hiệu vút qua cầu thành công!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Lương Thu Hiền (Giám đốc Marketing (CMO)) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_hien"
   },
   {
     "id": "em_ly",
@@ -370,8 +312,6 @@ const RECIPIENTS_DATA = [
     "sdt": "0901234030",
     "link_anh": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=80",
     "loi_chuc": "Chúc Khánh Ly ngày 20/10 đầu tiên tại công ty thật đáng nhớ, học hỏi được nhiều điều hay và luôn giữ trọn ngọn lửa nhiệt huyết nhé!",
-    "link_thiep": "https://thiep-20-10-five.vercel.app/?id=em_ly",
-    "ai_poem": "Bước đầu thực tập hăng say,\nKhánh Ly tươi trẻ mỗi ngày thêm xinh.\nChúc em giữ mãi niềm tin,\nTương lai rực rỡ, vẹn gìn nét duyên!",
-    "ai_song_prompt": "Vietnamese pop acoustic upbeat song, sweet female vocals, celebrating Trần Khánh Ly (Thực tập sinh Marketing) on Vietnamese Women's Day 20-10"
+    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=em_ly"
   }
 ];

@@ -1,43 +1,65 @@
 /**
  * THIỆP CHÚC MỪNG 20/10 CÁ NHÂN HÓA
- * Script xử lý hiệu ứng mở phong bao 3D, cá nhân hóa & xác nhận tham dự
+ * Script xử lý hiệu ứng phong bao 3D, popup lá thư 3s & xác nhận tham dự
  */
 
-// Cấu hình URL Webhook Google Sheet để tự động lưu câu trả lời vào Google Sheet
-// (Hướng dẫn tạo trong file google-apps-script.js)
+// Cấu hình URL Webhook Google Sheet (Nếu muốn tự động lưu phản hồi vào Google Sheet)
 const GOOGLE_SHEET_WEBHOOK_URL = '';
 
 let currentPerson = null;
 let isMusicPlaying = false;
+let isOpening = false;
+
+// Chuyển link ảnh Google Drive sang dạng hiển thị trực tiếp
+function formatImageUrl(url) {
+  if (!url) return 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80';
+  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  if (match && url.includes('drive.google.com')) {
+    return `https://lh3.googleusercontent.com/d/${match[1]}`;
+  }
+  return url;
+}
+
+// Lấy danh xưng và tên gọi thân mật (VD: Chị Nga, Em Mai, Chị Hương)
+function getShortRecipientName(person) {
+  if (!person) return '';
+  const parts = person.ho_ten.trim().split(' ');
+  const firstName = parts[parts.length - 1];
+  let prefix = 'Chị';
+  if (person.id.startsWith('em_')) prefix = 'Em';
+  else if (person.id.startsWith('ban_')) prefix = 'Bạn';
+  else if (person.id.startsWith('chi_')) prefix = 'Chị';
+  return `${prefix} ${firstName}`;
+}
 
 document.addEventListener('DOMContentLoaded', () => {
-  initPetals();
+  initNaturalPetals();
   loadCurrentRecipient();
   setupEventListeners();
 });
 
 /**
- * 1. Hiệu ứng cánh hoa bay lơ lửng
+ * 1. Hiệu ứng cánh hoa rơi tự nhiên (Organic Fluttering Breeze)
  */
-function initPetals() {
+function initNaturalPetals() {
   const container = document.getElementById('petals-container');
   if (!container) return;
 
-  const PETAL_COUNT = 22;
+  const PETAL_COUNT = 20;
   for (let i = 0; i < PETAL_COUNT; i++) {
     const petal = document.createElement('div');
     petal.classList.add('petal');
 
-    const size = Math.random() * 14 + 10;
-    const left = Math.random() * 100;
-    const duration = Math.random() * 8 + 7;
-    const delay = Math.random() * 10;
+    const size = Math.random() * 12 + 10; // 10px - 22px
+    const left = Math.random() * 105 - 2; // -2% to 103%
+    const duration = Math.random() * 6 + 8; // 8s - 14s bay bổng
+    const delay = Math.random() * 12;
 
     petal.style.width = `${size}px`;
-    petal.style.height = `${size * 1.3}px`;
+    petal.style.height = `${size * 1.35}px`;
     petal.style.left = `${left}%`;
-    petal.style.animationDuration = `${duration}s, ${Math.random() * 3 + 2}s`;
-    petal.style.animationDelay = `${delay}s, ${delay}s`;
+    petal.style.animationDuration = `${duration}s`;
+    petal.style.animationDelay = `${delay}s`;
 
     container.appendChild(petal);
   }
@@ -62,14 +84,11 @@ function loadCurrentRecipient() {
 
   if (!currentPerson) return;
 
-  // Điền dữ liệu vào phong bao bên ngoài
-  const envName = document.getElementById('envelope-person-name');
-  const envTitle = document.getElementById('envelope-person-title');
-  const envSnippet = document.getElementById('envelope-preview-snippet');
-
-  if (envName) envName.textContent = currentPerson.ho_ten;
-  if (envTitle) envTitle.textContent = currentPerson.chuc_danh;
-  if (envSnippet) envSnippet.textContent = currentPerson.loi_chuc;
+  // Cập nhật tên lá thư popup 3s: From Ban TCKT To [Tên người nhận]
+  const letterToName = document.getElementById('letter-to-name');
+  if (letterToName) {
+    letterToName.textContent = getShortRecipientName(currentPerson);
+  }
 
   // Điền dữ liệu vào thiệp chi tiết bên trong
   const cardName = document.getElementById('card-person-name');
@@ -82,9 +101,16 @@ function loadCurrentRecipient() {
   if (cardGreeting) cardGreeting.textContent = currentPerson.loi_chuc;
 
   if (cardImage) {
-    cardImage.src = currentPerson.link_anh;
+    cardImage.src = formatImageUrl(currentPerson.link_anh);
     cardImage.onerror = () => {
-      cardImage.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80';
+      // Fallback nếu ảnh drive hoặc link ngoài chưa public
+      const match = currentPerson.link_anh ? currentPerson.link_anh.match(/\/d\/([a-zA-Z0-9_-]+)/) : null;
+      if (match && !cardImage.dataset.triedFallback) {
+        cardImage.dataset.triedFallback = 'true';
+        cardImage.src = `https://drive.google.com/thumbnail?id=${match[1]}&sz=w800`;
+      } else {
+        cardImage.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80';
+      }
     };
   }
 
@@ -118,30 +144,49 @@ function loadCurrentRecipient() {
 }
 
 /**
- * 3. Hiệu ứng mở phong bao thư 3D & Pop up thiệp
+ * 3. Hiệu ứng mở phong bao: Nắp lật mở -> Popup lá thư 3s -> Hiện thiệp chính
  */
 function handleOpenEnvelope() {
+  if (isOpening) return;
+  isOpening = true;
+
   const wrapper = document.getElementById('envelope-wrapper');
+  const letterPopup = document.getElementById('letter-popup');
   const envelopeSection = document.getElementById('envelope-section');
   const greetingSection = document.getElementById('full-greeting-section');
 
   // Bật nhạc nền
   playBackgroundMusic();
 
-  // Thêm class kích hoạt animation 3D: Nắp lật mở, thiệp trượt pop-up lên
+  // Nắp phong bao lật mở 3D
   if (wrapper) wrapper.classList.add('is-open');
 
   // Bắn pháo hoa rực rỡ
   fireConfetti();
 
-  // Sau khi animation nắp mở và thiệp trượt ra hoàn tất (khoảng 850ms), hiện màn hình thiệp đầy đủ
+  // Sau 450ms khi nắp mở ra, hiện popup lá thư (From TCKT To [Tên người nhận])
   setTimeout(() => {
-    if (envelopeSection) envelopeSection.classList.add('hidden');
-    if (greetingSection) {
-      greetingSection.classList.remove('hidden');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (letterPopup) {
+      letterPopup.classList.add('active');
     }
-  }, 900);
+
+    // Hiển thị lá thư trong đúng 3 giây (3000ms) để người nhận kịp đọc
+    setTimeout(() => {
+      // Ẩn popup lá thư
+      if (letterPopup) {
+        letterPopup.classList.remove('active');
+      }
+
+      // Chuyển sang giao diện thiệp chính
+      setTimeout(() => {
+        if (envelopeSection) envelopeSection.classList.add('hidden');
+        if (greetingSection) {
+          greetingSection.classList.remove('hidden');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }, 350);
+    }, 3000);
+  }, 450);
 }
 
 /**
@@ -159,7 +204,6 @@ function updateGoogleCalendarLink() {
     `Trang phục: ${EVENT_INFO.dress_code}\n` +
     `Bản đồ chỉ đường: ${EVENT_INFO.google_maps_url}`
   );
-  // Ngày 20/10/2026 từ 18:30 (11:30 UTC) đến 21:30 (14:30 UTC)
   const dates = '20261020T113000Z/20261020T143000Z';
 
   btn.href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
@@ -224,30 +268,16 @@ function handleRsvpSubmit(e) {
  * 6. Đăng ký các sự kiện tương tác
  */
 function setupEventListeners() {
-  // Mở phong bì khi bấm vào con dấu sáp hoặc thẻ bao bì
-  const seal = document.getElementById('btn-seal');
-  const envContainer = document.getElementById('env-container');
-  const btnOpen = document.getElementById('btn-open-envelope');
-
-  if (seal) seal.addEventListener('click', handleOpenEnvelope);
-  if (envContainer) envContainer.addEventListener('click', handleOpenEnvelope);
-  if (btnOpen) btnOpen.addEventListener('click', handleOpenEnvelope);
+  // Chỉ cần click vào phong bao (bất cứ vị trí nào trên phong bì hoặc con dấu) là mở thiệp
+  const wrapper = document.getElementById('envelope-wrapper');
+  if (wrapper) {
+    wrapper.addEventListener('click', handleOpenEnvelope);
+  }
 
   // Nút bật/tắt nhạc
   const musicToggle = document.getElementById('music-toggle');
   if (musicToggle) {
     musicToggle.addEventListener('click', toggleBackgroundMusic);
-  }
-
-  // Sao chép lời chúc
-  const btnCopyGreeting = document.getElementById('btn-copy-greeting');
-  if (btnCopyGreeting) {
-    btnCopyGreeting.addEventListener('click', () => {
-      if (!currentPerson) return;
-      navigator.clipboard.writeText(currentPerson.loi_chuc).then(() => {
-        showToast('💌 Đã sao chép lời chúc vào khay nhớ tạm!');
-      });
-    });
   }
 
   // Form xác nhận tham dự
