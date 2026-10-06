@@ -309,26 +309,26 @@
         <!-- FORM XÁC NHẬN THAM DỰ -->
         <form id="rsvp-form" class="space-y-4 max-w-md mx-auto relative z-10">
           
-          <!-- 2 Option nút bấm chuẩn theo ảnh mẫu (có icon tích tròn & trái tim nhỏ) -->
+          <!-- 2 Option nút bấm: Độc quyền (Exclusive), 1 lượt chọn -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-5">
             
             <!-- Option 1: Sẽ tham dự (Mặc định chọn) -->
-            <label id="opt-yes-label" class="rsvp-card-option is-selected relative flex items-center justify-center gap-2.5 p-3.5 rounded-2xl border-2 border-rose-400 bg-rose-50/90 cursor-pointer shadow-sm select-none">
+            <label id="opt-yes-label" class="rsvp-opt-btn is-active">
               <input type="radio" name="rsvp_status" value="Sẽ tham dự" checked class="sr-only">
-              <div class="check-circle w-6 h-6 rounded-full bg-rose-600 text-white flex items-center justify-center text-xs shadow-inner">
+              <div id="opt-yes-check" class="w-6 h-6 rounded-full bg-rose-600 text-white flex items-center justify-center text-xs shadow-sm transition">
                 <i class="fa-solid fa-check"></i>
               </div>
               <span class="text-sm font-bold text-slate-800">Sẽ tham dự</span>
-              <span class="absolute -top-2 -right-1 text-xs">💕</span>
+              <span class="text-xs">💕</span>
             </label>
 
             <!-- Option 2: Không tham dự -->
-            <label id="opt-no-label" class="rsvp-card-option relative flex items-center justify-center gap-2.5 p-3.5 rounded-2xl border-2 border-slate-200 bg-white/95 cursor-pointer shadow-sm select-none">
+            <label id="opt-no-label" class="rsvp-opt-btn is-inactive">
               <input type="radio" name="rsvp_status" value="Không tham dự" class="sr-only">
-              <div class="check-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs text-transparent">
+              <div id="opt-no-check" class="w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs text-transparent transition">
                 <i class="fa-solid fa-check"></i>
               </div>
-              <span class="text-sm font-medium text-slate-700">Không tham dự</span>
+              <span class="text-sm font-medium text-slate-600">Không tham dự</span>
             </label>
           </div>
 
@@ -342,7 +342,7 @@
             <textarea id="rsvp-note" rows="2" placeholder="Ví dụ: Hẹn gặp mọi người lúc 18h30..." class="w-full text-xs sm:text-sm rounded-2xl border-2 border-rose-200 p-3.5 focus:outline-none focus:ring-2 focus:ring-rose-400 bg-white/95 shadow-inner"></textarea>
           </div>
 
-          <!-- Nút gửi xác nhận gradient hoa hồng -->
+          <!-- Nút gửi xác nhận -->
           <button type="submit" id="btn-submit-rsvp" class="w-full bg-gradient-to-r from-rose-600 via-pink-600 to-rose-600 hover:from-rose-700 hover:to-pink-700 text-white font-bold py-3.5 rounded-2xl shadow-lg transition hover:scale-[1.01] active:scale-95 text-sm flex items-center justify-center gap-2">
             <i class="fa-solid fa-paper-plane text-xs"></i> Gửi Xác Nhận
           </button>
@@ -356,6 +356,27 @@
       <p class="text-[11px] text-slate-300">Vietnamese Women's Day Celebration</p>
     </footer>
   </main>
+
+  <!-- POPUP CẢM ƠN (THANK YOU MODAL SAU KHI GỬI PHẢN HỒI) -->
+  <div id="thankyou-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div id="modal-icon-wrap" class="w-16 h-16 rounded-full bg-rose-100 text-rose-600 text-2xl flex items-center justify-center mx-auto mb-4 shadow-inner">
+        <i class="fa-solid fa-heart text-rose-500"></i>
+      </div>
+      <div class="text-[11px] uppercase tracking-widest text-rose-500 font-bold mb-1">
+        BAN TÀI CHÍNH KẾ TOÁN
+      </div>
+      <h3 id="modal-title" class="font-serif-luxury text-2xl sm:text-3xl font-extrabold text-rose-950 mb-2">
+        Cảm Ơn Chị!
+      </h3>
+      <p id="modal-desc" class="font-lora text-slate-700 text-xs sm:text-sm leading-relaxed mb-6">
+        Ban Tổ Chức đã ghi nhận phản hồi của Chị. Sự hiện diện của Chị là niềm vinh hạnh to lớn cho buổi tiệc!
+      </p>
+      <button id="btn-close-modal" type="button" class="w-full bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 text-white font-semibold py-3 px-6 rounded-2xl shadow-md transition hover:scale-105 text-sm">
+        Đóng & Xem Lại Thiệp
+      </button>
+    </div>
+  </div>
 
   <!-- TOAST THÔNG BÁO -->
   <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-slate-900/90 text-white px-5 py-2.5 rounded-full text-xs sm:text-sm font-medium shadow-2xl backdrop-blur-md transition-all duration-300 opacity-0 pointer-events-none flex items-center gap-2">

@@ -136,17 +136,126 @@ function loadCurrentRecipient() {
   // Cấu hình link Google Calendar
   updateGoogleCalendarLink();
 
-  // Kiểm tra nếu người này đã gửi xác nhận trước đó
-  const savedRsvp = localStorage.getItem(`rsvp_${currentPerson.id}`);
-  if (savedRsvp) {
-    try {
-      const data = JSON.parse(savedRsvp);
-      const radio = document.querySelector(`input[name="rsvp_status"][value="${data.status}"]`);
-      if (radio) radio.checked = true;
-      const noteElem = document.getElementById('rsvp-note');
-      if (noteElem) noteElem.value = data.note || '';
-    } catch (e) {}
+  // Kiểm tra nếu người này đã gửi xác nhận trước đó (Mỗi người chỉ có 1 lượt chọn)
+  checkExistingRsvp();
+}
+
+/**
+ * Cập nhật giao diện 2 nút lựa chọn (Exclusive - Độc quyền tuyệt đối)
+ */
+function updateRsvpUi(selectedVal) {
+  const optYesLabel = document.getElementById('opt-yes-label');
+  const optNoLabel = document.getElementById('opt-no-label');
+  const optYesCheck = document.getElementById('opt-yes-check');
+  const optNoCheck = document.getElementById('opt-no-check');
+
+  if (selectedVal === 'Sẽ tham dự') {
+    if (optYesLabel) {
+      optYesLabel.classList.remove('is-inactive');
+      optYesLabel.classList.add('is-active');
+    }
+    if (optNoLabel) {
+      optNoLabel.classList.remove('is-active');
+      optNoLabel.classList.add('is-inactive');
+    }
+    if (optYesCheck) {
+      optYesCheck.className = 'w-6 h-6 rounded-full bg-rose-600 text-white flex items-center justify-center text-xs shadow-sm transition';
+      optYesCheck.innerHTML = '<i class="fa-solid fa-check"></i>';
+    }
+    if (optNoCheck) {
+      optNoCheck.className = 'w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs text-transparent transition';
+      optNoCheck.innerHTML = '<i class="fa-solid fa-check"></i>';
+    }
+  } else {
+    if (optYesLabel) {
+      optYesLabel.classList.remove('is-active');
+      optYesLabel.classList.add('is-inactive');
+    }
+    if (optNoLabel) {
+      optNoLabel.classList.remove('is-inactive');
+      optNoLabel.classList.add('is-active');
+    }
+    if (optYesCheck) {
+      optYesCheck.className = 'w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs text-transparent transition';
+      optYesCheck.innerHTML = '<i class="fa-solid fa-check"></i>';
+    }
+    if (optNoCheck) {
+      optNoCheck.className = 'w-6 h-6 rounded-full bg-rose-600 text-white flex items-center justify-center text-xs shadow-sm transition';
+      optNoCheck.innerHTML = '<i class="fa-solid fa-check"></i>';
+    }
   }
+}
+
+/**
+ * Kiểm tra xem người nhận đã vote trước đó chưa
+ */
+function checkExistingRsvp() {
+  if (!currentPerson) return;
+  const savedRsvp = localStorage.getItem(`rsvp_${currentPerson.id}`);
+  if (!savedRsvp) return;
+
+  try {
+    const data = JSON.parse(savedRsvp);
+    const radio = document.querySelector(`input[name="rsvp_status"][value="${data.status}"]`);
+    if (radio) {
+      radio.checked = true;
+      updateRsvpUi(data.status);
+    }
+    const noteElem = document.getElementById('rsvp-note');
+    if (noteElem) {
+      noteElem.value = data.note || '';
+      noteElem.disabled = true;
+    }
+
+    // Khóa các lựa chọn (Mỗi người chỉ có 1 lượt chọn)
+    const radios = document.querySelectorAll('input[name="rsvp_status"]');
+    radios.forEach(r => r.disabled = true);
+
+    const submitBtn = document.getElementById('btn-submit-rsvp');
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i class="fa-solid fa-circle-check"></i> Bạn đã xác nhận (${data.status})`;
+      submitBtn.classList.remove('from-rose-600', 'to-rose-600', 'hover:from-rose-700', 'hover:to-pink-700');
+      submitBtn.classList.add('bg-slate-400', 'cursor-not-allowed', 'opacity-90');
+    }
+  } catch (e) {}
+}
+
+/**
+ * Hiển thị Pop-up Cảm Ơn sau khi gửi phản hồi
+ */
+function showThankYouModal(statusVal) {
+  const modal = document.getElementById('thankyou-modal');
+  const title = document.getElementById('modal-title');
+  const desc = document.getElementById('modal-desc');
+  const iconWrap = document.getElementById('modal-icon-wrap');
+  if (!modal || !currentPerson) return;
+
+  const xungHo = currentPerson.ho_ten.startsWith('Nguyễn Thị') || currentPerson.chuc_danh.includes('Trưởng') ? 'Chị' : 'Chị';
+  const tenNguoiNhan = currentPerson.ho_ten.split(' ').slice(-1)[0]; // Tên cuối
+
+  if (statusVal === 'Sẽ tham dự') {
+    if (title) title.innerText = `Cảm Ơn ${xungHo} ${tenNguoiNhan}!`;
+    if (desc) desc.innerText = `Ban Tổ Chức đã ghi nhận sự hiện diện của ${xungHo}! Rất hân hạnh được đón tiếp ${xungHo} tại buổi dạ tiệc 20/10 lúc 18h30.`;
+    if (iconWrap) {
+      iconWrap.className = 'w-16 h-16 rounded-full bg-rose-100 text-rose-600 text-2xl flex items-center justify-center mx-auto mb-4 shadow-inner';
+      iconWrap.innerHTML = '<i class="fa-solid fa-heart text-rose-500"></i>';
+    }
+  } else {
+    if (title) title.innerText = `Cảm Ơn ${xungHo} ${tenNguoiNhan}!`;
+    if (desc) desc.innerText = `Ban Tổ Chức rất tiếc vì ${xungHo} không thể tham gia buổi dạ tiệc, nhưng xin gửi trọn vẹn tình cảm và những lời chúc ngọt ngào nhất tới ${xungHo}!`;
+    if (iconWrap) {
+      iconWrap.className = 'w-16 h-16 rounded-full bg-slate-100 text-slate-600 text-2xl flex items-center justify-center mx-auto mb-4 shadow-inner';
+      iconWrap.innerHTML = '<i class="fa-regular fa-envelope text-slate-500"></i>';
+    }
+  }
+
+  modal.classList.add('active');
+}
+
+function closeThankYouModal() {
+  const modal = document.getElementById('thankyou-modal');
+  if (modal) modal.classList.remove('active');
 }
 
 /**
@@ -216,11 +325,17 @@ function updateGoogleCalendarLink() {
 }
 
 /**
- * 5. Xử lý Form Xác Nhận Tham Dự (2 options)
+ * 5. Xử lý Form Xác Nhận Tham Dự (2 options - Mỗi người chỉ có 1 lượt chọn)
  */
 function handleRsvpSubmit(e) {
   e.preventDefault();
   if (!currentPerson) return;
+
+  // Kiểm tra nếu đã vote
+  if (localStorage.getItem(`rsvp_${currentPerson.id}`)) {
+    showToast('Bạn đã gửi phản hồi trước đó rồi!');
+    return;
+  }
 
   const statusInput = document.querySelector('input[name="rsvp_status"]:checked');
   const noteInput = document.getElementById('rsvp-note');
@@ -238,7 +353,7 @@ function handleRsvpSubmit(e) {
     timestamp: new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })
   };
 
-  // 1. Lưu vào LocalStorage
+  // 1. Lưu vào LocalStorage (Khóa 1 lượt chọn cho người này)
   localStorage.setItem(`rsvp_${currentPerson.id}`, JSON.stringify(rsvpRecord));
 
   // 2. Gửi về Google Sheet Webhook (nếu BTC đã cấu hình)
@@ -253,28 +368,33 @@ function handleRsvpSubmit(e) {
     } catch (err) {}
   }
 
-  // Bắn pháo hoa nếu chọn tham dự
-  if (statusVal === 'Sẽ tham dự') {
-    fireConfetti();
-    showToast(`🌸 Tuyệt vời! Cảm ơn ${currentPerson.ho_ten} đã xác nhận tham dự!`);
-  } else {
-    showToast(`Cảm ơn ${currentPerson.ho_ten} đã gửi phản hồi cho Ban Tổ Chức!`);
-  }
+  // 3. Khóa các inputs và nút submit ngay sau khi gửi thành công
+  const radios = document.querySelectorAll('input[name="rsvp_status"]');
+  radios.forEach(r => r.disabled = true);
+  if (noteInput) noteInput.disabled = true;
 
-  // Khóa nút để tránh bấm nhiều lần
   const submitBtn = document.getElementById('btn-submit-rsvp');
   if (submitBtn) {
-    submitBtn.innerHTML = '<i class="fa-solid fa-check"></i> Đã Gửi Xác Nhận';
-    submitBtn.classList.replace('from-rose-600', 'from-emerald-600');
-    submitBtn.classList.replace('to-pink-600', 'to-teal-600');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = `<i class="fa-solid fa-circle-check"></i> Đã Gửi Xác Nhận (${statusVal})`;
+    submitBtn.classList.remove('from-rose-600', 'to-pink-600', 'hover:from-rose-700', 'hover:to-pink-700');
+    submitBtn.classList.add('bg-slate-400', 'cursor-not-allowed', 'opacity-90');
   }
+
+  // 4. Bắn pháo hoa nếu tham dự
+  if (statusVal === 'Sẽ tham dự') {
+    fireConfetti();
+  }
+
+  // 5. Hiển thị Pop-up Cảm Ơn
+  showThankYouModal(statusVal);
 }
 
 /**
  * 6. Đăng ký các sự kiện tương tác
  */
 function setupEventListeners() {
-  // Chỉ cần click vào phong bao (bất cứ vị trí nào trên phong bì hoặc con dấu) là mở thiệp
+  // Click vào phong bao là mở thiệp
   const wrapper = document.getElementById('envelope-wrapper');
   if (wrapper) {
     wrapper.addEventListener('click', handleOpenEnvelope);
@@ -286,26 +406,40 @@ function setupEventListeners() {
     musicToggle.addEventListener('click', toggleBackgroundMusic);
   }
 
-  // Đổi trạng thái hiển thị của 2 nút Sẽ tham dự / Không tham dự
-  const radios = document.querySelectorAll('input[name="rsvp_status"]');
-  radios.forEach(radio => {
-    radio.addEventListener('change', () => {
-      const optYes = document.getElementById('opt-yes-label');
-      const optNo = document.getElementById('opt-no-label');
-      if (radio.value === 'Sẽ tham dự') {
-        if (optYes) optYes.classList.add('is-selected');
-        if (optNo) optNo.classList.remove('is-selected');
-      } else {
-        if (optYes) optYes.classList.remove('is-selected');
-        if (optNo) optNo.classList.add('is-selected');
+  // Click vào option label để kích hoạt và đồng bộ trạng thái độc quyền (Exclusive)
+  const optYesLabel = document.getElementById('opt-yes-label');
+  const optNoLabel = document.getElementById('opt-no-label');
+  const yesRadio = document.querySelector('input[name="rsvp_status"][value="Sẽ tham dự"]');
+  const noRadio = document.querySelector('input[name="rsvp_status"][value="Không tham dự"]');
+
+  if (optYesLabel) {
+    optYesLabel.addEventListener('click', () => {
+      if (yesRadio && !yesRadio.disabled) {
+        yesRadio.checked = true;
+        updateRsvpUi('Sẽ tham dự');
       }
     });
-  });
+  }
+
+  if (optNoLabel) {
+    optNoLabel.addEventListener('click', () => {
+      if (noRadio && !noRadio.disabled) {
+        noRadio.checked = true;
+        updateRsvpUi('Không tham dự');
+      }
+    });
+  }
 
   // Form xác nhận tham dự
   const rsvpForm = document.getElementById('rsvp-form');
   if (rsvpForm) {
     rsvpForm.addEventListener('submit', handleRsvpSubmit);
+  }
+
+  // Nút đóng Thank You modal
+  const btnCloseModal = document.getElementById('btn-close-modal');
+  if (btnCloseModal) {
+    btnCloseModal.addEventListener('click', closeThankYouModal);
   }
 }
 
