@@ -93,92 +93,70 @@
   <!-- ==================== GIAO DIỆN 2: NỘI DUNG THIỆP ĐÃ MỞ ==================== -->
   <main id="full-greeting-section" class="hidden max-w-2xl mx-auto px-4 pt-8 space-y-8">
 
-    <!-- KHỐI 1: HÌNH ẢNH & LỜI CHÚC CÁ NHÂN HÓA (THIẾT KẾ HOA HỒNG & TEXTBOX THẲNG THEO MẪU) -->
-    <article class="rose-card-container rounded-3xl p-6 sm:p-10 relative overflow-hidden text-center">
-      
-      <!-- Hoa hồng trang trí góc trên bên trái -->
-      <div class="absolute -top-3 -left-3 text-4xl sm:text-5xl opacity-80 pointer-events-none select-none filter drop-shadow">
-        🌹
-      </div>
-      <!-- Cánh hoa trang trí góc trên bên phải -->
-      <div class="absolute top-2 right-2 text-2xl sm:text-3xl opacity-75 pointer-events-none select-none">
-        🌸
-      </div>
-
-      <!-- Badge trên cùng -->
-      <div class="mb-3">
-        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/95 border border-rose-300 text-rose-700 text-xs font-semibold shadow-sm">
-          🌸 CHÚC MỪNG NGÀY PHỤ NỮ VIỆT NAM 20/10 🌸
-        </span>
-      </div>
-
-      <!-- Tiêu đề nghệ thuật chuẩn theo ảnh mẫu -->
-      <div class="mb-5">
-        <h1 class="font-serif-luxury text-3xl sm:text-4xl font-extrabold text-rose-950 tracking-tight leading-tight">
-          Gửi Người Phụ Nữ
-        </h1>
-        <div class="font-script-romantic text-5xl sm:text-6xl text-rose-600 mt-0.5 mb-1 drop-shadow-sm flex items-center justify-center gap-1.5">
-          <span>Tuyệt Vời</span>
-          <span class="text-2xl sm:text-3xl text-rose-400 font-sans font-light">♡</span>
-        </div>
-      </div>
-
-      <!-- Khung ảnh đại diện chân dung & hoa hồng bao quanh -->
-      <div class="relative inline-block mb-3">
-        <div class="w-36 h-36 sm:w-44 sm:h-44 rounded-full p-1.5 bg-gradient-to-tr from-rose-500 via-pink-300 to-rose-200 shadow-xl mx-auto">
-          <img id="card-person-image" src="" alt="Chân dung" class="w-full h-full object-cover rounded-full bg-rose-50">
-        </div>
-        <!-- Cụm hoa hồng trang trí cạnh ảnh chân dung -->
-        <div class="absolute -bottom-1 -left-2 text-3xl sm:text-4xl filter drop-shadow pointer-events-none select-none">
-          🌸
-        </div>
-        <div class="absolute top-1 -right-1 text-xl sm:text-2xl filter drop-shadow pointer-events-none select-none">
-          🌺
-        </div>
-      </div>
-
-      <!-- Họ tên & chức vụ -->
-      <div class="mb-6">
-        <h2 id="card-person-name" class="font-serif-luxury text-2xl sm:text-3xl font-bold text-rose-950 tracking-tight">
-          Nguyễn Thị Thuý Nga
-        </h2>
-        <div class="mt-1.5">
-          <span id="card-person-title" class="inline-block text-xs font-semibold text-rose-800 bg-rose-100/90 px-4 py-1 rounded-full border border-rose-200">
-            Phòng Chính sách và Thuế
+    <!-- KHỐI 1: HÌNH ẢNH & LỜI CHÚC (DÙNG BACKGROUND HOA HỒNG CHUẨN, KHÔNG DÙNG ICON EMOJI) -->
+    <article class="card-with-bg p-6 sm:p-10 relative text-center">
+      <div class="card-content-wrap">
+        
+        <!-- Badge trên cùng -->
+        <div class="mb-3">
+          <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/95 border border-rose-300 text-rose-700 text-xs font-semibold shadow-sm">
+            🌸 CHÚC MỪNG NGÀY PHỤ NỮ VIỆT NAM 20/10 🌸
           </span>
         </div>
-      </div>
 
-      <!-- TEXTBOX LỜI CHÚC (ĐẶT THẲNG THỚM, GHIM TRÁI TIM, HOA HỒNG TRANG TRÍ) -->
-      <div class="relative bg-white/95 rounded-3xl p-6 sm:p-8 border-2 border-rose-200 shadow-xl text-left max-w-lg mx-auto">
-        <!-- Ghim trái tim ở đỉnh textbox -->
-        <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-rose-400 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs shadow-md border-2 border-white">
-          ❤️
+        <!-- Tiêu đề nghệ thuật chuẩn theo ảnh mẫu -->
+        <div class="mb-5">
+          <h1 class="font-serif-luxury text-3xl sm:text-4xl font-extrabold text-rose-950 tracking-tight leading-tight">
+            Gửi Người Phụ Nữ
+          </h1>
+          <div class="font-script-romantic text-5xl sm:text-6xl text-rose-600 mt-0.5 mb-1 drop-shadow-sm flex items-center justify-center gap-1.5">
+            <span>Tuyệt Vời</span>
+            <span class="text-2xl sm:text-3xl text-rose-400 font-sans font-light">♡</span>
+          </div>
         </div>
 
-        <!-- Dấu ngoặc kép mở “ -->
-        <div class="text-3xl text-rose-300 font-serif leading-none opacity-80 mb-1">“</div>
-
-        <!-- Lời chúc cá nhân hóa font Lora mượt mà -->
-        <p id="card-person-greeting" class="font-lora text-slate-700 text-sm sm:text-base leading-relaxed italic px-2">
-          <!-- Đổ từ CSV -->
-        </p>
-
-        <!-- Dấu ngoặc kép đóng ” -->
-        <div class="text-3xl text-rose-300 font-serif leading-none opacity-80 text-right mt-1">”</div>
-
-        <!-- Cành hoa hồng trang trí góc đáy hộp lời chúc -->
-        <div class="absolute -bottom-3 -right-3 text-3xl sm:text-4xl pointer-events-none select-none filter drop-shadow">
-          🌹
+        <!-- Khung ảnh đại diện chân dung -->
+        <div class="relative inline-block mb-3">
+          <div class="w-36 h-36 sm:w-44 sm:h-44 rounded-full p-1.5 bg-gradient-to-tr from-rose-400 via-pink-200 to-rose-300 shadow-xl mx-auto">
+            <img id="card-person-image" src="" alt="Chân dung" class="w-full h-full object-cover rounded-full bg-rose-50">
+          </div>
         </div>
-        <div class="absolute -bottom-2 -left-2 text-2xl opacity-80 pointer-events-none select-none">
-          🌸
+
+        <!-- Họ tên & chức vụ -->
+        <div class="mb-6">
+          <h2 id="card-person-name" class="font-serif-luxury text-2xl sm:text-3xl font-bold text-rose-950 tracking-tight">
+            Nguyễn Thị Thuý Nga
+          </h2>
+          <div class="mt-1.5">
+            <span id="card-person-title" class="inline-block text-xs font-semibold text-rose-800 bg-white/90 px-4 py-1 rounded-full border border-rose-200 shadow-sm">
+              Phòng Chính sách và Thuế
+            </span>
+          </div>
+        </div>
+
+        <!-- TEXTBOX LỜI CHÚC (ĐẶT THẲNG THỚM, GHIM TRÁI TIM, KHÔNG DÙNG ICON HOA HỒNG) -->
+        <div class="relative bg-white/95 rounded-3xl p-6 sm:p-8 border-2 border-rose-200/90 shadow-xl text-left max-w-lg mx-auto">
+          <!-- Ghim trái tim ở đỉnh textbox -->
+          <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-rose-400 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs shadow-md border-2 border-white">
+            ❤️
+          </div>
+
+          <!-- Dấu ngoặc kép mở “ -->
+          <div class="text-3xl text-rose-300 font-serif leading-none opacity-80 mb-1">“</div>
+
+          <!-- Lời chúc cá nhân hóa font Lora mượt mà -->
+          <p id="card-person-greeting" class="font-lora text-slate-700 text-sm sm:text-base leading-relaxed italic px-2">
+            <!-- Đổ từ CSV -->
+          </p>
+
+          <!-- Dấu ngoặc kép đóng ” -->
+          <div class="text-3xl text-rose-300 font-serif leading-none opacity-80 text-right mt-1">”</div>
         </div>
       </div>
     </article>
 
     <!-- KHỐI 2: THƯ MỜI DỰ TIỆC THIẾT KẾ MỚI CHUẨN POSTER THEO PHONG CÁCH HOA HỒNG & FONT LORA -->
-    <article class="invitation-container rounded-3xl p-6 sm:p-10 relative overflow-hidden">
+    <article class="card-with-bg p-6 sm:p-10 relative">
       
       <!-- Nền hoa văn cánh hoa trang trí chìm -->
       <div class="text-center space-y-1 mb-8 relative z-10">
@@ -303,81 +281,73 @@
       </div>
     </article>
 
-    <!-- KHỐI 3: XÁC NHẬN THAM DỰ (THIẾT KẾ HOA HỒNG & OPTION THEO MẪU POSTER) -->
-    <article class="rose-card-container rounded-3xl p-6 sm:p-10 relative overflow-hidden text-center">
-      
-      <!-- Hoa hồng trang trí góc trên bên phải -->
-      <div class="absolute -top-3 -right-3 text-4xl sm:text-5xl opacity-80 pointer-events-none select-none filter drop-shadow">
-        🌹
-      </div>
-      <!-- Hoa hồng trang trí góc dưới bên trái -->
-      <div class="absolute -bottom-3 -left-3 text-4xl sm:text-5xl opacity-80 pointer-events-none select-none filter drop-shadow">
-        🌹
-      </div>
-
-      <!-- Badge trên cùng -->
-      <div class="mb-3">
-        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/95 border border-rose-300 text-rose-700 text-xs font-semibold shadow-sm">
-          🌸 CHÚC MỪNG NGÀY PHỤ NỮ VIỆT NAM 20/10 🌸
-        </span>
-      </div>
-
-      <!-- Tiêu đề nghệ thuật -->
-      <div class="mb-6">
-        <h2 class="font-serif-luxury text-3xl sm:text-4xl font-extrabold text-rose-950 tracking-tight leading-tight">
-          Xác Nhận
-        </h2>
-        <div class="font-script-romantic text-5xl sm:text-6xl text-rose-600 mt-0.5 mb-1 drop-shadow-sm flex items-center justify-center gap-1.5">
-          <span>Tham Dự</span>
-          <span class="text-2xl sm:text-3xl text-rose-400 font-sans font-light">♡</span>
-        </div>
-        <p class="font-lora text-xs sm:text-sm text-slate-600 mt-1">
-          Vui lòng phản hồi sớm để Ban Tổ Chức chuẩn bị chu đáo nhất
-        </p>
-      </div>
-
-      <!-- FORM XÁC NHẬN THAM DỰ -->
-      <form id="rsvp-form" class="space-y-4 max-w-md mx-auto relative z-10">
+    <!-- KHỐI 3: XÁC NHẬN THAM DỰ (DÙNG BACKGROUND HOA HỒNG CHUẨN, KHÔNG DÙNG ICON EMOJI) -->
+    <article class="card-with-bg p-6 sm:p-10 relative text-center">
+      <div class="card-content-wrap">
         
-        <!-- 2 Option nút bấm chuẩn theo ảnh mẫu (có icon tích tròn & trái tim nhỏ) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-5">
-          
-          <!-- Option 1: Sẽ tham dự (Mặc định chọn) -->
-          <label id="opt-yes-label" class="rsvp-card-option is-selected relative flex items-center justify-center gap-2.5 p-3.5 rounded-2xl border-2 border-rose-400 bg-rose-50/80 cursor-pointer shadow-sm select-none">
-            <input type="radio" name="rsvp_status" value="Sẽ tham dự" checked class="sr-only">
-            <div class="check-circle w-6 h-6 rounded-full bg-rose-600 text-white flex items-center justify-center text-xs shadow-inner">
-              <i class="fa-solid fa-check"></i>
-            </div>
-            <span class="text-sm font-bold text-slate-800">Sẽ tham dự</span>
-            <!-- Trái tim nhỏ bay trên góc -->
-            <span class="absolute -top-2 -right-1 text-xs">💕</span>
-          </label>
-
-          <!-- Option 2: Không tham dự -->
-          <label id="opt-no-label" class="rsvp-card-option relative flex items-center justify-center gap-2.5 p-3.5 rounded-2xl border-2 border-slate-200 bg-white/90 cursor-pointer shadow-sm select-none">
-            <input type="radio" name="rsvp_status" value="Không tham dự" class="sr-only">
-            <div class="check-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs text-transparent">
-              <i class="fa-solid fa-check"></i>
-            </div>
-            <span class="text-sm font-medium text-slate-700">Không tham dự</span>
-          </label>
+        <!-- Badge trên cùng -->
+        <div class="mb-3">
+          <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/95 border border-rose-300 text-rose-700 text-xs font-semibold shadow-sm">
+            🌸 CHÚC MỪNG NGÀY PHỤ NỮ VIỆT NAM 20/10 🌸
+          </span>
         </div>
 
-        <!-- Nhãn & Textbox lời nhắn -->
-        <div>
-          <div class="text-left mb-1.5 flex items-center gap-1.5 text-xs font-semibold text-slate-700">
-            <i class="fa-regular fa-envelope text-rose-500"></i>
-            <span>Lời nhắn gửi đến Ban Tổ chức (Optional):</span>
-            <span class="text-rose-400 font-sans font-light">♡</span>
+        <!-- Tiêu đề nghệ thuật -->
+        <div class="mb-6">
+          <h2 class="font-serif-luxury text-3xl sm:text-4xl font-extrabold text-rose-950 tracking-tight leading-tight">
+            Xác Nhận
+          </h2>
+          <div class="font-script-romantic text-5xl sm:text-6xl text-rose-600 mt-0.5 mb-1 drop-shadow-sm flex items-center justify-center gap-1.5">
+            <span>Tham Dự</span>
+            <span class="text-2xl sm:text-3xl text-rose-400 font-sans font-light">♡</span>
           </div>
-          <textarea id="rsvp-note" rows="2" placeholder="Ví dụ: Hẹn gặp mọi người lúc 18h30..." class="w-full text-xs sm:text-sm rounded-2xl border-2 border-rose-200 p-3.5 focus:outline-none focus:ring-2 focus:ring-rose-400 bg-white/95 shadow-inner"></textarea>
+          <p class="font-lora text-xs sm:text-sm text-slate-600 mt-1">
+            Vui lòng phản hồi sớm để Ban Tổ Chức chuẩn bị chu đáo nhất
+          </p>
         </div>
 
-        <!-- Nút gửi xác nhận gradient hoa hồng -->
-        <button type="submit" id="btn-submit-rsvp" class="w-full bg-gradient-to-r from-rose-600 via-pink-600 to-rose-600 hover:from-rose-700 hover:to-pink-700 text-white font-bold py-3.5 rounded-2xl shadow-lg transition hover:scale-[1.01] active:scale-95 text-sm flex items-center justify-center gap-2">
-          <i class="fa-solid fa-paper-plane text-xs"></i> Gửi Xác Nhận
-        </button>
-      </form>
+        <!-- FORM XÁC NHẬN THAM DỰ -->
+        <form id="rsvp-form" class="space-y-4 max-w-md mx-auto relative z-10">
+          
+          <!-- 2 Option nút bấm chuẩn theo ảnh mẫu (có icon tích tròn & trái tim nhỏ) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-5">
+            
+            <!-- Option 1: Sẽ tham dự (Mặc định chọn) -->
+            <label id="opt-yes-label" class="rsvp-card-option is-selected relative flex items-center justify-center gap-2.5 p-3.5 rounded-2xl border-2 border-rose-400 bg-rose-50/90 cursor-pointer shadow-sm select-none">
+              <input type="radio" name="rsvp_status" value="Sẽ tham dự" checked class="sr-only">
+              <div class="check-circle w-6 h-6 rounded-full bg-rose-600 text-white flex items-center justify-center text-xs shadow-inner">
+                <i class="fa-solid fa-check"></i>
+              </div>
+              <span class="text-sm font-bold text-slate-800">Sẽ tham dự</span>
+              <span class="absolute -top-2 -right-1 text-xs">💕</span>
+            </label>
+
+            <!-- Option 2: Không tham dự -->
+            <label id="opt-no-label" class="rsvp-card-option relative flex items-center justify-center gap-2.5 p-3.5 rounded-2xl border-2 border-slate-200 bg-white/95 cursor-pointer shadow-sm select-none">
+              <input type="radio" name="rsvp_status" value="Không tham dự" class="sr-only">
+              <div class="check-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs text-transparent">
+                <i class="fa-solid fa-check"></i>
+              </div>
+              <span class="text-sm font-medium text-slate-700">Không tham dự</span>
+            </label>
+          </div>
+
+          <!-- Nhãn & Textbox lời nhắn -->
+          <div>
+            <div class="text-left mb-1.5 flex items-center gap-1.5 text-xs font-semibold text-slate-700">
+              <i class="fa-regular fa-envelope text-rose-500"></i>
+              <span>Lời nhắn gửi đến Ban Tổ chức (Optional):</span>
+              <span class="text-rose-400 font-sans font-light">♡</span>
+            </div>
+            <textarea id="rsvp-note" rows="2" placeholder="Ví dụ: Hẹn gặp mọi người lúc 18h30..." class="w-full text-xs sm:text-sm rounded-2xl border-2 border-rose-200 p-3.5 focus:outline-none focus:ring-2 focus:ring-rose-400 bg-white/95 shadow-inner"></textarea>
+          </div>
+
+          <!-- Nút gửi xác nhận gradient hoa hồng -->
+          <button type="submit" id="btn-submit-rsvp" class="w-full bg-gradient-to-r from-rose-600 via-pink-600 to-rose-600 hover:from-rose-700 hover:to-pink-700 text-white font-bold py-3.5 rounded-2xl shadow-lg transition hover:scale-[1.01] active:scale-95 text-sm flex items-center justify-center gap-2">
+            <i class="fa-solid fa-paper-plane text-xs"></i> Gửi Xác Nhận
+          </button>
+        </form>
+      </div>
     </article>
 
     <!-- FOOTER TINH TẾ -->

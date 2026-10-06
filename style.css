@@ -418,3 +418,22 @@ body {
   border-color: #e11d48 !important;
   color: #ffffff !important;
 }
+
+/* ==================== BACKGROUND HOA HỒNG CAO CẤP FIT MỌI KÍCH THƯỚC ==================== */
+.card-with-bg {
+  position: relative;
+  background-image: url('bg-card.png');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  border-radius: 2rem;
+  border: 1.5px solid #fecdd3;
+  box-shadow: 0 25px 50px -12px rgba(225, 29, 72, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.7);
+  overflow: hidden;
+}
+
+/* Lớp phủ nhẹ giúp chữ luôn rõ nét */
+.card-content-wrap {
+  position: relative;
+  z-index: 10;
+}
