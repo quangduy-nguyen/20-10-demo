@@ -1,23 +1,19 @@
 /**
  * THIỆP CHÚC MỪNG 20/10 CÁ NHÂN HÓA
- * Script xử lý tương tác, hiệu ứng, âm nhạc, lịch và khảo sát tham dự
+ * Script xử lý hiệu ứng mở phong bao 3D, cá nhân hóa & xác nhận tham dự
  */
 
-// Trạng thái ứng dụng
-// Cấu hình Webhook Google Sheet (Nếu muốn tự động lưu phản hồi vào Google Sheet)
-// Hướng dẫn xem trong file google-apps-script.js
+// Cấu hình URL Webhook Google Sheet để tự động lưu câu trả lời vào Google Sheet
+// (Hướng dẫn tạo trong file google-apps-script.js)
 const GOOGLE_SHEET_WEBHOOK_URL = '';
 
-let currentRecipientIndex = 0;
+let currentPerson = null;
 let isMusicPlaying = false;
 
-// Khởi tạo ứng dụng khi DOM tải xong
 document.addEventListener('DOMContentLoaded', () => {
   initPetals();
-  initRecipientsDropdown();
-  parseUrlAndLoadRecipient();
+  loadCurrentRecipient();
   setupEventListeners();
-  updateRsvpStats();
 });
 
 /**
@@ -27,21 +23,19 @@ function initPetals() {
   const container = document.getElementById('petals-container');
   if (!container) return;
 
-  const PETAL_COUNT = 24;
+  const PETAL_COUNT = 22;
   for (let i = 0; i < PETAL_COUNT; i++) {
     const petal = document.createElement('div');
     petal.classList.add('petal');
 
-    const size = Math.random() * 14 + 10; // 10px - 24px
-    const left = Math.random() * 100; // 0% - 100%
-    const duration = Math.random() * 8 + 7; // 7s - 15s
-    const delay = Math.random() * 10; // 0s - 10s
-    const opacity = Math.random() * 0.5 + 0.35;
+    const size = Math.random() * 14 + 10;
+    const left = Math.random() * 100;
+    const duration = Math.random() * 8 + 7;
+    const delay = Math.random() * 10;
 
     petal.style.width = `${size}px`;
     petal.style.height = `${size * 1.3}px`;
     petal.style.left = `${left}%`;
-    petal.style.opacity = opacity;
     petal.style.animationDuration = `${duration}s, ${Math.random() * 3 + 2}s`;
     petal.style.animationDelay = `${delay}s, ${delay}s`;
 
@@ -50,311 +44,118 @@ function initPetals() {
 }
 
 /**
- * 2. Đổ danh sách 30 người vào thẻ Select
+ * 2. Đọc ID người nhận từ URL (?id=...) và nạp dữ liệu
  */
-function initRecipientsDropdown() {
-  const select = document.getElementById('recipient-select');
-  if (!select || !RECIPIENTS_DATA) return;
-
-  select.innerHTML = '';
-  RECIPIENTS_DATA.forEach((person, index) => {
-    const option = document.createElement('option');
-    option.value = person.id;
-    option.textContent = `${index + 1}. ${person.ho_ten} (${person.chuc_danh})`;
-    select.appendChild(option);
-  });
-
-  select.addEventListener('change', (e) => {
-    const selectedId = e.target.value;
-    switchRecipientById(selectedId);
-  });
-}
-
-/**
- * 3. Đọc query param ?id=... từ URL
- */
-function parseUrlAndLoadRecipient() {
+function loadCurrentRecipient() {
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
 
-  if (id) {
-    const index = RECIPIENTS_DATA.findIndex(p => p.id === id);
-    if (index !== -1) {
-      currentRecipientIndex = index;
-    }
+  // Tìm trong danh sách dữ liệu
+  if (id && typeof RECIPIENTS_DATA !== 'undefined') {
+    currentPerson = RECIPIENTS_DATA.find(p => p.id === id);
   }
 
-  loadRecipientData(currentRecipientIndex);
-}
+  // Nếu không có param hoặc sai ID, mặc định lấy người đầu tiên
+  if (!currentPerson && typeof RECIPIENTS_DATA !== 'undefined' && RECIPIENTS_DATA.length > 0) {
+    currentPerson = RECIPIENTS_DATA[0];
+  }
 
-/**
- * 4. Tải dữ liệu cá nhân hóa người nhận lên giao diện
- */
-function loadRecipientData(index) {
-  if (index < 0 || index >= RECIPIENTS_DATA.length) index = 0;
-  currentRecipientIndex = index;
+  if (!currentPerson) return;
 
-  const person = RECIPIENTS_DATA[index];
-  if (!person) return;
+  // Điền dữ liệu vào phong bao bên ngoài
+  const envName = document.getElementById('envelope-person-name');
+  const envTitle = document.getElementById('envelope-person-title');
+  const envSnippet = document.getElementById('envelope-preview-snippet');
 
-  // Cập nhật thẻ Select
-  const select = document.getElementById('recipient-select');
-  if (select) select.value = person.id;
+  if (envName) envName.textContent = currentPerson.ho_ten;
+  if (envTitle) envTitle.textContent = currentPerson.chuc_danh;
+  if (envSnippet) envSnippet.textContent = currentPerson.loi_chuc;
 
-  // Cập nhật phong bì chưa mở
-  document.getElementById('envelope-recipient-name').textContent = person.ho_ten;
-  document.getElementById('envelope-recipient-title').textContent = person.chuc_danh;
+  // Điền dữ liệu vào thiệp chi tiết bên trong
+  const cardName = document.getElementById('card-person-name');
+  const cardTitle = document.getElementById('card-person-title');
+  const cardGreeting = document.getElementById('card-person-greeting');
+  const cardImage = document.getElementById('card-person-image');
 
-  // Cập nhật card chính
-  document.getElementById('person-name').textContent = person.ho_ten;
-  document.getElementById('person-title').textContent = person.chuc_danh;
-  document.getElementById('person-greeting').textContent = person.loi_chuc;
-  document.getElementById('person-ai-poem').textContent = person.ai_poem || `Chúc ${person.ho_ten} ngày 20/10 ngập tràn niềm vui, xinh đẹp và luôn hạnh phúc!`;
+  if (cardName) cardName.textContent = currentPerson.ho_ten;
+  if (cardTitle) cardTitle.textContent = currentPerson.chuc_danh;
+  if (cardGreeting) cardGreeting.textContent = currentPerson.loi_chuc;
 
-  // Ảnh chân dung
-  const imgElem = document.getElementById('person-image');
-  if (imgElem) {
-    imgElem.src = person.link_anh;
-    imgElem.onerror = () => {
-      // Fallback ảnh nếu link bị lỗi
-      imgElem.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80';
+  if (cardImage) {
+    cardImage.src = currentPerson.link_anh;
+    cardImage.onerror = () => {
+      cardImage.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80';
     };
   }
 
-  // Cập nhật thông tin sự kiện tiệc
-  if (EVENT_INFO) {
+  // Điền thông tin sự kiện
+  if (typeof EVENT_INFO !== 'undefined') {
     document.getElementById('event-title').textContent = EVENT_INFO.title;
     document.getElementById('event-subtitle').textContent = EVENT_INFO.subtitle;
     document.getElementById('event-date').textContent = EVENT_INFO.date_text;
     document.getElementById('event-location-name').textContent = EVENT_INFO.location_name;
     document.getElementById('event-location-address').textContent = EVENT_INFO.location_address;
     document.getElementById('event-dresscode').textContent = EVENT_INFO.dress_code;
-    
-    // Nút Google Maps
+
     const mapsBtn = document.getElementById('btn-google-maps');
     if (mapsBtn) mapsBtn.href = EVENT_INFO.google_maps_url;
   }
 
-  // Cập nhật shortcut Google Calendar
-  updateGoogleCalendarLink(person);
+  // Cấu hình link Google Calendar
+  updateGoogleCalendarLink();
 
-  // Cập nhật modal AI Song
-  document.getElementById('modal-song-name').textContent = person.ho_ten;
-  document.getElementById('modal-song-lyrics').textContent = `(Lời 1 - Dành tặng ${person.ho_ten})\nSớm mai ngát hương, tiếng cười xôn xao,\n${person.ho_ten} dịu dàng tựa ánh trăng sao.\n${person.chuc_danh} rạng rỡ thanh tao,\nTháng mười trao trọn ngọt ngào yêu thương!\n\n(Điệp khúc)\nChúc em/chị mãi xinh tươi như hoa ban mai,\nCon đường tương lai nở rộ muôn màu,\n20 tháng 10 đong đầy hạnh phúc,\nNụ cười rạng rỡ bên bạn bè thân thương!`;
-
-  const promptElem = document.getElementById('modal-ai-prompt');
-  if (promptElem) {
-    promptElem.textContent = `Vietnamese pop acoustic cheerful song, warm female vocals, lyrics celebrating ${person.ho_ten} (${person.chuc_danh}) on Vietnamese Women's Day 20-10, sweet joyful melody`;
-  }
-
-  // Cập nhật lại form khảo sát nếu đã từng vote trước đó
-  const savedRsvp = localStorage.getItem(`rsvp_${person.id}`);
-  const rsvpForm = document.getElementById('rsvp-form');
-  if (rsvpForm) {
-    if (savedRsvp) {
+  // Kiểm tra nếu người này đã gửi xác nhận trước đó
+  const savedRsvp = localStorage.getItem(`rsvp_${currentPerson.id}`);
+  if (savedRsvp) {
+    try {
       const data = JSON.parse(savedRsvp);
-      const radio = rsvpForm.querySelector(`input[name="rsvp_status"][value="${data.status}"]`);
+      const radio = document.querySelector(`input[name="rsvp_status"][value="${data.status}"]`);
       if (radio) radio.checked = true;
-      const noteInput = document.getElementById('rsvp-note');
-      if (noteInput) noteInput.value = data.note || '';
-    } else {
-      const defaultRadio = rsvpForm.querySelector('input[name="rsvp_status"][value="yes"]');
-      if (defaultRadio) defaultRadio.checked = true;
-      const noteInput = document.getElementById('rsvp-note');
-      if (noteInput) noteInput.value = '';
-    }
-  }
-
-  // Cập nhật nút copy link
-  const copyBtnText = document.getElementById('copy-btn-text');
-  if (copyBtnText) copyBtnText.textContent = `Sao chép link (${person.ho_ten.split(' ').pop()})`;
-}
-
-/**
- * 5. Chuyển người nhận theo ID
- */
-function switchRecipientById(id) {
-  const index = RECIPIENTS_DATA.findIndex(p => p.id === id);
-  if (index !== -1) {
-    currentRecipientIndex = index;
-    loadRecipientData(currentRecipientIndex);
-
-    // Cập nhật URL mà không reload trang
-    const newUrl = `${window.location.pathname}?id=${id}`;
-    window.history.replaceState({ path: newUrl }, '', newUrl);
+      const noteElem = document.getElementById('rsvp-note');
+      if (noteElem) noteElem.value = data.note || '';
+    } catch (e) {}
   }
 }
 
 /**
- * 6. Đăng ký các sự kiện tương tác
+ * 3. Hiệu ứng mở phong bao thư 3D & Pop up thiệp
  */
-function setupEventListeners() {
-  // Nút mở thiệp từ phong bì
-  const btnOpen = document.getElementById('btn-open-envelope');
-  if (btnOpen) {
-    btnOpen.addEventListener('click', openEnvelope);
-  }
-
-  // Nút đóng lại phong bì
-  const btnReopen = document.getElementById('btn-reopen-envelope');
-  if (btnReopen) {
-    btnReopen.addEventListener('click', () => {
-      document.getElementById('card-content-section').classList.add('hidden');
-      document.getElementById('envelope-section').classList.remove('hidden');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      showToast('Đã đóng lại phong bì!');
-    });
-  }
-
-  // Nút chuyển Người trước / Người sau
-  const btnPrev = document.getElementById('btn-prev');
-  const btnNext = document.getElementById('btn-next');
-  if (btnPrev) {
-    btnPrev.addEventListener('click', () => {
-      let newIdx = currentRecipientIndex - 1;
-      if (newIdx < 0) newIdx = RECIPIENTS_DATA.length - 1;
-      switchRecipientById(RECIPIENTS_DATA[newIdx].id);
-    });
-  }
-  if (btnNext) {
-    btnNext.addEventListener('click', () => {
-      let newIdx = currentRecipientIndex + 1;
-      if (newIdx >= RECIPIENTS_DATA.length) newIdx = 0;
-      switchRecipientById(RECIPIENTS_DATA[newIdx].id);
-    });
-  }
-
-  // Bật/tắt nhạc
-  const musicToggle = document.getElementById('music-toggle');
-  if (musicToggle) {
-    musicToggle.addEventListener('click', toggleMusic);
-  }
-
-  // Sao chép link cá nhân
-  const btnCopyLink = document.getElementById('btn-copy-link');
-  if (btnCopyLink) {
-    btnCopyLink.addEventListener('click', copyPersonalLink);
-  }
-
-  // Sao chép lời chúc
-  const btnCopyGreeting = document.getElementById('btn-copy-greeting');
-  if (btnCopyGreeting) {
-    btnCopyGreeting.addEventListener('click', copyGreetingText);
-  }
-
-  // Nút Apple / Outlook .ics
-  const btnIcs = document.getElementById('btn-download-ics');
-  if (btnIcs) {
-    btnIcs.addEventListener('click', downloadIcsFile);
-  }
-
-  // Nút Nhắc hẹn Zalo
-  const btnZalo = document.getElementById('btn-zalo-reminder');
-  if (btnZalo) {
-    btnZalo.addEventListener('click', copyZaloReminder);
-  }
-
-  // Khảo sát RSVP submit
-  const rsvpForm = document.getElementById('rsvp-form');
-  if (rsvpForm) {
-    rsvpForm.addEventListener('submit', handleRsvpSubmit);
-  }
-
-  // Modals
-  setupModals();
-}
-
-/**
- * 7. Mở phong bì thư và bắn pháo hoa
- */
-function openEnvelope() {
-  const envelopeSec = document.getElementById('envelope-section');
-  const cardSec = document.getElementById('card-content-section');
+function handleOpenEnvelope() {
+  const wrapper = document.getElementById('envelope-wrapper');
+  const envelopeSection = document.getElementById('envelope-section');
+  const greetingSection = document.getElementById('full-greeting-section');
 
   // Bật nhạc nền
-  playMusic();
+  playBackgroundMusic();
+
+  // Thêm class kích hoạt animation 3D: Nắp lật mở, thiệp trượt pop-up lên
+  if (wrapper) wrapper.classList.add('is-open');
 
   // Bắn pháo hoa rực rỡ
   fireConfetti();
 
-  // Chuyển view
-  envelopeSec.classList.add('hidden');
-  cardSec.classList.remove('hidden');
-
-  // Cuộn mượt
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Sau khi animation nắp mở và thiệp trượt ra hoàn tất (khoảng 850ms), hiện màn hình thiệp đầy đủ
+  setTimeout(() => {
+    if (envelopeSection) envelopeSection.classList.add('hidden');
+    if (greetingSection) {
+      greetingSection.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, 900);
 }
 
 /**
- * 8. Trình phát nhạc nền
+ * 4. Tạo đường link Google Calendar
  */
-function playMusic() {
-  const audio = document.getElementById('bg-music');
-  const icon = document.getElementById('music-icon');
-  if (!audio) return;
-
-  audio.play().then(() => {
-    isMusicPlaying = true;
-    if (icon) icon.classList.add('animate-spin-slow');
-  }).catch((err) => {
-    console.log('Autoplay blocked by browser policy:', err);
-  });
-}
-
-function toggleMusic() {
-  const audio = document.getElementById('bg-music');
-  const icon = document.getElementById('music-icon');
-  if (!audio) return;
-
-  if (audio.paused) {
-    audio.play();
-    isMusicPlaying = true;
-    if (icon) icon.classList.add('animate-spin-slow');
-    showToast('🎵 Đang phát nhạc nền!');
-  } else {
-    audio.pause();
-    isMusicPlaying = false;
-    if (icon) icon.classList.remove('animate-spin-slow');
-    showToast('🔇 Đã tắt nhạc!');
-  }
-}
-
-/**
- * 9. Hiệu ứng Canvas Confetti
- */
-function fireConfetti() {
-  if (typeof confetti !== 'function') return;
-
-  const count = 200;
-  const defaults = {
-    origin: { y: 0.7 }
-  };
-
-  function fire(particleRatio, opts) {
-    confetti(Object.assign({}, defaults, opts, {
-      particleCount: Math.floor(count * particleRatio)
-    }));
-  }
-
-  fire(0.25, { spread: 26, startVelocity: 55, colors: ['#f43f5e', '#fda4af', '#fbbf24'] });
-  fire(0.2, { spread: 60, colors: ['#e11d48', '#fbcfe8', '#f59e0b'] });
-  fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8, colors: ['#ff80bf', '#ffd1dc'] });
-  fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
-  fire(0.1, { spread: 120, startVelocity: 45 });
-}
-
-/**
- * 10. Shortcut Google Calendar
- */
-function updateGoogleCalendarLink(person) {
+function updateGoogleCalendarLink() {
   const btn = document.getElementById('btn-google-calendar');
-  if (!btn || !EVENT_INFO) return;
+  if (!btn || !currentPerson || typeof EVENT_INFO === 'undefined') return;
 
   const title = encodeURIComponent(EVENT_INFO.title);
   const location = encodeURIComponent(`${EVENT_INFO.location_name}, ${EVENT_INFO.location_address}`);
   const details = encodeURIComponent(
-    `Thư mời tham dự Dạ tiệc chúc mừng ngày Phụ nữ Việt Nam 20/10 gửi tới ${person.ho_ten}.\n` +
-    `Địa điểm: ${EVENT_INFO.location_name}\n` +
+    `Kính mời ${currentPerson.ho_ten} tham dự Dạ tiệc chúc mừng ngày Phụ nữ Việt Nam 20/10.\n` +
+    `Địa điểm: ${EVENT_INFO.location_name} (${EVENT_INFO.location_address})\n` +
     `Trang phục: ${EVENT_INFO.dress_code}\n` +
     `Bản đồ chỉ đường: ${EVENT_INFO.google_maps_url}`
   );
@@ -365,234 +166,145 @@ function updateGoogleCalendarLink(person) {
 }
 
 /**
- * 11. Tải file iCalendar .ics cho Apple Calendar / Outlook
- */
-function downloadIcsFile() {
-  const person = RECIPIENTS_DATA[currentRecipientIndex];
-  const icsData = [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'PRODID:-//20-10 Party Invitation//VI',
-    'CALSCALE:GREGORIAN',
-    'METHOD:PUBLISH',
-    'BEGIN:VEVENT',
-    'UID:20-10-event-' + Date.now() + '@company.com',
-    'DTSTAMP:20261006T000000Z',
-    'DTSTART:20261020T113000Z',
-    'DTEND:20261020T143000Z',
-    'SUMMARY:' + (EVENT_INFO.title || 'Dạ tiệc 20/10'),
-    'DESCRIPTION:' + `Dạ tiệc tôn vinh phái đẹp 20/10 gửi tới ${person.ho_ten}. Trang phục: ${EVENT_INFO.dress_code}`,
-    'LOCATION:' + `${EVENT_INFO.location_name}, ${EVENT_INFO.location_address}`,
-    'STATUS:CONFIRMED',
-    'END:VEVENT',
-    'END:VCALENDAR'
-  ].join('\r\n');
-
-  const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'Thiep-Moi-20-10-Maison-Sen.ics';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-
-  showToast('🍏 Đã tải file lịch .ics cho Apple/Outlook!');
-}
-
-/**
- * 12. Sao chép nhắc hẹn gửi Zalo
- */
-function copyZaloReminder() {
-  const person = RECIPIENTS_DATA[currentRecipientIndex];
-  const reminderText = 
-`🌸 [NHẮC HẸN 20/10] DẠ TIỆC TÔN VINH PHÁI ĐẸP 🌸
-Kính gửi: ${person.ho_ten} (${person.chuc_danh})
-⏰ Thời gian: ${EVENT_INFO.date_text}
-📍 Địa điểm: ${EVENT_INFO.location_name} - ${EVENT_INFO.location_address}
-👗 Trang phục: ${EVENT_INFO.dress_code}
-🗺️ Link Google Maps: ${EVENT_INFO.google_maps_url}
-💌 Link thiệp cá nhân: ${window.location.origin}${window.location.pathname}?id=${person.id}
-
-Hẹn gặp chị/em tối 20/10 thật rạng rỡ nhé! ❤️`;
-
-  navigator.clipboard.writeText(reminderText).then(() => {
-    showToast('💬 Đã sao chép nội dung nhắc hẹn Zalo!');
-  });
-}
-
-/**
- * 13. Xử lý Form Khảo sát (RSVP Poll)
+ * 5. Xử lý Form Xác Nhận Tham Dự (2 options)
  */
 function handleRsvpSubmit(e) {
   e.preventDefault();
-  const person = RECIPIENTS_DATA[currentRecipientIndex];
-  const form = e.target;
-  const statusInput = form.querySelector('input[name="rsvp_status"]:checked');
-  const noteInput = document.getElementById('rsvp-note');
+  if (!currentPerson) return;
 
+  const statusInput = document.querySelector('input[name="rsvp_status"]:checked');
+  const noteInput = document.getElementById('rsvp-note');
   if (!statusInput) return;
 
+  const statusVal = statusInput.value; // "Sẽ tham dự" hoặc "Không tham dự"
+  const noteVal = noteInput ? noteInput.value.trim() : '';
+
   const rsvpRecord = {
-    id: person.id,
-    ho_ten: person.ho_ten,
-    chuc_danh: person.chuc_danh,
-    status: statusInput.value,
-    note: noteInput ? noteInput.value.trim() : '',
-    timestamp: new Date().toISOString()
+    id: currentPerson.id,
+    ho_ten: currentPerson.ho_ten,
+    chuc_danh: currentPerson.chuc_danh,
+    status: statusVal,
+    note: noteVal,
+    timestamp: new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })
   };
 
-  // Lưu vào localStorage
-  localStorage.setItem(`rsvp_${person.id}`, JSON.stringify(rsvpRecord));
+  // 1. Lưu vào LocalStorage
+  localStorage.setItem(`rsvp_${currentPerson.id}`, JSON.stringify(rsvpRecord));
 
-  // Gửi tới Google Sheet Webhook (nếu đã cấu hình)
-  if (typeof GOOGLE_SHEET_WEBHOOK_URL !== 'undefined' && GOOGLE_SHEET_WEBHOOK_URL.trim() !== '') {
+  // 2. Gửi về Google Sheet Webhook (nếu BTC đã cấu hình)
+  if (GOOGLE_SHEET_WEBHOOK_URL && GOOGLE_SHEET_WEBHOOK_URL.trim() !== '') {
     try {
       fetch(GOOGLE_SHEET_WEBHOOK_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(rsvpRecord)
-      }).catch(err => console.log('Webhook Sheet error:', err));
+      }).catch(err => console.log('Sheet Webhook sync:', err));
     } catch (err) {}
   }
 
-  // Bắn pháo hoa ăn mừng
-  fireConfetti();
+  // Bắn pháo hoa nếu chọn tham dự
+  if (statusVal === 'Sẽ tham dự') {
+    fireConfetti();
+    showToast(`🌸 Tuyệt vời! Cảm ơn ${currentPerson.ho_ten} đã xác nhận tham dự!`);
+  } else {
+    showToast(`Cảm ơn ${currentPerson.ho_ten} đã gửi phản hồi cho Ban Tổ Chức!`);
+  }
 
-  // Hiển thị thông báo
-  const statusTextMap = {
-    'yes': 'tham gia',
-    'maybe': 'đang sắp xếp',
-    'no': 'bận việc'
-  };
-  showToast(`🎉 Cảm ơn ${person.ho_ten} đã phản hồi (${statusTextMap[statusInput.value]})!`);
-
-  // Cập nhật lại thống kê hiển thị
-  updateRsvpStats();
+  // Khóa nút để tránh bấm nhiều lần
+  const submitBtn = document.getElementById('btn-submit-rsvp');
+  if (submitBtn) {
+    submitBtn.innerHTML = '<i class="fa-solid fa-check"></i> Đã Gửi Xác Nhận';
+    submitBtn.classList.replace('from-rose-600', 'from-emerald-600');
+    submitBtn.classList.replace('to-pink-600', 'to-teal-600');
+  }
 }
 
 /**
- * 14. Thống kê kết quả Poll
+ * 6. Đăng ký các sự kiện tương tác
  */
-function updateRsvpStats() {
-  let yes = 24; // Mock base count for demo
-  let maybe = 4;
-  let no = 1;
+function setupEventListeners() {
+  // Mở phong bì khi bấm vào con dấu sáp hoặc thẻ bao bì
+  const seal = document.getElementById('btn-seal');
+  const envContainer = document.getElementById('env-container');
+  const btnOpen = document.getElementById('btn-open-envelope');
 
-  // Đếm thêm dữ liệu từ localStorage
-  RECIPIENTS_DATA.forEach(p => {
-    const item = localStorage.getItem(`rsvp_${p.id}`);
-    if (item) {
-      try {
-        const data = JSON.parse(item);
-        if (data.status === 'yes') yes++;
-        else if (data.status === 'maybe') maybe++;
-        else if (data.status === 'no') no++;
-      } catch (err) {}
-    }
-  });
+  if (seal) seal.addEventListener('click', handleOpenEnvelope);
+  if (envContainer) envContainer.addEventListener('click', handleOpenEnvelope);
+  if (btnOpen) btnOpen.addEventListener('click', handleOpenEnvelope);
 
-  const total = yes + maybe + no;
-  const yesPct = Math.round((yes / total) * 100);
-  const maybePct = Math.round((maybe / total) * 100);
-  const noPct = 100 - yesPct - maybePct;
-
-  const elTotal = document.getElementById('rsvp-total-count');
-  if (elTotal) elTotal.textContent = `${total} phản hồi`;
-
-  const elYesPct = document.getElementById('stat-yes-pct');
-  const elYesBar = document.getElementById('stat-yes-bar');
-  if (elYesPct) elYesPct.textContent = `${yesPct}% (${yes} người)`;
-  if (elYesBar) elYesBar.style.width = `${yesPct}%`;
-
-  const elMaybePct = document.getElementById('stat-maybe-pct');
-  const elMaybeBar = document.getElementById('stat-maybe-bar');
-  if (elMaybePct) elMaybePct.textContent = `${maybePct}% (${maybe} người)`;
-  if (elMaybeBar) elMaybeBar.style.width = `${maybePct}%`;
-
-  const elNoPct = document.getElementById('stat-no-pct');
-  const elNoBar = document.getElementById('stat-no-bar');
-  if (elNoPct) elNoPct.textContent = `${noPct}% (${no} người)`;
-  if (elNoBar) elNoBar.style.width = `${noPct}%`;
-}
-
-/**
- * 15. Setup Modals (Bài hát AI & Video)
- */
-function setupModals() {
-  // Modal AI Song
-  const btnOpenSong = document.getElementById('btn-open-ai-song');
-  const modalSong = document.getElementById('ai-song-modal');
-  const btnCloseSong = document.getElementById('close-ai-song');
-
-  if (btnOpenSong && modalSong) {
-    btnOpenSong.addEventListener('click', () => {
-      modalSong.classList.remove('hidden');
-      modalSong.classList.add('flex');
-    });
-  }
-  if (btnCloseSong && modalSong) {
-    btnCloseSong.addEventListener('click', () => {
-      modalSong.classList.add('hidden');
-      modalSong.classList.remove('flex');
-    });
+  // Nút bật/tắt nhạc
+  const musicToggle = document.getElementById('music-toggle');
+  if (musicToggle) {
+    musicToggle.addEventListener('click', toggleBackgroundMusic);
   }
 
-  // Modal Video
-  const btnOpenVideo = document.getElementById('btn-open-video');
-  const modalVideo = document.getElementById('video-modal');
-  const btnCloseVideo = document.getElementById('close-video');
-  const videoElem = document.getElementById('greeting-video');
-
-  if (btnOpenVideo && modalVideo) {
-    btnOpenVideo.addEventListener('click', () => {
-      modalVideo.classList.remove('hidden');
-      modalVideo.classList.add('flex');
-      if (videoElem) videoElem.play();
-    });
-  }
-  if (btnCloseVideo && modalVideo) {
-    btnCloseVideo.addEventListener('click', () => {
-      modalVideo.classList.add('hidden');
-      modalVideo.classList.remove('flex');
-      if (videoElem) videoElem.pause();
-    });
-  }
-
-  // Đóng modal khi bấm nền đen
-  [modalSong, modalVideo].forEach(modal => {
-    if (modal) {
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          modal.classList.add('hidden');
-          modal.classList.remove('flex');
-          if (videoElem) videoElem.pause();
-        }
+  // Sao chép lời chúc
+  const btnCopyGreeting = document.getElementById('btn-copy-greeting');
+  if (btnCopyGreeting) {
+    btnCopyGreeting.addEventListener('click', () => {
+      if (!currentPerson) return;
+      navigator.clipboard.writeText(currentPerson.loi_chuc).then(() => {
+        showToast('💌 Đã sao chép lời chúc vào khay nhớ tạm!');
       });
-    }
+    });
+  }
+
+  // Form xác nhận tham dự
+  const rsvpForm = document.getElementById('rsvp-form');
+  if (rsvpForm) {
+    rsvpForm.addEventListener('submit', handleRsvpSubmit);
+  }
+}
+
+/**
+ * 7. Phát nhạc nền
+ */
+function playBackgroundMusic() {
+  const audio = document.getElementById('bg-music');
+  const icon = document.getElementById('music-icon');
+  if (!audio) return;
+
+  audio.play().then(() => {
+    isMusicPlaying = true;
+    if (icon) icon.classList.add('spin-slow');
+  }).catch(() => {});
+}
+
+function toggleBackgroundMusic() {
+  const audio = document.getElementById('bg-music');
+  const icon = document.getElementById('music-icon');
+  if (!audio) return;
+
+  if (audio.paused) {
+    audio.play();
+    isMusicPlaying = true;
+    if (icon) icon.classList.add('spin-slow');
+    showToast('🎵 Đang phát nhạc nền');
+  } else {
+    audio.pause();
+    isMusicPlaying = false;
+    if (icon) icon.classList.remove('spin-slow');
+    showToast('🔇 Đã tắt nhạc');
+  }
+}
+
+/**
+ * 8. Hiệu ứng Canvas Confetti
+ */
+function fireConfetti() {
+  if (typeof confetti !== 'function') return;
+  confetti({
+    particleCount: 120,
+    spread: 70,
+    origin: { y: 0.65 },
+    colors: ['#f43f5e', '#fb7185', '#fbbf24', '#fbcfe8']
   });
 }
 
 /**
- * 16. Tiện ích Sao Chép Link & Toast
+ * 9. Toast thông báo
  */
-function copyPersonalLink() {
-  const person = RECIPIENTS_DATA[currentRecipientIndex];
-  const url = `${window.location.origin}${window.location.pathname}?id=${person.id}`;
-  navigator.clipboard.writeText(url).then(() => {
-    showToast(`🔗 Đã sao chép link thiệp cho ${person.ho_ten}!`);
-  });
-}
-
-function copyGreetingText() {
-  const person = RECIPIENTS_DATA[currentRecipientIndex];
-  navigator.clipboard.writeText(person.loi_chuc).then(() => {
-    showToast('💌 Đã sao chép lời chúc vào khay nhớ tạm!');
-  });
-}
-
 function showToast(message) {
   const toast = document.getElementById('toast');
   const msgElem = document.getElementById('toast-message');
