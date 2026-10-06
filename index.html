@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thiệp Chúc Mừng 20/10 - Ngày Phụ Nữ Việt Nam</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌸</text></svg>">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen text-slate-800 relative selection:bg-rose-200 selection:text-rose-900">
+
+  <!-- Cánh hoa bay lơ lửng -->
+  <div id="petals-container"></div>
+
+  <!-- Audio player ngầm -->
+  <audio id="bg-music" preload="auto" loop>
+    <!-- Nhạc acoustic không lời lãng mạn nhẹ nhàng -->
+    <source src="https://assets.mixkit.co/music/preview/mixkit-romantic-moment-piano-solo-734.mp3" type="audio/mp3">
+  </audio>
+
+  <!-- Nút điều khiển âm nhạc góc phải -->
+  <div class="fixed top-5 right-5 z-50 flex items-center gap-2">
+    <button id="music-toggle" class="glass-effect text-rose-600 hover:text-rose-700 w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 border border-rose-200 group" title="Bật / Tắt nhạc">
+      <i id="music-icon" class="fa-solid fa-compact-disc text-xl animate-spin-slow"></i>
+      <span class="sr-only">Nhạc nền</span>
+    </button>
+  </div>
+
+  <!-- THANH CÔNG CỤ TEST & CHỌN NGƯỜI NHẬN (Cực tiện cho BTC test 30 chị em) -->
+  <div class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-rose-200 py-2.5 px-4 shadow-sm">
+    <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-3 text-sm">
+      <div class="flex items-center gap-2 flex-grow sm:flex-grow-0">
+        <span class="text-rose-500 font-semibold flex items-center gap-1.5 whitespace-nowrap">
+          <i class="fa-solid fa-gift"></i> Chế độ Test:
+        </span>
+        <select id="recipient-select" class="bg-rose-50 border border-rose-300 text-rose-900 rounded-lg px-3 py-1.5 focus:ring-2 focus:ring-rose-400 focus:outline-none text-sm font-medium w-full sm:w-64">
+          <!-- Đổ danh sách 30 người từ data.js -->
+        </select>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button id="btn-prev" class="p-1.5 px-2.5 bg-rose-100 hover:bg-rose-200 text-rose-700 rounded-md transition" title="Người trước">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button id="btn-next" class="p-1.5 px-2.5 bg-rose-100 hover:bg-rose-200 text-rose-700 rounded-md transition" title="Người sau">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+        <button id="btn-copy-link" class="flex items-center gap-1.5 bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded-lg shadow-sm transition active:scale-95 text-xs sm:text-sm font-medium">
+          <i class="fa-solid fa-link"></i> <span id="copy-btn-text">Sao chép link cá nhân</span>
+        </button>
+        <button id="btn-reopen-envelope" class="p-1.5 px-2.5 bg-amber-100 hover:bg-amber-200 text-amber-800 rounded-md transition text-xs font-medium flex items-center gap-1" title="Đóng lại phong bì thư">
+          <i class="fa-solid fa-envelope"></i> Đóng phong bì
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== GIAO DIỆN 1: PHONG BÌ THƯ 3D (CHƯA MỞ) ==================== -->
+  <section id="envelope-section" class="min-h-[85vh] flex items-center justify-center p-4">
+    <div class="max-w-md w-full envelope-wrapper">
+      <div class="envelope p-8 text-center relative overflow-hidden card-luxury-shadow">
+        <!-- Hoa văn trang trí góc -->
+        <div class="absolute -top-6 -left-6 text-rose-200 text-6xl opacity-40"><i class="fa-solid fa-spa"></i></div>
+        <div class="absolute -bottom-6 -right-6 text-rose-200 text-6xl opacity-40"><i class="fa-solid fa-spa"></i></div>
+
+        <div class="inline-block px-4 py-1 rounded-full bg-rose-100 text-rose-700 text-xs font-semibold uppercase tracking-wider mb-4 border border-rose-200">
+          ✨ Thư Chúc Mừng 20/10 ✨
+        </div>
+
+        <h2 class="font-serif-luxury text-2xl font-bold text-slate-800 mb-1">Kính Gửi Chị/Em</h2>
+        <div id="envelope-recipient-name" class="font-serif-luxury text-3xl font-extrabold rose-gradient-text my-2">
+          Nguyễn Thị Lan
+        </div>
+        <p id="envelope-recipient-title" class="text-sm text-slate-500 mb-8 italic">
+          Trưởng phòng Kế toán
+        </p>
+
+        <!-- Con dấu sáp niêm phong -->
+        <div class="my-6 flex justify-center">
+          <div id="btn-open-envelope" class="wax-seal w-24 h-24 rounded-full flex flex-col items-center justify-center text-white cursor-pointer select-none transition-transform">
+            <span class="text-xs uppercase tracking-widest font-semibold opacity-90">20/10</span>
+            <i class="fa-solid fa-heart text-2xl my-0.5 animate-pulse"></i>
+            <span class="text-[10px] font-medium tracking-tight">MỞ THIỆP</span>
+          </div>
+        </div>
+
+        <p class="text-xs text-rose-500 font-medium animate-pulse-gentle mt-4">
+          <i class="fa-solid fa-hand-pointer mr-1"></i> Chạm vào con dấu sáp để mở thiệp & bật nhạc
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== GIAO DIỆN 2: NỘI DUNG THIỆP ĐÃ MỞ ==================== -->
+  <main id="card-content-section" class="hidden max-w-3xl mx-auto px-4 py-8 space-y-8">
+    
+    <!-- CARD 1: THIỆP CHÚC MỪNG CÁ NHÂN HÓA -->
+    <div class="glass-effect rounded-3xl p-6 sm:p-10 card-luxury-shadow border border-rose-100 relative overflow-hidden">
+      <!-- Dải ruy băng góc -->
+      <div class="absolute top-0 right-0 bg-gradient-to-l from-rose-500 to-pink-500 text-white text-[11px] font-bold px-6 py-1.5 rounded-bl-2xl shadow-md uppercase tracking-wider">
+        20 Tháng 10
+      </div>
+
+      <!-- Header thiệp -->
+      <div class="text-center space-y-3 mb-8">
+        <span class="text-rose-500 text-xs sm:text-sm font-semibold uppercase tracking-widest bg-rose-50 px-4 py-1 rounded-full border border-rose-200 inline-block">
+          🌸 Happy Vietnamese Women's Day 🌸
+        </span>
+        <h1 class="font-serif-luxury text-2xl sm:text-4xl font-extrabold text-slate-800">
+          TÔN VINH NÀNG THƠ
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-500 max-w-md mx-auto">
+          Mỗi người phụ nữ là một đóa hoa ngát hương, tô điểm sắc màu rực rỡ cho tập thể của chúng ta.
+        </p>
+      </div>
+
+      <!-- Khung ảnh đại diện cá nhân hóa -->
+      <div class="flex flex-col items-center text-center mb-8">
+        <div class="relative group">
+          <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-full p-1.5 bg-gradient-to-tr from-rose-400 via-pink-300 to-amber-300 shadow-xl gold-border-glow">
+            <img id="person-image" src="" alt="Chân dung người nhận" class="w-full h-full object-cover rounded-full bg-rose-50">
+          </div>
+          <div class="absolute -bottom-2 right-2 bg-rose-500 text-white w-9 h-9 rounded-full flex items-center justify-center shadow-lg border-2 border-white text-sm">
+            ❤️
+          </div>
+        </div>
+
+        <h2 id="person-name" class="font-serif-luxury text-2xl sm:text-3xl font-bold rose-gradient-text mt-4">
+          Nguyễn Thị Lan
+        </h2>
+        <span id="person-title" class="inline-block mt-1 text-xs sm:text-sm font-medium text-rose-700 bg-rose-100 px-3 py-0.5 rounded-full border border-rose-200">
+          Trưởng phòng Kế toán
+        </span>
+      </div>
+
+      <!-- Lời chúc cá nhân hóa từ Sheet/CSV -->
+      <div class="relative bg-gradient-to-br from-rose-50/90 to-pink-50/70 rounded-2xl p-6 sm:p-8 border border-rose-200/80 mb-6">
+        <i class="fa-solid fa-quote-left text-3xl text-rose-300 absolute top-4 left-4 -z-0 opacity-60"></i>
+        <div class="relative z-10">
+          <h3 class="text-xs uppercase tracking-wider text-rose-600 font-bold mb-2 flex items-center gap-1.5">
+            <i class="fa-solid fa-envelope-open-text"></i> Lời Chúc Gửi Tới Chị:
+          </h3>
+          <p id="person-greeting" class="text-slate-700 text-base sm:text-lg leading-relaxed font-normal italic">
+            <!-- Đổ từ CSV -->
+          </p>
+        </div>
+        <i class="fa-solid fa-quote-right text-3xl text-rose-300 absolute bottom-4 right-4 -z-0 opacity-60"></i>
+      </div>
+
+      <!-- Thơ AI sáng tác riêng theo tên -->
+      <div class="glass-gold rounded-2xl p-5 border border-amber-300/80 mb-6">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase font-bold text-amber-800 flex items-center gap-1.5">
+            <i class="fa-solid fa-wand-magic-sparkles text-amber-600"></i> Thơ AI Tặng Riêng Nàng Thơ
+          </span>
+          <span class="text-[10px] bg-amber-200 text-amber-900 font-semibold px-2 py-0.5 rounded">
+            AI Generated
+          </span>
+        </div>
+        <p id="person-ai-poem" class="font-handwriting text-xl sm:text-2xl text-slate-800 leading-relaxed text-center whitespace-pre-line py-2">
+          <!-- Đổ thơ 4 câu theo tên -->
+        </p>
+      </div>
+
+      <!-- Nút tương tác: Nhạc AI & Video -->
+      <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+        <button id="btn-open-ai-song" class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-rose-600 text-white font-medium text-xs sm:text-sm shadow-md hover:shadow-lg hover:scale-105 transition">
+          <i class="fa-solid fa-music"></i> 
+          <span>Bài Hát AI Theo Tên</span>
+        </button>
+
+        <button id="btn-open-video" class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-rose-500 to-pink-600 text-white font-medium text-xs sm:text-sm shadow-md hover:shadow-lg hover:scale-105 transition">
+          <i class="fa-solid fa-circle-play"></i>
+          <span>Xem Video Lời Chúc (Optional)</span>
+        </button>
+
+        <button id="btn-copy-greeting" class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-rose-100 hover:bg-rose-200 text-rose-800 font-medium text-xs sm:text-sm border border-rose-300 transition">
+          <i class="fa-solid fa-copy"></i>
+          <span>Sao chép lời chúc</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- CARD 2: THƯ MỜI DỰ TIỆC (YÊU CẦU 3) -->
+    <div class="glass-effect rounded-3xl p-6 sm:p-10 card-luxury-shadow border border-amber-200 relative overflow-hidden bg-gradient-to-b from-white via-amber-50/30 to-rose-50/40">
+      <div class="text-center space-y-2 mb-8">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold uppercase tracking-wider border border-amber-300">
+          <i class="fa-solid fa-champagne-glasses text-amber-600"></i> Lời Mời Trân Trọng
+        </div>
+        <h2 id="event-title" class="font-serif-luxury text-2xl sm:text-3xl font-extrabold gold-gradient-text">
+          DẠ TIỆC TÔN VINH PHÁI ĐẸP 20/10
+        </h2>
+        <p id="event-subtitle" class="text-xs sm:text-sm text-slate-500 italic">
+          "Rạng Rỡ Như Hoa - Tỏa Sáng Yêu Thương"
+        </p>
+      </div>
+
+      <!-- Chi tiết thời gian, địa điểm -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <!-- Thời gian -->
+        <div class="bg-white/80 p-5 rounded-2xl border border-rose-100 shadow-sm flex flex-col items-center text-center">
+          <div class="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center text-xl mb-3">
+            <i class="fa-solid fa-clock"></i>
+          </div>
+          <span class="text-xs uppercase text-slate-400 font-bold mb-1">Thời Gian</span>
+          <p id="event-date" class="text-sm font-semibold text-slate-800">18:30 - Thứ Ba, 20/10/2026</p>
+          <span class="text-[11px] text-rose-500 mt-1">Đón khách từ 18:00</span>
+        </div>
+
+        <!-- Địa điểm -->
+        <div class="bg-white/80 p-5 rounded-2xl border border-rose-100 shadow-sm flex flex-col items-center text-center">
+          <div class="w-12 h-12 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-xl mb-3">
+            <i class="fa-solid fa-utensils"></i>
+          </div>
+          <span class="text-xs uppercase text-slate-400 font-bold mb-1">Địa Điểm</span>
+          <p id="event-location-name" class="text-sm font-bold text-slate-800">Nhà hàng Maison Sen Buffet</p>
+          <span id="event-location-address" class="text-[11px] text-slate-500 mt-1 line-clamp-2">61 Trần Hưng Đạo, Hoàn Kiếm, Hà Nội</span>
+        </div>
+
+        <!-- Dress code -->
+        <div class="bg-white/80 p-5 rounded-2xl border border-rose-100 shadow-sm flex flex-col items-center text-center">
+          <div class="w-12 h-12 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center text-xl mb-3">
+            <i class="fa-solid fa-shirt"></i>
+          </div>
+          <span class="text-xs uppercase text-slate-400 font-bold mb-1">Trang Phục</span>
+          <p id="event-dresscode" class="text-sm font-semibold text-slate-800">Hồng Pastel / Trắng</p>
+          <span class="text-[11px] text-pink-500 mt-1">Thanh lịch & Rạng rỡ</span>
+        </div>
+      </div>
+
+      <!-- Nút mở Google Maps dẫn đường (Yêu cầu 3) -->
+      <div class="bg-amber-50/70 border border-amber-200 rounded-2xl p-5 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3 text-center sm:text-left">
+          <div class="w-10 h-10 rounded-full bg-rose-600 text-white flex-shrink-0 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-map-location-dot"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-slate-800">Chỉ đường tới Maison Sen Buffet (Hà Nội)</h4>
+            <p class="text-xs text-slate-600">61 Trần Hưng Đạo, P. Phan Chu Trinh, Q. Hoàn Kiếm, Hà Nội</p>
+          </div>
+        </div>
+
+        <a id="btn-google-maps" href="https://www.google.com/maps/search/?api=1&query=Maison+Sen+Buffet+61+Tr%E1%BA%A7n+H%C6%B0ng+%C4%90%E1%BA%A1o+Ho%C3%A0n+Ki%E1%BA%BFm+H%C3%A0+N%E1%BB%99i" target="_blank" rel="noopener noreferrer" class="flex-shrink-0 inline-flex items-center gap-2 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white font-semibold px-5 py-2.5 rounded-xl shadow-md transition hover:scale-105 text-sm">
+          <i class="fa-solid fa-diamond-turn-right"></i> Mở Google Maps
+        </a>
+      </div>
+
+      <!-- CARD 3: SHORTCUT NHẮC HẸN ĐA NỀN TẢNG (YÊU CẦU 4 - OPTIONAL) -->
+      <div class="border-t border-rose-100 pt-6">
+        <div class="text-center mb-4">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-rose-700 flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-bell"></i> Shortcut Nhắc Hẹn Đa Nền Tảng
+          </h3>
+          <p class="text-xs text-slate-500 mt-1">Đồng bộ lịch chỉ với 1 chạm, không sợ quên lịch tiệc</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <!-- Google Calendar -->
+          <a id="btn-google-calendar" href="#" target="_blank" class="flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium shadow-sm transition hover:border-rose-300">
+            <i class="fa-brands fa-google text-red-500"></i> Google Calendar
+          </a>
+
+          <!-- Apple / Outlook .ics -->
+          <button id="btn-download-ics" class="flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium shadow-sm transition hover:border-rose-300">
+            <i class="fa-brands fa-apple text-slate-800"></i> Apple / Outlook (.ics)
+          </button>
+
+          <!-- Sao chép lời nhắc Zalo -->
+          <button id="btn-zalo-reminder" class="flex items-center justify-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium shadow-sm transition">
+            <i class="fa-solid fa-comment-dots text-blue-600"></i> Nhắc Hẹn Qua Zalo
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 4: POLL KHẢO SÁT & XÁC NHẬN THAM DỰ (YÊU CẦU 5 - OPTIONAL) -->
+    <div class="glass-effect rounded-3xl p-6 sm:p-10 card-luxury-shadow border border-rose-100">
+      <div class="text-center space-y-2 mb-6">
+        <span class="text-xs uppercase font-bold text-rose-600 bg-rose-50 px-3 py-1 rounded-full border border-rose-200">
+          <i class="fa-solid fa-square-poll-vertical"></i> Khảo Sát & Xác Nhận (RSVP)
+        </span>
+        <h3 class="font-serif-luxury text-xl sm:text-2xl font-bold text-slate-800">
+          Chị/Em Có Thể Tham Gia Chung Vui Chứ?
+        </h3>
+        <p class="text-xs text-slate-500">
+          Sự hiện diện của chị/em là niềm vinh hạnh to lớn của đại gia đình chúng ta!
+        </p>
+      </div>
+
+      <form id="rsvp-form" class="space-y-4 max-w-lg mx-auto">
+        <!-- 3 Lựa chọn -->
+        <div class="space-y-2">
+          <label class="flex items-center gap-3 p-3.5 rounded-xl border border-rose-200 bg-rose-50/50 hover:bg-rose-100/50 cursor-pointer transition">
+            <input type="radio" name="rsvp_status" value="yes" checked class="w-4 h-4 text-rose-600 focus:ring-rose-500">
+            <span class="text-sm font-semibold text-slate-800">🎉 Chắc chắn tham gia (Hẹn gặp lúc 18h30!)</span>
+          </label>
+
+          <label class="flex items-center gap-3 p-3.5 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-slate-100/50 cursor-pointer transition">
+            <input type="radio" name="rsvp_status" value="maybe" class="w-4 h-4 text-rose-600 focus:ring-rose-500">
+            <span class="text-sm font-medium text-slate-700">🤔 Đang sắp xếp (50/50, sẽ báo lại sớm)</span>
+          </label>
+
+          <label class="flex items-center gap-3 p-3.5 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-slate-100/50 cursor-pointer transition">
+            <input type="radio" name="rsvp_status" value="no" class="w-4 h-4 text-rose-600 focus:ring-rose-500">
+            <span class="text-sm font-medium text-slate-700">🥺 Tiếc quá, em có lịch bận đột xuất</span>
+          </label>
+        </div>
+
+        <!-- Ghi chú / Lời nhắn gửi -->
+        <div>
+          <label for="rsvp-note" class="block text-xs font-semibold text-slate-600 mb-1">
+            Ghi chú món ăn hoặc lời nhắn gửi đến Ban Tổ Chức (Optional):
+          </label>
+          <textarea id="rsvp-note" rows="2" placeholder="Ví dụ: Em ăn kiêng/dị ứng hải sản, Háo hức chờ tiết mục văn nghệ..." class="w-full text-sm rounded-xl border border-slate-200 p-3 focus:outline-none focus:ring-2 focus:ring-rose-400 bg-white/80"></textarea>
+        </div>
+
+        <!-- Nút gửi -->
+        <button type="submit" class="w-full bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 text-white font-bold py-3 rounded-xl shadow-md transition hover:scale-[1.02] active:scale-95 text-sm flex items-center justify-center gap-2">
+          <i class="fa-solid fa-paper-plane"></i> Gửi Xác Nhận Tham Gia
+        </button>
+      </form>
+
+      <!-- Kết quả Poll (Live Tally) -->
+      <div id="rsvp-result-box" class="mt-8 pt-6 border-t border-rose-100">
+        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-3 flex items-center justify-between">
+          <span>📊 Thống kê bình chọn tham gia</span>
+          <span id="rsvp-total-count" class="text-rose-600 font-bold">28/30 đã phản hồi</span>
+        </h4>
+
+        <div class="space-y-2 text-xs">
+          <div>
+            <div class="flex justify-between font-semibold mb-1">
+              <span class="text-emerald-700">Chắc chắn tham gia</span>
+              <span id="stat-yes-pct" class="text-emerald-700">85% (24 người)</span>
+            </div>
+            <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+              <div id="stat-yes-bar" class="bg-emerald-500 h-full rounded-full transition-all duration-700" style="width: 85%"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between font-medium mb-1">
+              <span class="text-amber-700">Đang sắp xếp</span>
+              <span id="stat-maybe-pct" class="text-amber-700">11% (3 người)</span>
+            </div>
+            <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+              <div id="stat-maybe-bar" class="bg-amber-400 h-full rounded-full transition-all duration-700" style="width: 11%"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between font-medium mb-1">
+              <span class="text-rose-700">Bận việc</span>
+              <span id="stat-no-pct" class="text-rose-700">4% (1 người)</span>
+            </div>
+            <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+              <div id="stat-no-bar" class="bg-rose-400 h-full rounded-full transition-all duration-700" style="width: 4%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="text-center py-6 text-slate-500 text-xs space-y-2">
+      <p>❤️ Thiết kế với tình cảm trân trọng nhất gửi tới toàn thể Nữ CBNV Công ty.</p>
+      <p class="text-[11px] text-slate-400">© 2026 Vietnamese Women's Day Celebration - 20/10</p>
+    </footer>
+  </main>
+
+  <!-- ==================== MODAL 1: BÀI HÁT AI SÁNG TÁC RIÊNG ==================== -->
+  <div id="ai-song-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 card-luxury-shadow relative border border-rose-200">
+      <button id="close-ai-song" class="absolute top-4 right-4 text-slate-400 hover:text-rose-600 text-xl w-8 h-8 rounded-full flex items-center justify-center">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="text-center mb-5">
+        <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center mx-auto text-xl mb-2">
+          <i class="fa-solid fa-music"></i>
+        </div>
+        <h3 class="font-serif-luxury text-xl font-bold text-slate-800">
+          Bài Hát AI Theo Tên: <span id="modal-song-name" class="rose-gradient-text">Nguyễn Thị Lan</span>
+        </h3>
+        <p class="text-xs text-slate-500">Tạo bởi AI (Suno.ai / Udio) với phong cách Pop Acoustic ngọt ngào</p>
+      </div>
+
+      <!-- Khung lời bài hát -->
+      <div class="bg-purple-50/60 rounded-2xl p-4 border border-purple-200 mb-4 max-h-48 overflow-y-auto">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-purple-700 block mb-1">Lời bài hát AI gợi ý:</span>
+        <p id="modal-song-lyrics" class="text-xs text-slate-700 leading-relaxed italic whitespace-pre-line">
+          (Đoạn 1)
+          Sớm mai mây hồng gió bay lướt qua hiên nhà,
+          Chị Lan mỉm cười tựa muôn sắc hoa.
+          Sổ sách vẹn toàn, nét duyên thướt tha,
+          Tháng Mười rực rỡ, khúc ca chan hòa!
+        </p>
+      </div>
+
+      <!-- Trình phát nhạc bài hát AI demo -->
+      <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 mb-4">
+        <span class="text-xs font-semibold text-slate-700 mb-2 block flex items-center gap-1.5">
+          <i class="fa-solid fa-headphones text-rose-500"></i> Bản nghe thử Demo:
+        </span>
+        <audio controls class="w-full h-10">
+          <source src="https://assets.mixkit.co/music/preview/mixkit-romantic-moment-piano-solo-734.mp3" type="audio/mp3">
+          Trình duyệt không hỗ trợ phát audio.
+        </audio>
+      </div>
+
+      <!-- Prompt Suno AI & Hướng dẫn -->
+      <div class="bg-amber-50 rounded-xl p-3 border border-amber-200 text-xs text-amber-900 space-y-1">
+        <span class="font-bold flex items-center gap-1">
+          <i class="fa-solid fa-lightbulb text-amber-600"></i> Hướng dẫn sáng tác nhạc AI theo tên:
+        </span>
+        <p>Vào <strong>Suno.com</strong> hoặc <strong>Udio.com</strong> (miễn phí), chọn <em>Create</em> và dán Prompt:</p>
+        <div class="bg-white p-2 rounded border border-amber-300 font-mono text-[11px] text-slate-700 select-all" id="modal-ai-prompt">
+          Vietnamese pop acoustic song, warm cheerful female vocals, celebrating Lan on Vietnamese Women Day 20-10
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 2: VIDEO LỜI CHÚC (OPTIONAL) ==================== -->
+  <div id="video-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-xl w-full p-4 sm:p-6 card-luxury-shadow relative border border-rose-200">
+      <button id="close-video" class="absolute top-3 right-3 text-slate-400 hover:text-rose-600 text-xl w-8 h-8 rounded-full flex items-center justify-center z-10 bg-white/80">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="text-center mb-3">
+        <h3 class="font-serif-luxury text-lg font-bold text-slate-800">
+          🎬 Video Chúc Mừng 20/10 Gửi Tới Phái Đẹp
+        </h3>
+        <p class="text-xs text-slate-500">Món quà tinh thần từ các anh em đồng nghiệp trong công ty</p>
+      </div>
+
+      <div class="rounded-2xl overflow-hidden aspect-video bg-black shadow-inner relative">
+        <video id="greeting-video" controls class="w-full h-full object-cover" poster="https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=800&q=80">
+          <!-- Video demo hoa nở chúc mừng -->
+          <source src="https://assets.mixkit.co/videos/preview/mixkit-set-of-plateaus-seen-from-the-sky-in-a-sunset-26070-large.mp4" type="video/mp4">
+          Trình duyệt không hỗ trợ video HTML5.
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST THÔNG BÁO NHẸ ==================== -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-slate-900/90 text-white px-5 py-2.5 rounded-full text-xs sm:text-sm font-medium shadow-2xl backdrop-blur-md transition-all duration-300 opacity-0 pointer-events-none flex items-center gap-2">
+    <i class="fa-solid fa-circle-check text-emerald-400"></i>
+    <span id="toast-message">Đã sao chép link thành công!</span>
+  </div>
+
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
