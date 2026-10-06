@@ -23,9 +23,9 @@
   <!-- Cánh hoa rơi tự nhiên nhẹ nhàng bay bổng -->
   <div id="petals-container"></div>
 
-  <!-- Audio player ngầm -->
-  <audio id="bg-music" preload="auto" loop>
-    <source src="https://assets.mixkit.co/music/preview/mixkit-romantic-moment-piano-solo-734.mp3" type="audio/mp3">
+  <!-- Audio player ngầm (Nhạc nền piano lãng mạn nhẹ nhàng) -->
+  <audio id="bg-music" preload="auto" loop playsinline>
+    <source src="music.mp3" type="audio/mp3">
   </audio>
 
   <!-- Nút bật/tắt nhạc nền góc phải -->
@@ -322,13 +322,13 @@
               <span class="text-xs">💕</span>
             </label>
 
-            <!-- Option 2: Không tham dự -->
+            <!-- Option 2: Hẹn dịp khác -->
             <label id="opt-no-label" class="rsvp-opt-btn is-inactive">
-              <input type="radio" name="rsvp_status" value="Không tham dự" class="sr-only">
+              <input type="radio" name="rsvp_status" value="Hẹn dịp khác" class="sr-only">
               <div id="opt-no-check" class="w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs text-transparent transition">
                 <i class="fa-solid fa-check"></i>
               </div>
-              <span class="text-sm font-medium text-slate-600">Không tham dự</span>
+              <span class="text-sm font-medium text-slate-600">Hẹn dịp khác</span>
             </label>
           </div>
 

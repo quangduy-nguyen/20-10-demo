@@ -410,7 +410,7 @@ function setupEventListeners() {
   const optYesLabel = document.getElementById('opt-yes-label');
   const optNoLabel = document.getElementById('opt-no-label');
   const yesRadio = document.querySelector('input[name="rsvp_status"][value="Sẽ tham dự"]');
-  const noRadio = document.querySelector('input[name="rsvp_status"][value="Không tham dự"]');
+  const noRadio = document.querySelector('input[name="rsvp_status"][value="Hẹn dịp khác"]') || document.querySelector('input[name="rsvp_status"][value="Không tham dự"]');
 
   if (optYesLabel) {
     optYesLabel.addEventListener('click', () => {
@@ -425,7 +425,7 @@ function setupEventListeners() {
     optNoLabel.addEventListener('click', () => {
       if (noRadio && !noRadio.disabled) {
         noRadio.checked = true;
-        updateRsvpUi('Không tham dự');
+        updateRsvpUi('Hẹn dịp khác');
       }
     });
   }
@@ -444,7 +444,7 @@ function setupEventListeners() {
 }
 
 /**
- * 7. Phát nhạc nền
+ * 7. Phát nhạc nền (Hỗ trợ trình duyệt máy tính & di động)
  */
 function playBackgroundMusic() {
   const audio = document.getElementById('bg-music');
@@ -456,9 +456,24 @@ function playBackgroundMusic() {
   if (playPromise !== undefined) {
     playPromise.then(() => {
       isMusicPlaying = true;
-      if (icon) icon.classList.add('spin-slow');
+      if (icon) {
+        icon.className = 'fa-solid fa-compact-disc text-xl spin-slow';
+      }
     }).catch(err => {
-      console.log('Chờ tương tác người dùng để phát nhạc:', err);
+      console.log('Trình duyệt cần tương tác người dùng để phát nhạc:', err);
+      // Đăng ký mở khóa âm thanh ngay lần chạm / click đầu tiên của người dùng
+      const unlockAudio = () => {
+        audio.play().then(() => {
+          isMusicPlaying = true;
+          if (icon) {
+            icon.className = 'fa-solid fa-compact-disc text-xl spin-slow';
+          }
+        }).catch(() => {});
+        document.removeEventListener('click', unlockAudio);
+        document.removeEventListener('touchstart', unlockAudio);
+      };
+      document.addEventListener('click', unlockAudio, { once: true });
+      document.addEventListener('touchstart', unlockAudio, { once: true });
     });
   }
 }
@@ -469,14 +484,22 @@ function toggleBackgroundMusic() {
   if (!audio) return;
 
   if (audio.paused) {
-    audio.play();
-    isMusicPlaying = true;
-    if (icon) icon.classList.add('spin-slow');
-    showToast('🎵 Đang phát nhạc nền');
+    audio.play().then(() => {
+      isMusicPlaying = true;
+      if (icon) {
+        icon.className = 'fa-solid fa-compact-disc text-xl spin-slow';
+      }
+      showToast('🎵 Đang phát nhạc nền');
+    }).catch(err => {
+      console.log('Lỗi phát nhạc:', err);
+      showToast('⚠️ Không thể phát nhạc, vui lòng thử lại');
+    });
   } else {
     audio.pause();
     isMusicPlaying = false;
-    if (icon) icon.classList.remove('spin-slow');
+    if (icon) {
+      icon.className = 'fa-solid fa-compact-disc text-xl';
+    }
     showToast('🔇 Đã tắt nhạc');
   }
 }
