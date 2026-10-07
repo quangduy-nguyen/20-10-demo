@@ -129,20 +129,28 @@ body {
   border-radius: 20px;
 }
 
-/* Nắp gập phong bao (100% responsive bằng clip-path, vừa vặn tuyệt đối mọi kích thước điện thoại) */
+/* Nắp gập phong bao (Bo tròn 2 góc trên khớp hoàn hảo với thân phong bì, không bị lồi góc nhọn) */
 .env-flap {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 56%;
-  background: linear-gradient(180deg, #e11d48 0%, #be123c 100%);
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
   border-radius: 20px 20px 0 0;
+  overflow: hidden;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
   transform-origin: top center;
   transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.2s;
   z-index: 4;
   filter: drop-shadow(0 4px 8px rgba(136, 19, 55, 0.35));
+}
+
+.env-flap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #e11d48 0%, #be123c 100%);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
 }
 
 .envelope-wrapper.is-open .env-flap {
@@ -150,7 +158,7 @@ body {
   z-index: 1;
 }
 
-/* Mặt trước phong bao (túi) - khớp 100% với container, không hở viền */
+/* Mặt trước phong bao (túi) - Khớp 100% hình chữ nhật bo viền 4 góc */
 .env-front-pocket {
   position: absolute;
   inset: 0;
@@ -158,7 +166,9 @@ body {
   height: 100%;
   z-index: 3;
   pointer-events: none;
-  border-radius: 0 0 20px 20px;
+  border-radius: 20px;
+  overflow: hidden;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 
 /* Cánh gập hai bên */
@@ -168,7 +178,6 @@ body {
   inset: 0;
   background: linear-gradient(135deg, #fb7185 0%, #f43f5e 50%, #e11d48 100%);
   clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
-  border-radius: 0 0 20px 20px;
 }
 
 /* Cánh gập đáy hất lên */
@@ -178,7 +187,6 @@ body {
   inset: 0;
   background: linear-gradient(0deg, #f43f5e 0%, #fb7185 75%, #fecdd3 100%);
   clip-path: polygon(0 100%, 100% 100%, 50% 48%);
-  border-radius: 0 0 20px 20px;
   filter: drop-shadow(0 -3px 6px rgba(190, 18, 60, 0.25));
 }
 
