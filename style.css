@@ -97,7 +97,7 @@ body {
 .envelope-wrapper {
   perspective: 1200px;
   width: 100%;
-  max-width: 440px;
+  max-width: 420px;
   margin: 0 auto;
   cursor: pointer;
   user-select: none;
@@ -106,49 +106,43 @@ body {
 .env-container {
   position: relative;
   width: 100%;
-  height: 290px;
+  aspect-ratio: 4 / 2.7;
+  max-height: 280px;
+  min-height: 220px;
   background: #fbcfe8;
-  border-radius: 18px;
-  box-shadow: 0 25px 50px -12px rgba(225, 29, 72, 0.3), 0 0 0 1px rgba(244, 63, 94, 0.2);
+  border-radius: 20px;
+  box-shadow: 0 20px 45px -10px rgba(225, 29, 72, 0.3), 0 0 0 1px rgba(244, 63, 94, 0.2);
   transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
 }
 
 .env-container:hover {
   transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 35px 60px -15px rgba(225, 29, 72, 0.4);
+  box-shadow: 0 30px 55px -12px rgba(225, 29, 72, 0.4);
 }
 
 .env-back {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
   background: linear-gradient(145deg, #f43f5e, #be123c);
-  border-radius: 18px;
+  border-radius: 20px;
 }
 
-/* Nắp gập phong bao */
+/* Nắp gập phong bao (100% responsive bằng clip-path, vừa vặn tuyệt đối mọi kích thước điện thoại) */
 .env-flap {
   position: absolute;
   top: 0;
   left: 0;
-  width: 0;
-  height: 0;
-  border-left: 220px solid transparent;
-  border-right: 220px solid transparent;
-  border-top: 155px solid #e11d48;
+  width: 100%;
+  height: 56%;
+  background: linear-gradient(180deg, #e11d48 0%, #be123c 100%);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  border-radius: 20px 20px 0 0;
   transform-origin: top center;
   transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.2s;
   z-index: 4;
-}
-
-@media (max-width: 460px) {
-  .env-flap {
-    border-left-width: 175px;
-    border-right-width: 175px;
-    border-top-width: 135px;
-  }
+  filter: drop-shadow(0 4px 8px rgba(136, 19, 55, 0.35));
 }
 
 .envelope-wrapper.is-open .env-flap {
@@ -156,48 +150,46 @@ body {
   z-index: 1;
 }
 
-/* Mặt trước phong bao (túi) */
+/* Mặt trước phong bao (túi) - khớp 100% với container, không hở viền */
 .env-front-pocket {
   position: absolute;
-  bottom: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
   z-index: 3;
   pointer-events: none;
+  border-radius: 0 0 20px 20px;
 }
 
+/* Cánh gập hai bên */
 .env-front-pocket::before {
   content: '';
   position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 0;
-  border-left: 220px solid #fb7185;
-  border-right: 220px solid #fb7185;
-  border-top: 145px solid transparent;
-  border-bottom: 145px solid #f43f5e;
-  border-radius: 0 0 18px 18px;
+  inset: 0;
+  background: linear-gradient(135deg, #fb7185 0%, #f43f5e 50%, #e11d48 100%);
+  clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
+  border-radius: 0 0 20px 20px;
 }
 
-@media (max-width: 460px) {
-  .env-front-pocket::before {
-    border-left-width: 175px;
-    border-right-width: 175px;
-    border-top-width: 125px;
-    border-bottom-width: 125px;
-  }
+/* Cánh gập đáy hất lên */
+.env-front-pocket::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, #f43f5e 0%, #fb7185 75%, #fecdd3 100%);
+  clip-path: polygon(0 100%, 100% 100%, 50% 48%);
+  border-radius: 0 0 20px 20px;
+  filter: drop-shadow(0 -3px 6px rgba(190, 18, 60, 0.25));
 }
 
 /* Con dấu sáp đỏ */
 .env-seal {
   position: absolute;
-  top: 135px;
+  top: 54%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 66px;
-  height: 66px;
+  width: 62px;
+  height: 62px;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 35%, #f43f5e, #be123c, #881337);
   box-shadow: 0 6px 18px rgba(190, 18, 60, 0.45), inset 0 2px 4px rgba(255, 255, 255, 0.35);
@@ -327,26 +319,32 @@ body {
   position: relative;
 }
 
-/* Thẻ vòm 3 cột (Arch Cards) */
+/* Thẻ vòm 3 cột (Arch Cards) - Tinh gọn, cân đối trên cả điện thoại & máy tính */
 .arch-card {
-  border-radius: 80px 80px 24px 24px;
+  border-radius: 46px 46px 20px 20px;
   border: 1.5px solid #fecdd3;
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 10px 25px -5px rgba(225, 29, 72, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 20px -4px rgba(225, 29, 72, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.7);
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
   position: relative;
 }
 
+@media (min-width: 768px) {
+  .arch-card {
+    border-radius: 68px 68px 22px 22px;
+  }
+}
+
 .arch-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 18px 35px -5px rgba(225, 29, 72, 0.2);
+  box-shadow: 0 16px 30px -5px rgba(225, 29, 72, 0.18);
 }
 
 .arch-icon-circle {
-  width: 50px;
-  height: 50px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: #ffe4e6;
   color: #be123c;
@@ -354,7 +352,14 @@ body {
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  box-shadow: 0 4px 10px rgba(225, 29, 72, 0.15);
+  box-shadow: 0 3px 8px rgba(225, 29, 72, 0.12);
+}
+
+@media (min-width: 768px) {
+  .arch-icon-circle {
+    width: 48px;
+    height: 48px;
+  }
 }
 
 /* Thanh nhắc hẹn Lời nhắc chuẩn theo ảnh */

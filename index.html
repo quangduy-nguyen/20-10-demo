@@ -23,9 +23,9 @@
   <!-- Cánh hoa rơi tự nhiên nhẹ nhàng bay bổng -->
   <div id="petals-container"></div>
 
-  <!-- Audio player ngầm (Nhạc nền piano lãng mạn nhẹ nhàng) -->
-  <audio id="bg-music" preload="auto" loop playsinline>
-    <source src="music.mp3" type="audio/mp3">
+  <!-- Audio player ngầm (Nhạc nền piano River Flows In You lãng mạn nhẹ nhàng) -->
+  <audio id="bg-music" preload="auto" loop playsinline src="music.mp3">
+    <source src="music.mp3" type="audio/mpeg">
   </audio>
 
   <!-- Nút bật/tắt nhạc nền góc phải -->
@@ -91,7 +91,7 @@
   </div>
 
   <!-- ==================== GIAO DIỆN 2: NỘI DUNG THIỆP ĐÃ MỞ ==================== -->
-  <main id="full-greeting-section" class="hidden max-w-2xl mx-auto px-4 pt-8 space-y-8">
+  <main id="full-greeting-section" class="hidden max-w-3xl mx-auto px-4 pt-8 space-y-8">
 
     <!-- KHỐI 1: HÌNH ẢNH & LỜI CHÚC (DÙNG BACKGROUND HOA HỒNG CHUẨN, KHÔNG DÙNG ICON EMOJI) -->
     <article class="card-with-bg p-6 sm:p-10 relative text-center">
@@ -178,26 +178,26 @@
       </div>
 
       <!-- 3 THẺ VÒM (ARCH CARDS) CÂN ĐỐI THEO ẢNH MẪU - FONT LORA -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 mb-8 relative z-10">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-5 mb-8 relative z-10 max-w-md md:max-w-none mx-auto">
         
         <!-- Cột 1: THỜI GIAN -->
-        <div class="arch-card p-6 pt-5 pb-7 text-center flex flex-col items-center justify-between min-h-[260px]">
+        <div class="arch-card px-4 py-4 sm:px-4 sm:py-5 text-center flex flex-col items-center justify-between min-h-[190px] sm:min-h-[240px]">
           <div class="w-full">
-            <div class="text-rose-300 text-xs mb-1 select-none">୨୧</div>
-            <div class="arch-icon-circle mb-3">
-              <i class="fa-regular fa-clock text-xl"></i>
+            <div class="text-rose-300 text-xs sm:text-sm mb-1 select-none">୨୧</div>
+            <div class="arch-icon-circle mb-2">
+              <i class="fa-regular fa-clock text-lg sm:text-xl"></i>
             </div>
-            <span class="text-[11px] font-bold uppercase tracking-wider text-rose-600 block mb-2">
+            <span class="text-xs sm:text-sm font-extrabold uppercase tracking-widest text-rose-600 block mb-1.5">
               THỜI GIAN
             </span>
           </div>
 
-          <div class="my-auto py-2">
-            <div class="font-lora text-3xl sm:text-4xl font-bold text-rose-950 tracking-tight" id="event-time-highlight">
+          <div class="my-auto py-1">
+            <div class="font-lora text-4xl sm:text-5xl font-black text-rose-950 tracking-tight leading-tight mb-1" id="event-time-highlight">
               18:30
             </div>
-            <div class="font-lora text-xs sm:text-sm font-medium text-slate-700 mt-1 leading-snug" id="event-date-full">
-              Thứ Ba,<br>ngày 20/10/2026
+            <div class="font-lora text-base sm:text-lg font-bold text-slate-800 leading-snug" id="event-date-full">
+              Thứ Ba, ngày 20/10/2026
             </div>
           </div>
 
@@ -208,23 +208,23 @@
         </div>
 
         <!-- Cột 2: ĐỊA ĐIỂM -->
-        <div class="arch-card p-6 pt-5 pb-7 text-center flex flex-col items-center justify-between min-h-[260px]">
+        <div class="arch-card px-4 py-4 sm:px-4 sm:py-5 text-center flex flex-col items-center justify-between min-h-[190px] sm:min-h-[240px]">
           <div class="w-full">
-            <div class="text-rose-300 text-xs mb-1 select-none">୨୧</div>
-            <div class="arch-icon-circle mb-3">
-              <i class="fa-solid fa-location-dot text-xl"></i>
+            <div class="text-rose-300 text-xs sm:text-sm mb-1 select-none">୨୧</div>
+            <div class="arch-icon-circle mb-2">
+              <i class="fa-solid fa-location-dot text-lg sm:text-xl"></i>
             </div>
-            <span class="text-[11px] font-bold uppercase tracking-wider text-rose-600 block mb-2">
+            <span class="text-xs sm:text-sm font-extrabold uppercase tracking-widest text-rose-600 block mb-1.5">
               ĐỊA ĐIỂM
             </span>
           </div>
 
-          <div class="my-auto py-2 px-1">
-            <div class="font-lora text-sm sm:text-base font-bold text-rose-950 leading-snug mb-1.5" id="event-location-name">
-              Nhà hàng<br>Maison Sen Buffet
+          <div class="my-auto py-1">
+            <div class="font-lora text-xl sm:text-2xl font-bold text-rose-950 leading-snug mb-1" id="event-location-name">
+              Nhà hàng Maison Sen Buffet
             </div>
-            <div class="font-lora text-[11px] sm:text-xs text-slate-600 leading-relaxed" id="event-location-address">
-              61 Trần Hưng Đạo,<br>P. Phan Chu Trinh,<br>Q. Hoàn Kiếm, Hà Nội
+            <div class="font-lora text-sm sm:text-base font-semibold text-slate-700 leading-relaxed" id="event-location-address">
+              61 Trần Hưng Đạo, P. Phan Chu Trinh, Q. Hoàn Kiếm, Hà Nội
             </div>
           </div>
 
@@ -234,28 +234,28 @@
         </div>
 
         <!-- Cột 3: TRANG PHỤC -->
-        <div class="arch-card p-6 pt-5 pb-7 text-center flex flex-col items-center justify-between min-h-[260px]">
+        <div class="arch-card px-4 py-4 sm:px-4 sm:py-5 text-center flex flex-col items-center justify-between min-h-[190px] sm:min-h-[240px]">
           <div class="w-full">
-            <div class="text-rose-300 text-xs mb-1 select-none">୨୧</div>
-            <div class="arch-icon-circle mb-3">
-              <i class="fa-solid fa-wand-magic-sparkles text-lg"></i>
+            <div class="text-rose-300 text-xs sm:text-sm mb-1 select-none">୨୧</div>
+            <div class="arch-icon-circle mb-2">
+              <i class="fa-solid fa-wand-magic-sparkles text-lg sm:text-xl"></i>
             </div>
-            <span class="text-[11px] font-bold uppercase tracking-wider text-rose-600 block mb-2">
+            <span class="text-xs sm:text-sm font-extrabold uppercase tracking-widest text-rose-600 block mb-1.5">
               TRANG PHỤC
             </span>
           </div>
 
-          <div class="my-auto py-2">
-            <div class="font-lora text-sm sm:text-base font-bold text-rose-950 leading-snug mb-1" id="event-dresscode">
-              Hồng Pastel<br>/ Trắng / Thanh lịch
+          <div class="my-auto py-1">
+            <div class="font-lora text-xl sm:text-2xl font-bold text-rose-950 leading-snug mb-1" id="event-dresscode">
+              Hồng Pastel / Trắng / Thanh lịch
             </div>
-            <div class="font-lora text-[11px] sm:text-xs text-rose-800/80 italic mt-1">
+            <div class="font-lora text-sm sm:text-base font-semibold text-rose-800/85 italic">
               (Trang phục dự tiệc)
             </div>
           </div>
 
           <!-- Icon váy dạ tiệc phác thảo -->
-          <div class="text-rose-300 text-xl opacity-70 mt-1">
+          <div class="text-rose-300 text-xl opacity-75 mt-1">
             <i class="fa-solid fa-person-dress"></i>
           </div>
         </div>

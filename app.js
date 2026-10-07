@@ -123,11 +123,11 @@ function loadCurrentRecipient() {
     const elDate = document.getElementById('event-date');
     if (elDate) elDate.textContent = EVENT_INFO.date_text;
     const elLocName = document.getElementById('event-location-name');
-    if (elLocName) elLocName.innerHTML = 'Nhà hàng<br>Maison Sen Buffet';
+    if (elLocName) elLocName.innerHTML = 'Nhà hàng Maison Sen Buffet';
     const elLocAddr = document.getElementById('event-location-address');
-    if (elLocAddr) elLocAddr.innerHTML = '61 Trần Hưng Đạo,<br>P. Phan Chu Trinh,<br>Q. Hoàn Kiếm, Hà Nội';
+    if (elLocAddr) elLocAddr.innerHTML = '61 Trần Hưng Đạo, P. Phan Chu Trinh, Q. Hoàn Kiếm, Hà Nội';
     const elDress = document.getElementById('event-dresscode');
-    if (elDress) elDress.innerHTML = 'Hồng Pastel<br>/ Trắng / Thanh lịch';
+    if (elDress) elDress.innerHTML = 'Hồng Pastel / Trắng / Thanh lịch';
 
     const mapsBtn = document.getElementById('btn-google-maps');
     if (mapsBtn && EVENT_INFO.google_maps_url) mapsBtn.href = EVENT_INFO.google_maps_url;
@@ -451,7 +451,11 @@ function playBackgroundMusic() {
   const icon = document.getElementById('music-icon');
   if (!audio) return;
 
+  if (!audio.src || !audio.src.includes('music.mp3')) {
+    audio.src = 'music.mp3';
+  }
   audio.volume = 0.85;
+
   const playPromise = audio.play();
   if (playPromise !== undefined) {
     playPromise.then(() => {
