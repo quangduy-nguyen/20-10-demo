@@ -84,20 +84,18 @@ function loadCurrentRecipient() {
 
   if (!currentPerson) return;
 
-  // Cập nhật tên lá thư popup 3s: From Ban TCKT To [Tên người nhận]
+  // Cập nhật tên lá thư popup 3s: From Ban TCKT To Ms. [Tên đầy đủ]
   const letterToName = document.getElementById('letter-to-name');
   if (letterToName) {
-    letterToName.textContent = getShortRecipientName(currentPerson);
+    letterToName.textContent = `Ms. ${currentPerson.ho_ten}`;
   }
 
   // Điền dữ liệu vào thiệp chi tiết bên trong
   const cardName = document.getElementById('card-person-name');
-  const cardTitle = document.getElementById('card-person-title');
   const cardGreeting = document.getElementById('card-person-greeting');
   const cardImage = document.getElementById('card-person-image');
 
   if (cardName) cardName.textContent = currentPerson.ho_ten;
-  if (cardTitle) cardTitle.textContent = currentPerson.chuc_danh;
   if (cardGreeting) cardGreeting.textContent = currentPerson.loi_chuc;
 
   if (cardImage) {
@@ -116,146 +114,18 @@ function loadCurrentRecipient() {
 
   // Điền thông tin sự kiện an toàn
   if (typeof EVENT_INFO !== 'undefined') {
-    const elTitle = document.getElementById('event-title');
-    if (elTitle) elTitle.textContent = EVENT_INFO.title;
-    const elSub = document.getElementById('event-subtitle');
-    if (elSub) elSub.textContent = EVENT_INFO.subtitle;
-    const elDate = document.getElementById('event-date');
-    if (elDate) elDate.textContent = EVENT_INFO.date_text;
+    const elTimeHighlight = document.getElementById('event-time-highlight');
+    if (elTimeHighlight) elTimeHighlight.textContent = '18:30';
+    const elDateFull = document.getElementById('event-date-full');
+    if (elDateFull) elDateFull.textContent = 'Thứ 4, ngày 14/10/2026';
     const elLocName = document.getElementById('event-location-name');
-    if (elLocName) elLocName.innerHTML = 'Nhà hàng Maison Sen Buffet';
+    if (elLocName) elLocName.textContent = 'Sheraton Hanoi West';
     const elLocAddr = document.getElementById('event-location-address');
-    if (elLocAddr) elLocAddr.innerHTML = '61 Trần Hưng Đạo, P. Phan Chu Trinh, Q. Hoàn Kiếm, Hà Nội';
-    const elDress = document.getElementById('event-dresscode');
-    if (elDress) elDress.innerHTML = 'Hồng Pastel / Trắng / Thanh lịch';
+    if (elLocAddr) elLocAddr.textContent = 'Số 36 đường Lê Đức Thọ';
 
     const mapsBtn = document.getElementById('btn-google-maps');
     if (mapsBtn && EVENT_INFO.google_maps_url) mapsBtn.href = EVENT_INFO.google_maps_url;
   }
-
-  // Cấu hình link Google Calendar
-  updateGoogleCalendarLink();
-
-  // Kiểm tra nếu người này đã gửi xác nhận trước đó (Mỗi người chỉ có 1 lượt chọn)
-  checkExistingRsvp();
-}
-
-/**
- * Cập nhật giao diện 2 nút lựa chọn (Exclusive - Độc quyền tuyệt đối)
- */
-function updateRsvpUi(selectedVal) {
-  const optYesLabel = document.getElementById('opt-yes-label');
-  const optNoLabel = document.getElementById('opt-no-label');
-  const optYesCheck = document.getElementById('opt-yes-check');
-  const optNoCheck = document.getElementById('opt-no-check');
-
-  if (selectedVal === 'Sẽ tham dự') {
-    if (optYesLabel) {
-      optYesLabel.classList.remove('is-inactive');
-      optYesLabel.classList.add('is-active');
-    }
-    if (optNoLabel) {
-      optNoLabel.classList.remove('is-active');
-      optNoLabel.classList.add('is-inactive');
-    }
-    if (optYesCheck) {
-      optYesCheck.className = 'w-6 h-6 rounded-full bg-rose-600 text-white flex items-center justify-center text-xs shadow-sm transition';
-      optYesCheck.innerHTML = '<i class="fa-solid fa-check"></i>';
-    }
-    if (optNoCheck) {
-      optNoCheck.className = 'w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs text-transparent transition';
-      optNoCheck.innerHTML = '<i class="fa-solid fa-check"></i>';
-    }
-  } else {
-    if (optYesLabel) {
-      optYesLabel.classList.remove('is-active');
-      optYesLabel.classList.add('is-inactive');
-    }
-    if (optNoLabel) {
-      optNoLabel.classList.remove('is-inactive');
-      optNoLabel.classList.add('is-active');
-    }
-    if (optYesCheck) {
-      optYesCheck.className = 'w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs text-transparent transition';
-      optYesCheck.innerHTML = '<i class="fa-solid fa-check"></i>';
-    }
-    if (optNoCheck) {
-      optNoCheck.className = 'w-6 h-6 rounded-full bg-rose-600 text-white flex items-center justify-center text-xs shadow-sm transition';
-      optNoCheck.innerHTML = '<i class="fa-solid fa-check"></i>';
-    }
-  }
-}
-
-/**
- * Kiểm tra xem người nhận đã vote trước đó chưa
- */
-function checkExistingRsvp() {
-  if (!currentPerson) return;
-  const savedRsvp = localStorage.getItem(`rsvp_${currentPerson.id}`);
-  if (!savedRsvp) return;
-
-  try {
-    const data = JSON.parse(savedRsvp);
-    const radio = document.querySelector(`input[name="rsvp_status"][value="${data.status}"]`);
-    if (radio) {
-      radio.checked = true;
-      updateRsvpUi(data.status);
-    }
-    const noteElem = document.getElementById('rsvp-note');
-    if (noteElem) {
-      noteElem.value = data.note || '';
-      noteElem.disabled = true;
-    }
-
-    // Khóa các lựa chọn (Mỗi người chỉ có 1 lượt chọn)
-    const radios = document.querySelectorAll('input[name="rsvp_status"]');
-    radios.forEach(r => r.disabled = true);
-
-    const submitBtn = document.getElementById('btn-submit-rsvp');
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = `<i class="fa-solid fa-circle-check"></i> Bạn đã xác nhận (${data.status})`;
-      submitBtn.classList.remove('from-rose-600', 'to-rose-600', 'hover:from-rose-700', 'hover:to-pink-700');
-      submitBtn.classList.add('bg-slate-400', 'cursor-not-allowed', 'opacity-90');
-    }
-  } catch (e) {}
-}
-
-/**
- * Hiển thị Pop-up Cảm Ơn sau khi gửi phản hồi
- */
-function showThankYouModal(statusVal) {
-  const modal = document.getElementById('thankyou-modal');
-  const title = document.getElementById('modal-title');
-  const desc = document.getElementById('modal-desc');
-  const iconWrap = document.getElementById('modal-icon-wrap');
-  if (!modal || !currentPerson) return;
-
-  const xungHo = currentPerson.ho_ten.startsWith('Nguyễn Thị') || currentPerson.chuc_danh.includes('Trưởng') ? 'Chị' : 'Chị';
-  const tenNguoiNhan = currentPerson.ho_ten.split(' ').slice(-1)[0]; // Tên cuối
-
-  if (statusVal === 'Sẽ tham dự') {
-    if (title) title.innerText = `Cảm Ơn ${xungHo} ${tenNguoiNhan}!`;
-    if (desc) desc.innerText = `Ban Tổ Chức đã ghi nhận sự hiện diện của ${xungHo}! Rất hân hạnh được đón tiếp ${xungHo} tại buổi dạ tiệc 20/10 lúc 18h30.`;
-    if (iconWrap) {
-      iconWrap.className = 'w-16 h-16 rounded-full bg-rose-100 text-rose-600 text-2xl flex items-center justify-center mx-auto mb-4 shadow-inner';
-      iconWrap.innerHTML = '<i class="fa-solid fa-heart text-rose-500"></i>';
-    }
-  } else {
-    if (title) title.innerText = `Cảm Ơn ${xungHo} ${tenNguoiNhan}!`;
-    if (desc) desc.innerText = `Ban Tổ Chức rất tiếc vì ${xungHo} không thể tham gia buổi dạ tiệc, nhưng xin gửi trọn vẹn tình cảm và những lời chúc ngọt ngào nhất tới ${xungHo}!`;
-    if (iconWrap) {
-      iconWrap.className = 'w-16 h-16 rounded-full bg-slate-100 text-slate-600 text-2xl flex items-center justify-center mx-auto mb-4 shadow-inner';
-      iconWrap.innerHTML = '<i class="fa-regular fa-envelope text-slate-500"></i>';
-    }
-  }
-
-  modal.classList.add('active');
-}
-
-function closeThankYouModal() {
-  const modal = document.getElementById('thankyou-modal');
-  if (modal) modal.classList.remove('active');
 }
 
 /**
@@ -279,7 +149,7 @@ function handleOpenEnvelope() {
   // Bắn pháo hoa rực rỡ
   fireConfetti();
 
-  // Sau 450ms khi nắp mở ra, hiện popup lá thư (From TCKT To [Tên người nhận])
+  // Sau 450ms khi nắp mở ra, hiện popup lá thư (From Anh em TCKT To Ms. [Tên đầy đủ])
   setTimeout(() => {
     if (letterPopup) {
       letterPopup.classList.add('active');
@@ -305,93 +175,7 @@ function handleOpenEnvelope() {
 }
 
 /**
- * 4. Tạo đường link Google Calendar
- */
-function updateGoogleCalendarLink() {
-  const btn = document.getElementById('btn-google-calendar');
-  if (!btn || !currentPerson || typeof EVENT_INFO === 'undefined') return;
-
-  const title = encodeURIComponent(EVENT_INFO.title);
-  const location = encodeURIComponent(`${EVENT_INFO.location_name}, ${EVENT_INFO.location_address}`);
-  const details = encodeURIComponent(
-    `Kính mời ${currentPerson.ho_ten} tham dự Dạ tiệc chúc mừng ngày Phụ nữ Việt Nam 20/10.\n` +
-    `Địa điểm: ${EVENT_INFO.location_name} (${EVENT_INFO.location_address})\n` +
-    `Trang phục: ${EVENT_INFO.dress_code}\n` +
-    `Bản đồ chỉ đường: ${EVENT_INFO.google_maps_url}`
-  );
-  const dates = '20261020T113000Z/20261020T143000Z';
-
-  btn.href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
-}
-
-/**
- * 5. Xử lý Form Xác Nhận Tham Dự (2 options - Mỗi người chỉ có 1 lượt chọn)
- */
-function handleRsvpSubmit(e) {
-  e.preventDefault();
-  if (!currentPerson) return;
-
-  // Kiểm tra nếu đã vote
-  if (localStorage.getItem(`rsvp_${currentPerson.id}`)) {
-    showToast('Bạn đã gửi phản hồi trước đó rồi!');
-    return;
-  }
-
-  const statusInput = document.querySelector('input[name="rsvp_status"]:checked');
-  const noteInput = document.getElementById('rsvp-note');
-  if (!statusInput) return;
-
-  const statusVal = statusInput.value; // "Sẽ tham dự" hoặc "Không tham dự"
-  const noteVal = noteInput ? noteInput.value.trim() : '';
-
-  const rsvpRecord = {
-    id: currentPerson.id,
-    ho_ten: currentPerson.ho_ten,
-    chuc_danh: currentPerson.chuc_danh,
-    status: statusVal,
-    note: noteVal,
-    timestamp: new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })
-  };
-
-  // 1. Lưu vào LocalStorage (Khóa 1 lượt chọn cho người này)
-  localStorage.setItem(`rsvp_${currentPerson.id}`, JSON.stringify(rsvpRecord));
-
-  // 2. Gửi về Google Sheet Webhook (nếu BTC đã cấu hình)
-  if (GOOGLE_SHEET_WEBHOOK_URL && GOOGLE_SHEET_WEBHOOK_URL.trim() !== '') {
-    try {
-      fetch(GOOGLE_SHEET_WEBHOOK_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(rsvpRecord)
-      }).catch(err => console.log('Sheet Webhook sync:', err));
-    } catch (err) {}
-  }
-
-  // 3. Khóa các inputs và nút submit ngay sau khi gửi thành công
-  const radios = document.querySelectorAll('input[name="rsvp_status"]');
-  radios.forEach(r => r.disabled = true);
-  if (noteInput) noteInput.disabled = true;
-
-  const submitBtn = document.getElementById('btn-submit-rsvp');
-  if (submitBtn) {
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = `<i class="fa-solid fa-circle-check"></i> Đã Gửi Xác Nhận (${statusVal})`;
-    submitBtn.classList.remove('from-rose-600', 'to-pink-600', 'hover:from-rose-700', 'hover:to-pink-700');
-    submitBtn.classList.add('bg-slate-400', 'cursor-not-allowed', 'opacity-90');
-  }
-
-  // 4. Bắn pháo hoa nếu tham dự
-  if (statusVal === 'Sẽ tham dự') {
-    fireConfetti();
-  }
-
-  // 5. Hiển thị Pop-up Cảm Ơn
-  showThankYouModal(statusVal);
-}
-
-/**
- * 6. Đăng ký các sự kiện tương tác
+ * 4. Đăng ký các sự kiện tương tác
  */
 function setupEventListeners() {
   // Click vào phong bao là mở thiệp
@@ -404,42 +188,6 @@ function setupEventListeners() {
   const musicToggle = document.getElementById('music-toggle');
   if (musicToggle) {
     musicToggle.addEventListener('click', toggleBackgroundMusic);
-  }
-
-  // Click vào option label để kích hoạt và đồng bộ trạng thái độc quyền (Exclusive)
-  const optYesLabel = document.getElementById('opt-yes-label');
-  const optNoLabel = document.getElementById('opt-no-label');
-  const yesRadio = document.querySelector('input[name="rsvp_status"][value="Sẽ tham dự"]');
-  const noRadio = document.querySelector('input[name="rsvp_status"][value="Hẹn dịp khác"]') || document.querySelector('input[name="rsvp_status"][value="Không tham dự"]');
-
-  if (optYesLabel) {
-    optYesLabel.addEventListener('click', () => {
-      if (yesRadio && !yesRadio.disabled) {
-        yesRadio.checked = true;
-        updateRsvpUi('Sẽ tham dự');
-      }
-    });
-  }
-
-  if (optNoLabel) {
-    optNoLabel.addEventListener('click', () => {
-      if (noRadio && !noRadio.disabled) {
-        noRadio.checked = true;
-        updateRsvpUi('Hẹn dịp khác');
-      }
-    });
-  }
-
-  // Form xác nhận tham dự
-  const rsvpForm = document.getElementById('rsvp-form');
-  if (rsvpForm) {
-    rsvpForm.addEventListener('submit', handleRsvpSubmit);
-  }
-
-  // Nút đóng Thank You modal
-  const btnCloseModal = document.getElementById('btn-close-modal');
-  if (btnCloseModal) {
-    btnCloseModal.addEventListener('click', closeThankYouModal);
   }
 }
 
