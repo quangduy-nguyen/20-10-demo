@@ -19,7 +19,16 @@ body {
   min-height: 100vh;
   color: #334155;
   overflow-x: hidden;
+  word-break: normal;
+  overflow-wrap: normal;
+  text-wrap: pretty;
 }
+
+h1, h2, h3, p, span, div {
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
 
 .font-serif-luxury {
   font-family: 'Playfair Display', serif;

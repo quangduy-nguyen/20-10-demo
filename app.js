@@ -99,18 +99,21 @@ function loadCurrentRecipient() {
   if (cardGreeting) cardGreeting.textContent = currentPerson.loi_chuc;
 
   if (cardImage) {
-    cardImage.src = formatImageUrl(currentPerson.link_anh);
+    const cacheBuster = '?v=20261012c';
+    let baseImgUrl = formatImageUrl(currentPerson.link_anh);
+    cardImage.src = baseImgUrl.includes('?') ? `${baseImgUrl}&v=20261012c` : `${baseImgUrl}${cacheBuster}`;
+    
     cardImage.onerror = () => {
       // 1. Thử tìm file avatar ở thư mục gốc (avatar_[id].jpg)
       if (!cardImage.dataset.triedRoot) {
         cardImage.dataset.triedRoot = 'true';
-        cardImage.src = `avatar_${currentPerson.id}.jpg`;
+        cardImage.src = `avatar_${currentPerson.id}.jpg${cacheBuster}`;
         return;
       }
       // 2. Thử trong thư mục con avatars/[id].jpg
       if (!cardImage.dataset.triedFolder) {
         cardImage.dataset.triedFolder = 'true';
-        cardImage.src = `avatars/${currentPerson.id}.jpg`;
+        cardImage.src = `avatars/${currentPerson.id}.jpg${cacheBuster}`;
         return;
       }
       // 3. Fallback nếu không tìm thấy ảnh
