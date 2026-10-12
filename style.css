@@ -529,3 +529,239 @@ h1, h2, h3, p, span, div {
   box-shadow: none !important;
   transform: none !important;
 }
+
+/* ==================== SƠ ĐỒ CHỖ NGỒI (SEATING CHART MODAL & FLOOR PLAN) ==================== */
+.btn-seating-pulse {
+  box-shadow: 0 10px 25px -5px rgba(225, 29, 72, 0.35), 0 0 0 2px rgba(255, 255, 255, 0.6);
+  animation: btnPulseGlow 3s infinite;
+}
+
+@keyframes btnPulseGlow {
+  0%, 100% {
+    box-shadow: 0 10px 25px -5px rgba(225, 29, 72, 0.35), 0 0 0 2px rgba(255, 255, 255, 0.6);
+  }
+  50% {
+    box-shadow: 0 15px 35px -3px rgba(225, 29, 72, 0.55), 0 0 0 4px rgba(251, 191, 36, 0.7);
+  }
+}
+
+.seating-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 85;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.seating-modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.seating-modal-card {
+  width: 100%;
+  max-width: 960px;
+  max-height: 94vh;
+  background: #ffffff;
+  border-radius: 28px;
+  box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.5), 0 0 0 1px rgba(244, 63, 94, 0.2);
+  border: 1.5px solid #fecdd3;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  transform: scale(0.92) translateY(20px);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.seating-modal-overlay.active .seating-modal-card {
+  transform: scale(1) translateY(0);
+}
+
+/* Floor plan container */
+.floor-plan-wrapper {
+  background: radial-gradient(circle at 50% 30%, #fffbf8 0%, #fff5f5 60%, #fff1f2 100%);
+  border: 1.5px solid #fed7aa;
+  border-radius: 20px;
+  position: relative;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.floor-plan-inner {
+  min-width: 760px;
+  padding: 1.5rem 1rem;
+}
+
+/* Khối bàn tiệc */
+.table-card-container {
+  background: #ffffff;
+  border: 1.5px solid #fed7aa;
+  border-radius: 18px;
+  box-shadow: 0 4px 14px -2px rgba(217, 119, 6, 0.08);
+  padding: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.table-card-container.is-my-table {
+  border-color: #f43f5e;
+  background: #fff5f5;
+  box-shadow: 0 8px 24px -4px rgba(225, 29, 72, 0.18), 0 0 0 2px rgba(244, 63, 94, 0.25);
+}
+
+.table-surface-bar {
+  background: linear-gradient(180deg, #fef3c7 0%, #fde68a 100%);
+  border: 1px dashed #d97706;
+  border-radius: 10px;
+  padding: 0.35rem 0.6rem;
+  text-align: center;
+  color: #92400e;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.table-surface-bar.wood-surface {
+  background: linear-gradient(180deg, #fed7aa 0%, #fdba74 100%);
+  border-color: #c2410c;
+  color: #7c2d12;
+}
+
+.table-surface-bar.vip-surface {
+  background: linear-gradient(180deg, #fecdd3 0%, #fda4af 100%);
+  border-color: #e11d48;
+  color: #881337;
+}
+
+/* Ghế ngồi */
+.chair-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.45rem 0.35rem;
+  text-align: center;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 80px;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+}
+
+.chair-box:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+}
+
+.chair-box .chair-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  color: #475569;
+  font-size: 0.7rem;
+  font-weight: 800;
+  margin-bottom: 2px;
+}
+
+.chair-box .chair-name {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #1e293b;
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-width: 95px;
+  margin: 0 auto;
+}
+
+/* Ghế của người nhận - TOẢ SÁNG NỔI BẬT */
+.chair-box.is-my-seat {
+  background: linear-gradient(135deg, #e11d48 0%, #be123c 100%) !important;
+  border: 2px solid #fbbf24 !important;
+  color: #ffffff !important;
+  transform: scale(1.08) !important;
+  z-index: 20 !important;
+  animation: mySeatPulse 2s infinite ease-in-out !important;
+}
+
+.chair-box.is-my-seat .chair-num {
+  background: #fbbf24 !important;
+  color: #881337 !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.chair-box.is-my-seat .chair-name {
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.chair-box.is-my-seat .seat-badge-pin {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fbbf24;
+  color: #881337;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 9999px;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  animation: bouncePin 1.5s infinite;
+}
+
+@keyframes bouncePin {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-4px); }
+}
+
+@keyframes mySeatPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 3px #fbbf24, 0 0 20px rgba(225, 29, 72, 0.7);
+    transform: scale(1.06);
+  }
+  50% {
+    box-shadow: 0 0 0 6px #f59e0b, 0 0 32px rgba(244, 63, 94, 0.95);
+    transform: scale(1.1);
+  }
+}
+
+/* Highlight ghế khi search */
+.chair-box.is-search-match {
+  background: #fef08a !important;
+  border-color: #ca8a04 !important;
+  transform: scale(1.06) !important;
+  box-shadow: 0 0 0 3px #facc15, 0 0 15px rgba(234, 179, 8, 0.5) !important;
+}
+
+.chair-box.is-search-match .chair-num {
+  background: #ca8a04 !important;
+  color: #ffffff !important;
+}
+
+.chair-box.is-search-dimmed {
+  opacity: 0.35;
+  filter: grayscale(40%);
+}
+

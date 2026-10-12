@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initNaturalPetals();
   loadCurrentRecipient();
   setupEventListeners();
+  initSeatingChart();
 });
 
 /**
@@ -305,3 +306,292 @@ function showToast(message) {
     toast.classList.add('opacity-0', 'pointer-events-none');
   }, 2800);
 }
+
+/**
+ * =========================================================================
+ * 10. SƠ ĐỒ CHỖ NGỒI CÁ NHÂN HÓA (SEATING CHART MODAL & FLOOR PLAN)
+ * =========================================================================
+ */
+let currentSeatInfo = null;
+
+function removeVietnameseTones(str) {
+  if (!str) return '';
+  return str.normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+    .toLowerCase().trim();
+}
+
+function initSeatingChart() {
+  if (typeof SEATING_MAP_DATA === 'undefined') return;
+
+  // 1. Tìm thông tin chỗ ngồi của người nhận
+  if (currentPerson) {
+    currentSeatInfo = getGuestSeatingInfo(currentPerson.id, currentPerson.ho_ten);
+  }
+
+  // 2. Cập nhật nút bấm trong thiệp
+  const btnLabel = document.getElementById('btn-seating-label');
+  const btnBadgeText = document.getElementById('btn-seating-badge-text');
+
+  if (currentPerson && btnLabel) {
+    const shortName = getShortRecipientName(currentPerson);
+    btnLabel.textContent = `Vị Trí Của ${shortName}`;
+  }
+
+  if (currentSeatInfo && btnBadgeText) {
+    btnBadgeText.textContent = `Ghế ${currentSeatInfo.seat} • ${currentSeatInfo.table_code || currentSeatInfo.table_name}`;
+  }
+
+  // 3. Render giao diện mặt bằng sơ đồ
+  renderSeatingFloorPlan();
+
+  // 4. Cập nhật thông tin trong Spotlight Card
+  updateSpotlightCard();
+
+  // 5. Đăng ký các sự kiện tương tác sơ đồ
+  setupSeatingEventListeners();
+}
+
+function updateSpotlightCard() {
+  if (!currentPerson || !currentSeatInfo) return;
+
+  const spotlightName = document.getElementById('spotlight-guest-name');
+  const spotlightAvatar = document.getElementById('spotlight-avatar');
+  const spotlightTableDesc = document.getElementById('spotlight-table-desc');
+  const spotlightSeatNum = document.getElementById('spotlight-seat-num');
+  const spotlightMates = document.getElementById('spotlight-table-mates');
+
+  if (spotlightName) spotlightName.textContent = currentPerson.ho_ten;
+  if (spotlightAvatar) {
+    const cardImg = document.getElementById('card-person-image');
+    spotlightAvatar.src = cardImg ? cardImg.src : formatImageUrl(currentPerson.link_anh);
+  }
+  if (spotlightTableDesc) {
+    spotlightTableDesc.textContent = `${currentSeatInfo.table_name} (${currentSeatInfo.table_desc})`;
+  }
+  if (spotlightSeatNum) spotlightSeatNum.textContent = currentSeatInfo.seat;
+
+  if (spotlightMates) {
+    if (currentSeatInfo.table_mates && currentSeatInfo.table_mates.length > 0) {
+      spotlightMates.innerHTML = currentSeatInfo.table_mates.map(m => {
+        return `<span class="inline-block bg-white/80 border border-rose-200 text-rose-950 font-semibold px-2 py-0.5 rounded-md text-[11px] shadow-2xs">${m.name}</span>`;
+      }).join(' ');
+    } else {
+      spotlightMates.textContent = 'Toàn thể đồng nghiệp Ban TCKT';
+    }
+  }
+}
+
+function renderSeatingFloorPlan() {
+  if (!SEATING_MAP_DATA || !SEATING_MAP_DATA.tables) return;
+
+  const rowBooth = document.getElementById('row-booth-tables');
+  const rowMiddle = document.getElementById('row-middle-tables');
+  const rowBottom = document.getElementById('row-bottom-tables');
+
+  if (rowBooth) rowBooth.innerHTML = '';
+  if (rowMiddle) rowMiddle.innerHTML = '';
+  if (rowBottom) rowBottom.innerHTML = '';
+
+  SEATING_MAP_DATA.tables.forEach(table => {
+    const isMyTable = currentSeatInfo && currentSeatInfo.table_id === table.id;
+
+    // Dãy 1: B10, B11, B12, B13
+    if (['table_b10', 'table_b11', 'table_b12', 'table_b13'].includes(table.id) && rowBooth) {
+      const tableEl = createTableElement(table, isMyTable, 'col-span-1');
+      rowBooth.appendChild(tableEl);
+    }
+    // Dãy 2: Giữa trái (3 col), Bàn dài gỗ (6 col), Giữa phải (3 col)
+    else if (['table_mid_left', 'table_mid_wood', 'table_mid_right'].includes(table.id) && rowMiddle) {
+      let colSpan = 'col-span-12 md:col-span-4';
+      if (table.id === 'table_mid_wood') colSpan = 'col-span-12 md:col-span-5';
+      else if (table.id === 'table_mid_left') colSpan = 'col-span-12 md:col-span-3';
+      else if (table.id === 'table_mid_right') colSpan = 'col-span-12 md:col-span-4';
+
+      const tableEl = createTableElement(table, isMyTable, colSpan);
+      rowMiddle.appendChild(tableEl);
+    }
+    // Dãy 3: Dưới trái, Dưới giữa (VIP), Dưới phải
+    else if (['table_bot_left', 'table_bot_mid', 'table_bot_right'].includes(table.id) && rowBottom) {
+      const tableEl = createTableElement(table, isMyTable, 'col-span-1');
+      rowBottom.appendChild(tableEl);
+    }
+  });
+}
+
+function createTableElement(table, isMyTable, colClass) {
+  const container = document.createElement('div');
+  container.className = `table-card-container flex flex-col justify-between ${colClass} ${isMyTable ? 'is-my-table' : ''}`;
+  container.id = `table-dom-${table.id}`;
+
+  // 1. Hàng ghế phía trên
+  const topRowEl = document.createElement('div');
+  topRowEl.className = 'flex items-center justify-around gap-1.5 mb-2';
+  table.top_row.forEach(seat => {
+    topRowEl.appendChild(createChairElement(seat, table));
+  });
+  container.appendChild(topRowEl);
+
+  // 2. Mặt bàn ở giữa
+  const surfaceEl = document.createElement('div');
+  let surfaceClass = 'table-surface-bar';
+  if (table.type === 'wood_long') surfaceClass += ' wood-surface';
+  else if (table.type === 'vip') surfaceClass += ' vip-surface';
+  surfaceEl.className = surfaceClass;
+  surfaceEl.innerHTML = `<i class="fa-solid fa-utensils text-[10px] opacity-70 mr-1"></i>${table.name}`;
+  container.appendChild(surfaceEl);
+
+  // 3. Hàng ghế phía dưới
+  const botRowEl = document.createElement('div');
+  botRowEl.className = 'flex items-center justify-around gap-1.5 mt-2';
+  table.bottom_row.forEach(seat => {
+    botRowEl.appendChild(createChairElement(seat, table));
+  });
+  container.appendChild(botRowEl);
+
+  return container;
+}
+
+function createChairElement(seat, table) {
+  const chair = document.createElement('div');
+  const isMySeat = currentSeatInfo && currentSeatInfo.seat === seat.seat;
+
+  chair.className = `chair-box ${isMySeat ? 'is-my-seat' : ''}`;
+  chair.dataset.seat = seat.seat;
+  chair.dataset.name = seat.name;
+  chair.dataset.table = table.name;
+  chair.id = `chair-${seat.seat}`;
+
+  let pinHtml = '';
+  if (isMySeat) {
+    pinHtml = `<div class="seat-badge-pin"><i class="fa-solid fa-star"></i> Vị Trí Của Chị</div>`;
+  }
+
+  chair.innerHTML = `
+    ${pinHtml}
+    <div class="chair-num">${seat.seat}</div>
+    <div class="chair-name" title="${seat.name}">${seat.name}</div>
+  `;
+
+  chair.addEventListener('click', () => {
+    showToast(`🪑 Ghế ${seat.seat}: ${seat.name} (${table.name})`);
+  });
+
+  return chair;
+}
+
+function setupSeatingEventListeners() {
+  const btnOpen = document.getElementById('btn-open-seating');
+  const btnClose = document.getElementById('btn-close-seating');
+  const btnFooterClose = document.getElementById('btn-footer-close-seating');
+  const modal = document.getElementById('seating-modal');
+  const btnFocus = document.getElementById('btn-focus-seat');
+  const searchInput = document.getElementById('seating-search-input');
+
+  if (btnOpen) btnOpen.addEventListener('click', openSeatingModal);
+  if (btnClose) btnClose.addEventListener('click', closeSeatingModal);
+  if (btnFooterClose) btnFooterClose.addEventListener('click', closeSeatingModal);
+
+  // Click ra ngoài thẻ modal để đóng
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeSeatingModal();
+    });
+  }
+
+  // Phím Esc để đóng
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal && modal.classList.contains('active')) {
+      closeSeatingModal();
+    }
+  });
+
+  // Nút định vị ghế
+  if (btnFocus) {
+    btnFocus.addEventListener('click', () => {
+      focusMySeat(true);
+    });
+  }
+
+  // Tìm kiếm tên trên sơ đồ
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      handleSeatingSearch(e.target.value);
+    });
+  }
+}
+
+function openSeatingModal() {
+  const modal = document.getElementById('seating-modal');
+  if (!modal) return;
+
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  // Hiệu ứng pháo hoa nhẹ khi mở sơ đồ
+  if (typeof confetti === 'function') {
+    confetti({
+      particleCount: 40,
+      spread: 60,
+      origin: { y: 0.5 },
+      colors: ['#fbbf24', '#f43f5e', '#fb7185']
+    });
+  }
+
+  // Tự động cuộn tới ghế của mình
+  setTimeout(() => {
+    focusMySeat(true);
+  }, 350);
+}
+
+function closeSeatingModal() {
+  const modal = document.getElementById('seating-modal');
+  if (!modal) return;
+
+  modal.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function focusMySeat(smooth = true) {
+  const mySeatEl = document.querySelector('.chair-box.is-my-seat');
+  if (mySeatEl) {
+    mySeatEl.scrollIntoView({
+      behavior: smooth ? 'smooth' : 'auto',
+      block: 'center',
+      inline: 'center'
+    });
+
+    // Nhấp nháy tạo sự chú ý
+    mySeatEl.classList.remove('is-my-seat');
+    void mySeatEl.offsetWidth; // trigger reflow
+    mySeatEl.classList.add('is-my-seat');
+  }
+}
+
+function handleSeatingSearch(query) {
+  const allChairs = document.querySelectorAll('.chair-box');
+  const cleanQ = removeVietnameseTones(query);
+
+  if (!cleanQ) {
+    allChairs.forEach(c => {
+      c.classList.remove('is-search-match', 'is-search-dimmed');
+    });
+    return;
+  }
+
+  allChairs.forEach(c => {
+    const rawName = c.dataset.name || '';
+    const seatNum = c.dataset.seat || '';
+    const cleanName = removeVietnameseTones(rawName);
+
+    if (cleanName.includes(cleanQ) || seatNum === cleanQ) {
+      c.classList.add('is-search-match');
+      c.classList.remove('is-search-dimmed');
+    } else {
+      c.classList.remove('is-search-match');
+      c.classList.add('is-search-dimmed');
+    }
+  });
+}
+
