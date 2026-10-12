@@ -84,10 +84,14 @@ function loadCurrentRecipient() {
 
   if (!currentPerson) return;
 
-  // Cập nhật tên lá thư popup 3s: From Ban TCKT To Ms. [Tên đầy đủ]
+  // Cập nhật tên lá thư popup 3s: Chị Nguyễn Thúy Linh (Trưởng ban) hoặc Ms. [Tên đầy đủ] cho các chị em
   const letterToName = document.getElementById('letter-to-name');
   if (letterToName) {
-    letterToName.textContent = `Ms. ${currentPerson.ho_ten}`;
+    if (currentPerson.id === 'chi_thuy_linh') {
+      letterToName.textContent = `Chị ${currentPerson.ho_ten}`;
+    } else {
+      letterToName.textContent = `Ms. ${currentPerson.ho_ten}`;
+    }
   }
 
   // Điền dữ liệu vào thiệp chi tiết bên trong
@@ -95,7 +99,13 @@ function loadCurrentRecipient() {
   const cardGreeting = document.getElementById('card-person-greeting');
   const cardImage = document.getElementById('card-person-image');
 
-  if (cardName) cardName.textContent = currentPerson.ho_ten;
+  if (cardName) {
+    if (currentPerson.id === 'chi_thuy_linh') {
+      cardName.textContent = `Chị ${currentPerson.ho_ten}`;
+    } else {
+      cardName.textContent = currentPerson.ho_ten;
+    }
+  }
   if (cardGreeting) cardGreeting.textContent = currentPerson.loi_chuc;
 
   if (cardImage) {
