@@ -1,20 +1,18 @@
 // Dữ liệu Sơ Đồ Chỗ Ngồi 56 Ghế - Tiệc 20/10 tại Sheraton Hanoi West
-// Trích xuất và chuẩn hóa từ SO_DO_CHO_NGOI_20-10.xlsx
+// Chuẩn hóa 100% theo đúng tên gọi và vị trí trong SO_DO_CHO_NGOI_20-10.xlsx
 
 const SEATING_MAP_DATA = {
   venue: "Sheraton Hanoi West",
   address: "Số 36 đường Lê Đức Thọ, P. Mỹ Đình 2, Nam Từ Liêm, Hà Nội",
   total_seats: 56,
-  
-  // Danh sách các cụm bàn theo đúng vị trí trên sơ đồ mặt bằng
+
+  // Danh sách các bàn theo đúng file Excel
   tables: [
-    // --- DÃY 1: KHU GHẾ ĐỆM CÓ DỰA (B10, B11, B12, B13) ---
+    // --- DÃY 1: GHẾ ĐỆM CÓ DỰA (B10, B11, B12, B13) ---
     {
       id: "table_b10",
       code: "B10",
-      name: "Bàn B10",
-      type: "booth",
-      desc: "Ghế đệm có dựa (Gần khu buffet)",
+      name: "B10",
       top_row: [
         { seat: 1, name: "Nguyễn Thị Thanh Nhàn", recipient_id: "chi_thanh_nhan" },
         { seat: 2, name: "Trương Thị Huyền Trang", recipient_id: "em_huyen_trang" }
@@ -27,9 +25,7 @@ const SEATING_MAP_DATA = {
     {
       id: "table_b11",
       code: "B11",
-      name: "Bàn B11",
-      type: "booth",
-      desc: "Ghế đệm có dựa (Gần khu buffet)",
+      name: "B11",
       top_row: [
         { seat: 3, name: "Phan Thị Hồng Hạnh", recipient_id: "chi_hong_hanh" },
         { seat: 4, name: "Trịnh Ngọc Quang Anh" }
@@ -42,9 +38,7 @@ const SEATING_MAP_DATA = {
     {
       id: "table_b12",
       code: "B12",
-      name: "Bàn B12",
-      type: "booth",
-      desc: "Ghế đệm có dựa (Gần khu buffet)",
+      name: "B12",
       top_row: [
         { seat: 5, name: "Hoàng Thị Thu Hiền", recipient_id: "chi_thu_hien" },
         { seat: 6, name: "Nguyễn Ngọc Huyền", recipient_id: "em_ngoc_huyen" }
@@ -57,9 +51,7 @@ const SEATING_MAP_DATA = {
     {
       id: "table_b13",
       code: "B13",
-      name: "Bàn B13",
-      type: "booth",
-      desc: "Ghế đệm có dựa (Gần khu buffet)",
+      name: "B13",
       top_row: [
         { seat: 7, name: "Nguyễn Lan Anh", recipient_id: "em_lan_anh" },
         { seat: 8, name: "Nguyễn Thị Vân", recipient_id: "chi_thanh_van" }
@@ -73,10 +65,8 @@ const SEATING_MAP_DATA = {
     // --- DÃY 2: DÃY GIỮA ---
     {
       id: "table_mid_left",
-      code: "BÀN GHÉP (GIỮA TRÁI)",
-      name: "Bàn Giữa Trái",
-      type: "cluster",
-      desc: "Bàn ghép (Cạnh Backdrop Sân Khấu)",
+      code: "BÀN GHÉP",
+      name: "BÀN GHÉP",
       top_row: [
         { seat: 33, name: "Nguyễn Hải Đăng" },
         { seat: 34, name: "Chu Thị Hồ Loan", recipient_id: "chi_ho_loan" },
@@ -91,9 +81,7 @@ const SEATING_MAP_DATA = {
     {
       id: "table_mid_wood",
       code: "BÀN DÀI BẰNG GỖ",
-      name: "Bàn Dài Bằng Gỗ",
-      type: "wood_long",
-      desc: "Bàn dài bằng gỗ (Trung tâm phòng tiệc)",
+      name: "BÀN DÀI BẰNG GỖ",
       top_row: [
         { seat: 17, name: "Phạm Sơn" },
         { seat: 18, name: "Nguyễn Thị Minh Hồng", recipient_id: "chi_minh_hong" },
@@ -109,10 +97,8 @@ const SEATING_MAP_DATA = {
     },
     {
       id: "table_mid_right",
-      code: "2 BÀN GHÉP (GIỮA PHẢI)",
-      name: "Bàn Giữa Phải",
-      type: "cluster",
-      desc: "2 bàn ghép (Khu giữa bên phải)",
+      code: "2 BÀN GHÉP",
+      name: "2 BÀN GHÉP",
       top_row: [
         { seat: 25, name: "Bùi Văn Thung" },
         { seat: 26, name: "Trương Thị Thanh Hà", recipient_id: "chi_thanh_ha" },
@@ -127,13 +113,11 @@ const SEATING_MAP_DATA = {
       ]
     },
 
-    // --- DÃY 3: DÃY DƯỚI (GẦN CỬA VIEW CÂY XANH) ---
+    // --- DÃY 3: DÃY DƯỚI ---
     {
       id: "table_bot_left",
-      code: "2 BÀN GHÉP (DƯỚI TRÁI)",
-      name: "Bàn Dưới Trái",
-      type: "cluster",
-      desc: "2 bàn ghép (Dưới bên trái)",
+      code: "2 BÀN GHÉP",
+      name: "2 BÀN GHÉP",
       top_row: [
         { seat: 39, name: "Trần Trung Thành" },
         { seat: 40, name: "Đỗ Hồng Phong" },
@@ -147,27 +131,23 @@ const SEATING_MAP_DATA = {
     },
     {
       id: "table_bot_mid",
-      code: "2 BÀN GHÉP (DƯỚI GIỮA)",
-      name: "Bàn Dưới Giữa (Bàn Lãnh Đạo)",
-      type: "vip",
-      desc: "2 bàn ghép VIP (Khu vực trung tâm dưới)",
+      code: "2 BÀN GHÉP",
+      name: "2 BÀN GHÉP",
       top_row: [
         { seat: 45, name: "Nguyễn Thị Việt Hằng", recipient_id: "chi_viet_hang" },
         { seat: 46, name: "Phạm Thị Hồng Minh", recipient_id: "chi_hong_minh" },
         { seat: 47, name: "Đỗ Thị Thu Hằng", recipient_id: "chi_thu_hang" }
       ],
       bottom_row: [
-        { seat: 50, name: "PB (Phó Ban)" },
-        { seat: 49, name: "Nguyễn Thúy Linh (Trưởng Ban)", recipient_id: "chi_thuy_linh", is_tb: true },
-        { seat: 48, name: "PB (Phó Ban)" }
+        { seat: 50, name: "PB" },
+        { seat: 49, name: "TB", recipient_id: "chi_thuy_linh", is_tb: true },
+        { seat: 48, name: "PB" }
       ]
     },
     {
       id: "table_bot_right",
-      code: "2 BÀN GHÉP (DƯỚI PHẢI)",
-      name: "Bàn Dưới Phải",
-      type: "cluster",
-      desc: "2 bàn ghép (Dưới bên phải)",
+      code: "2 BÀN GHÉP",
+      name: "2 BÀN GHÉP",
       top_row: [
         { seat: 51, name: "Quang Duy" },
         { seat: 52, name: "Tiến Dũng" },
@@ -182,7 +162,7 @@ const SEATING_MAP_DATA = {
   ]
 };
 
-// Hàm tiện ích tra cứu vị trí của khách mời theo ID hoặc Họ Tên
+// Hàm tra cứu vị trí của khách mời theo ID hoặc Họ Tên
 function getGuestSeatingInfo(recipientId, recipientName) {
   if (!SEATING_MAP_DATA || !SEATING_MAP_DATA.tables) return null;
 
@@ -191,11 +171,9 @@ function getGuestSeatingInfo(recipientId, recipientName) {
   for (const table of SEATING_MAP_DATA.tables) {
     const allSeats = [...table.top_row, ...table.bottom_row];
     for (const seatObj of allSeats) {
-      // 1. Khớp theo ID người nhận
       if (recipientId && seatObj.recipient_id === recipientId) {
         return buildSeatResult(seatObj, table);
       }
-      // 2. Khớp theo tên chuẩn hóa
       if (normTargetName) {
         const normSeatName = seatObj.name.toLowerCase().replace(/uý/g, 'úy').trim();
         if (normSeatName.includes(normTargetName) || normTargetName.includes(normSeatName)) {
@@ -207,10 +185,10 @@ function getGuestSeatingInfo(recipientId, recipientName) {
 
   // Trường hợp đặc biệt nếu là chi_thuy_linh
   if (recipientId === 'chi_thuy_linh') {
-    const vipTable = SEATING_MAP_DATA.tables.find(t => t.id === 'table_bot_mid');
-    if (vipTable) {
-      const seat49 = vipTable.bottom_row.find(s => s.seat === 49);
-      if (seat49) return buildSeatResult(seat49, vipTable);
+    const botMid = SEATING_MAP_DATA.tables.find(t => t.id === 'table_bot_mid');
+    if (botMid) {
+      const seat49 = botMid.bottom_row.find(s => s.seat === 49);
+      if (seat49) return buildSeatResult(seat49, botMid);
     }
   }
 
@@ -218,18 +196,11 @@ function getGuestSeatingInfo(recipientId, recipientName) {
 }
 
 function buildSeatResult(seatObj, table) {
-  const tableMates = [...table.top_row, ...table.bottom_row]
-    .filter(s => s.seat !== seatObj.seat)
-    .map(s => ({ seat: s.seat, name: s.name }));
-
   return {
     seat: seatObj.seat,
     name: seatObj.name,
     table_id: table.id,
     table_code: table.code,
-    table_name: table.name,
-    table_desc: table.desc,
-    table_type: table.type,
-    table_mates: tableMates
+    table_name: table.name
   };
 }

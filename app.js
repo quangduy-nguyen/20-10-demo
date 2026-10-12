@@ -340,10 +340,10 @@ function initSeatingChart() {
   }
 
   if (currentSeatInfo && btnBadgeText) {
-    btnBadgeText.textContent = `Ghế ${currentSeatInfo.seat} • ${currentSeatInfo.table_code || currentSeatInfo.table_name}`;
+    btnBadgeText.textContent = `Ghế ${currentSeatInfo.seat} • ${currentSeatInfo.table_name}`;
   }
 
-  // 3. Render giao diện mặt bằng sơ đồ
+  // 3. Render giao diện mặt bằng sơ đồ chuẩn theo Excel
   renderSeatingFloorPlan();
 
   // 4. Cập nhật thông tin trong Spotlight Card
@@ -358,28 +358,24 @@ function updateSpotlightCard() {
 
   const spotlightName = document.getElementById('spotlight-guest-name');
   const spotlightAvatar = document.getElementById('spotlight-avatar');
-  const spotlightTableDesc = document.getElementById('spotlight-table-desc');
   const spotlightSeatNum = document.getElementById('spotlight-seat-num');
-  const spotlightMates = document.getElementById('spotlight-table-mates');
 
-  if (spotlightName) spotlightName.textContent = currentPerson.ho_ten;
+  if (spotlightName) {
+    // Riêng chị Nguyễn Thuý Linh bổ sung chữ "Chị" thành "Chị Nguyễn Thuý Linh"
+    if (currentPerson.id === 'chi_thuy_linh' || currentPerson.ho_ten.includes('Thúy Linh') || currentPerson.ho_ten.includes('Thuý Linh')) {
+      spotlightName.textContent = 'Chị Nguyễn Thuý Linh';
+    } else {
+      spotlightName.textContent = currentPerson.ho_ten;
+    }
+  }
+
   if (spotlightAvatar) {
     const cardImg = document.getElementById('card-person-image');
     spotlightAvatar.src = cardImg ? cardImg.src : formatImageUrl(currentPerson.link_anh);
   }
-  if (spotlightTableDesc) {
-    spotlightTableDesc.textContent = `${currentSeatInfo.table_name} (${currentSeatInfo.table_desc})`;
-  }
-  if (spotlightSeatNum) spotlightSeatNum.textContent = currentSeatInfo.seat;
 
-  if (spotlightMates) {
-    if (currentSeatInfo.table_mates && currentSeatInfo.table_mates.length > 0) {
-      spotlightMates.innerHTML = currentSeatInfo.table_mates.map(m => {
-        return `<span class="inline-block bg-white/80 border border-rose-200 text-rose-950 font-semibold px-2 py-0.5 rounded-md text-[11px] shadow-2xs">${m.name}</span>`;
-      }).join(' ');
-    } else {
-      spotlightMates.textContent = 'Toàn thể đồng nghiệp Ban TCKT';
-    }
+  if (spotlightSeatNum) {
+    spotlightSeatNum.textContent = currentSeatInfo.seat;
   }
 }
 
@@ -394,57 +390,76 @@ function renderSeatingFloorPlan() {
   if (rowMiddle) rowMiddle.innerHTML = '';
   if (rowBottom) rowBottom.innerHTML = '';
 
-  SEATING_MAP_DATA.tables.forEach(table => {
+  // DÃY 1: B10, B11, B12, B13 (Mỗi bàn 2 ghế mỗi hàng)
+  const boothTables = SEATING_MAP_DATA.tables.filter(t => ['table_b10', 'table_b11', 'table_b12', 'table_b13'].includes(t.id));
+  boothTables.forEach(table => {
     const isMyTable = currentSeatInfo && currentSeatInfo.table_id === table.id;
+    const tableEl = createTableElement(table, isMyTable, 2, 'flex: 1; min-width: 0;');
+    if (rowBooth) rowBooth.appendChild(tableEl);
+  });
 
-    // Dãy 1: B10, B11, B12, B13
-    if (['table_b10', 'table_b11', 'table_b12', 'table_b13'].includes(table.id) && rowBooth) {
-      const tableEl = createTableElement(table, isMyTable, 'col-span-1');
-      rowBooth.appendChild(tableEl);
-    }
-    // Dãy 2: Giữa trái (3 col), Bàn dài gỗ (6 col), Giữa phải (3 col)
-    else if (['table_mid_left', 'table_mid_wood', 'table_mid_right'].includes(table.id) && rowMiddle) {
-      let colSpan = 'col-span-12 md:col-span-4';
-      if (table.id === 'table_mid_wood') colSpan = 'col-span-12 md:col-span-5';
-      else if (table.id === 'table_mid_left') colSpan = 'col-span-12 md:col-span-3';
-      else if (table.id === 'table_mid_right') colSpan = 'col-span-12 md:col-span-4';
+  // DÃY 2: BACKDROP + BÀN GHÉP (3 ghế) + BÀN DÀI BẰNG GỖ (4 ghế) + 2 BÀN GHÉP (4 ghế)
+  if (rowMiddle) {
+    // Khối Backdrop bên trái như file Excel
+    const backdropEl = document.createElement('div');
+    backdropEl.className = 'table-backdrop-block';
+    backdropEl.textContent = 'BACKDROP';
+    rowMiddle.appendChild(backdropEl);
 
-      const tableEl = createTableElement(table, isMyTable, colSpan);
-      rowMiddle.appendChild(tableEl);
+    const tMidLeft = SEATING_MAP_DATA.tables.find(t => t.id === 'table_mid_left');
+    const tMidWood = SEATING_MAP_DATA.tables.find(t => t.id === 'table_mid_wood');
+    const tMidRight = SEATING_MAP_DATA.tables.find(t => t.id === 'table_mid_right');
+
+    if (tMidLeft) {
+      const isMyTable = currentSeatInfo && currentSeatInfo.table_id === tMidLeft.id;
+      rowMiddle.appendChild(createTableElement(tMidLeft, isMyTable, 3, 'flex: 3; min-width: 0;'));
     }
-    // Dãy 3: Dưới trái, Dưới giữa (VIP), Dưới phải
-    else if (['table_bot_left', 'table_bot_mid', 'table_bot_right'].includes(table.id) && rowBottom) {
-      const tableEl = createTableElement(table, isMyTable, 'col-span-1');
-      rowBottom.appendChild(tableEl);
+    if (tMidWood) {
+      const isMyTable = currentSeatInfo && currentSeatInfo.table_id === tMidWood.id;
+      rowMiddle.appendChild(createTableElement(tMidWood, isMyTable, 4, 'flex: 4; min-width: 0;', true));
     }
+    if (tMidRight) {
+      const isMyTable = currentSeatInfo && currentSeatInfo.table_id === tMidRight.id;
+      rowMiddle.appendChild(createTableElement(tMidRight, isMyTable, 4, 'flex: 4; min-width: 0;'));
+    }
+  }
+
+  // DÃY 3: 3 BÀN (Mỗi bàn 3 ghế mỗi hàng)
+  const botTables = SEATING_MAP_DATA.tables.filter(t => ['table_bot_left', 'table_bot_mid', 'table_bot_right'].includes(t.id));
+  botTables.forEach(table => {
+    const isMyTable = currentSeatInfo && currentSeatInfo.table_id === table.id;
+    const tableEl = createTableElement(table, isMyTable, 3, 'flex: 1; min-width: 0;');
+    if (rowBottom) rowBottom.appendChild(tableEl);
   });
 }
 
-function createTableElement(table, isMyTable, colClass) {
+function createTableElement(table, isMyTable, cols, flexCss, isWood = false) {
   const container = document.createElement('div');
-  container.className = `table-card-container flex flex-col justify-between ${colClass} ${isMyTable ? 'is-my-table' : ''}`;
+  container.className = `table-card-container ${isMyTable ? 'is-my-table' : ''}`;
   container.id = `table-dom-${table.id}`;
+  if (flexCss) {
+    container.style.cssText = flexCss;
+  }
 
-  // 1. Hàng ghế phía trên
+  // 1. Hàng ghế phía trên (grid theo đúng số cột)
   const topRowEl = document.createElement('div');
-  topRowEl.className = 'flex items-center justify-around gap-1.5 mb-2';
+  topRowEl.className = 'chair-row-grid';
+  topRowEl.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
   table.top_row.forEach(seat => {
     topRowEl.appendChild(createChairElement(seat, table));
   });
   container.appendChild(topRowEl);
 
-  // 2. Mặt bàn ở giữa
+  // 2. Mặt bàn ở giữa (Không dùng icon)
   const surfaceEl = document.createElement('div');
-  let surfaceClass = 'table-surface-bar';
-  if (table.type === 'wood_long') surfaceClass += ' wood-surface';
-  else if (table.type === 'vip') surfaceClass += ' vip-surface';
-  surfaceEl.className = surfaceClass;
-  surfaceEl.innerHTML = `<i class="fa-solid fa-utensils text-[10px] opacity-70 mr-1"></i>${table.name}`;
+  surfaceEl.className = `table-surface-bar ${isWood ? 'wood-surface' : ''}`;
+  surfaceEl.textContent = table.name;
   container.appendChild(surfaceEl);
 
-  // 3. Hàng ghế phía dưới
+  // 3. Hàng ghế phía dưới (grid theo đúng số cột)
   const botRowEl = document.createElement('div');
-  botRowEl.className = 'flex items-center justify-around gap-1.5 mt-2';
+  botRowEl.className = 'chair-row-grid';
+  botRowEl.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
   table.bottom_row.forEach(seat => {
     botRowEl.appendChild(createChairElement(seat, table));
   });
@@ -465,7 +480,7 @@ function createChairElement(seat, table) {
 
   let pinHtml = '';
   if (isMySeat) {
-    pinHtml = `<div class="seat-badge-pin"><i class="fa-solid fa-star"></i> Vị Trí Của Chị</div>`;
+    pinHtml = `<div class="seat-badge-pin">Vị trí của Chị</div>`;
   }
 
   chair.innerHTML = `
@@ -475,7 +490,7 @@ function createChairElement(seat, table) {
   `;
 
   chair.addEventListener('click', () => {
-    showToast(`🪑 Ghế ${seat.seat}: ${seat.name} (${table.name})`);
+    showToast(`Ghế ${seat.seat}: ${seat.name} (${table.name})`);
   });
 
   return chair;
@@ -487,7 +502,6 @@ function setupSeatingEventListeners() {
   const btnFooterClose = document.getElementById('btn-footer-close-seating');
   const modal = document.getElementById('seating-modal');
   const btnFocus = document.getElementById('btn-focus-seat');
-  const searchInput = document.getElementById('seating-search-input');
 
   if (btnOpen) btnOpen.addEventListener('click', openSeatingModal);
   if (btnClose) btnClose.addEventListener('click', closeSeatingModal);
@@ -513,13 +527,6 @@ function setupSeatingEventListeners() {
       focusMySeat(true);
     });
   }
-
-  // Tìm kiếm tên trên sơ đồ
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      handleSeatingSearch(e.target.value);
-    });
-  }
 }
 
 function openSeatingModal() {
@@ -529,20 +536,10 @@ function openSeatingModal() {
   modal.classList.add('active');
   document.body.style.overflow = 'hidden';
 
-  // Hiệu ứng pháo hoa nhẹ khi mở sơ đồ
-  if (typeof confetti === 'function') {
-    confetti({
-      particleCount: 40,
-      spread: 60,
-      origin: { y: 0.5 },
-      colors: ['#fbbf24', '#f43f5e', '#fb7185']
-    });
-  }
-
   // Tự động cuộn tới ghế của mình
   setTimeout(() => {
     focusMySeat(true);
-  }, 350);
+  }, 300);
 }
 
 function closeSeatingModal() {
@@ -567,31 +564,5 @@ function focusMySeat(smooth = true) {
     void mySeatEl.offsetWidth; // trigger reflow
     mySeatEl.classList.add('is-my-seat');
   }
-}
-
-function handleSeatingSearch(query) {
-  const allChairs = document.querySelectorAll('.chair-box');
-  const cleanQ = removeVietnameseTones(query);
-
-  if (!cleanQ) {
-    allChairs.forEach(c => {
-      c.classList.remove('is-search-match', 'is-search-dimmed');
-    });
-    return;
-  }
-
-  allChairs.forEach(c => {
-    const rawName = c.dataset.name || '';
-    const seatNum = c.dataset.seat || '';
-    const cleanName = removeVietnameseTones(rawName);
-
-    if (cleanName.includes(cleanQ) || seatNum === cleanQ) {
-      c.classList.add('is-search-match');
-      c.classList.remove('is-search-dimmed');
-    } else {
-      c.classList.remove('is-search-match');
-      c.classList.add('is-search-dimmed');
-    }
-  });
 }
 

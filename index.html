@@ -303,23 +303,18 @@
   <!-- ==================== MODAL SƠ ĐỒ CHỖ NGỒI CÁ NHÂN HÓA ==================== -->
   <div id="seating-modal" class="seating-modal-overlay">
     <div class="seating-modal-card">
-      <!-- Header Modal -->
-      <div class="px-5 py-4 border-b border-rose-100 flex items-center justify-between bg-gradient-to-r from-rose-50 via-white to-pink-50">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-full bg-rose-500 text-white flex items-center justify-center text-lg shadow-md">
-            <i class="fa-solid fa-chair text-amber-300"></i>
-          </div>
-          <div>
-            <h3 class="font-serif-luxury text-lg sm:text-xl font-bold text-rose-950 leading-tight">
-              Sơ Đồ Chỗ Ngồi Tiệc 20/10
-            </h3>
-            <p class="text-xs text-rose-700/80 font-medium">
-              Sheraton Hanoi West • 56 Chỗ Ngồi
-            </p>
-          </div>
+      <!-- Header Modal (Không dùng icon) -->
+      <div class="px-5 py-4 border-b border-rose-100 flex items-center justify-between bg-white">
+        <div>
+          <h3 class="font-serif-luxury text-lg sm:text-xl font-bold text-rose-950 leading-tight">
+            SƠ ĐỒ CHỖ NGỒI TIỆC 20/10
+          </h3>
+          <p class="text-xs text-slate-500 font-medium">
+            Sheraton Hanoi West • 56 Chỗ Ngồi
+          </p>
         </div>
         <button id="btn-close-seating" type="button" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-rose-100 text-slate-500 hover:text-rose-700 flex items-center justify-center transition-colors text-base" title="Đóng sơ đồ">
-          <i class="fa-solid fa-xmark"></i>
+          ✕
         </button>
       </div>
 
@@ -327,24 +322,18 @@
       <div class="p-4 sm:p-6 overflow-y-auto space-y-4 flex-1">
         
         <!-- SPOTLIGHT BANNER: Vị trí của người nhận -->
-        <div id="seating-spotlight" class="bg-gradient-to-br from-rose-50 via-pink-50 to-amber-50/50 rounded-2xl p-4 sm:p-5 border-2 border-rose-200/90 shadow-sm relative overflow-hidden">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div id="seating-spotlight" class="bg-gradient-to-br from-rose-50 via-pink-50 to-white rounded-2xl p-4 sm:p-5 border border-rose-200 shadow-sm">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div class="flex items-center gap-3.5">
-              <div class="relative">
+              <div class="relative shrink-0">
                 <img id="spotlight-avatar" src="" alt="Avatar" class="w-14 h-14 rounded-full object-cover border-2 border-rose-400 shadow-md">
-                <span class="absolute -bottom-1 -right-1 bg-amber-400 text-rose-950 text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold shadow">
-                  <i class="fa-solid fa-star"></i>
-                </span>
               </div>
               <div>
-                <div class="text-xs uppercase tracking-wider text-rose-600 font-bold">
-                  Vị trí dành riêng cho:
+                <div class="text-xs uppercase tracking-wider text-rose-600 font-bold mb-0.5">
+                  VỊ TRÍ CỦA:
                 </div>
-                <div id="spotlight-guest-name" class="font-serif-luxury text-lg sm:text-xl font-extrabold text-rose-950">
+                <div id="spotlight-guest-name" class="font-serif-luxury text-xl sm:text-2xl font-extrabold text-rose-950">
                   <!-- Tên khách -->
-                </div>
-                <div id="spotlight-table-desc" class="text-xs text-slate-600 mt-0.5">
-                  <!-- Mô tả bàn -->
                 </div>
               </div>
             </div>
@@ -357,103 +346,55 @@
                   --
                 </div>
               </div>
-              <button id="btn-focus-seat" type="button" class="inline-flex items-center gap-1.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-3.5 py-2.5 rounded-xl shadow transition hover:scale-105">
-                <i class="fa-solid fa-location-crosshairs"></i>
-                <span>Định vị ghế</span>
+              <button id="btn-focus-seat" type="button" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition hover:scale-105">
+                Định vị ghế
               </button>
-            </div>
-          </div>
-
-          <!-- Danh sách bạn cùng bàn -->
-          <div class="mt-3 pt-3 border-t border-rose-200/70 text-xs text-slate-700 flex flex-wrap items-center gap-1.5">
-            <span class="font-bold text-rose-800 flex items-center gap-1">
-              <i class="fa-solid fa-user-group text-rose-500"></i> Cùng bàn:
-            </span>
-            <span id="spotlight-table-mates" class="text-slate-600 leading-relaxed">
-              <!-- Danh sách bạn cùng bàn -->
-            </span>
-          </div>
-        </div>
-
-        <!-- THANH TÌM KIẾM & CHÚ THÍCH -->
-        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs">
-          <!-- Ô tìm kiếm tên -->
-          <div class="relative flex-1">
-            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-            <input id="seating-search-input" type="text" placeholder="Tìm tên khách mời trên sơ đồ (VD: Nga, Mai, Thu, Thành, Quang...)" class="w-full pl-9 pr-3 py-2 bg-white rounded-lg border border-slate-300 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-rose-400 focus:ring-1 focus:ring-rose-400">
-          </div>
-
-          <!-- Chú thích màu sắc (Legend) -->
-          <div class="flex items-center gap-4 flex-wrap justify-center sm:justify-end text-[11px] text-slate-600 px-1">
-            <div class="flex items-center gap-1.5">
-              <span class="w-3.5 h-3.5 rounded-md bg-rose-600 border border-amber-300 shadow-sm inline-block"></span>
-              <span class="font-bold text-rose-700">Ghế của Chị</span>
-            </div>
-            <div class="flex items-center gap-1.5">
-              <span class="w-3.5 h-3.5 rounded-md bg-slate-100 border border-slate-300 inline-block"></span>
-              <span>Ghế khách mời</span>
             </div>
           </div>
         </div>
 
         <!-- SƠ ĐỒ MẶT BẰNG TRỰC QUAN (FLOOR PLAN) -->
         <div class="floor-plan-wrapper p-3 sm:p-5">
-          <div class="floor-plan-inner space-y-6">
+          <div class="floor-plan-inner space-y-5">
             
             <!-- VIỀN TRÊN: MẶT ĐƯỜNG LÊ ĐỨC THỌ & KHU BUFFET -->
-            <div class="border-2 border-dashed border-amber-300 rounded-xl p-2.5 bg-amber-50/80 text-center">
-              <div class="text-[11px] tracking-widest uppercase font-extrabold text-amber-800">
-                🏛️ MẶT ĐƯỜNG LÊ ĐỨC THỌ • LỐI VÀO CHÍNH & KHU BUFFET
-              </div>
+            <div class="border border-slate-300 rounded-lg p-2.5 bg-slate-100 text-center font-bold text-xs text-slate-700 tracking-wider uppercase">
+              MẶT ĐƯỜNG LÊ ĐỨC THỌ • LỐI VÀO & KHU BUFFET
             </div>
 
-            <!-- DÃY 1: KHU GHẾ ĐỆM CÓ DỰA (B10, B11, B12, B13) -->
+            <!-- DÃY 1: GHẾ ĐỆM CÓ DỰA (B10, B11, B12, B13) -->
             <div>
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-xs uppercase font-extrabold text-amber-900 tracking-wider flex items-center gap-1.5">
-                  <span>🛋️ DÃY GHẾ ĐỆM CÓ DỰA</span>
-                  <span class="text-[10px] font-normal text-slate-500">(Bàn B10 - B13)</span>
-                </span>
-                <span class="text-[10px] text-slate-400">Gần khu Buffet</span>
+              <div class="text-xs uppercase font-extrabold text-slate-700 tracking-wider mb-2">
+                GHẾ ĐỆM CÓ DỰA
               </div>
-              <div class="grid grid-cols-4 gap-3" id="row-booth-tables">
+              <div class="flex items-stretch gap-3" id="row-booth-tables">
                 <!-- Render B10, B11, B12, B13 -->
               </div>
             </div>
 
-            <!-- DÃY 2: DÃY GIỮA (BACKDROP TRÁI • BÀN DÀI BẰNG GỖ Ở GIỮA • BÀN GHÉP PHẢI) -->
+            <!-- DÃY 2: DÃY GIỮA -->
             <div>
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-xs uppercase font-extrabold text-rose-900 tracking-wider flex items-center gap-1.5">
-                  <span>✨ DÃY TRUNG TÂM PHÒNG TIỆC</span>
-                </span>
-                <span class="text-[10px] font-bold text-rose-600 bg-rose-100 px-2 py-0.5 rounded-full">
-                  🎭 Backdrop Sân Khấu ở cánh trái
-                </span>
+              <div class="text-xs uppercase font-extrabold text-slate-700 tracking-wider mb-2">
+                DÃY GIỮA
               </div>
-              <div class="grid grid-cols-12 gap-3" id="row-middle-tables">
-                <!-- Render Giữa trái (3 col), Bàn dài gỗ (5 col), Giữa phải (4 col) -->
+              <div class="flex items-stretch gap-3" id="row-middle-tables">
+                <!-- Render BACKDROP + BÀN GHÉP + BÀN DÀI BẰNG GỖ + 2 BÀN GHÉP -->
               </div>
             </div>
 
-            <!-- DÃY 3: DÃY DƯỚI (BÀN LÃNH ĐẠO VIP Ở GIỮA) -->
+            <!-- DÃY 3: DÃY DƯỚI -->
             <div>
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-xs uppercase font-extrabold text-rose-900 tracking-wider flex items-center gap-1.5">
-                  <span>👑 DÃY BÀN DƯỚI (KHU VỰC LÃNH ĐẠO & KHÁCH MỜI)</span>
-                </span>
-                <span class="text-[10px] text-slate-400">View Cây Xanh & Cửa Kính</span>
+              <div class="text-xs uppercase font-extrabold text-slate-700 tracking-wider mb-2">
+                DÃY DƯỚI
               </div>
-              <div class="grid grid-cols-3 gap-3" id="row-bottom-tables">
-                <!-- Render Dưới trái, Dưới giữa (VIP), Dưới phải -->
+              <div class="flex items-stretch gap-3" id="row-bottom-tables">
+                <!-- Render 3 bàn: 2 BÀN GHÉP, 2 BÀN GHÉP, 2 BÀN GHÉP -->
               </div>
             </div>
 
             <!-- VIỀN DƯỚI: CỬA RA VÀO NỐI KHU VIEW CÂY XANH -->
-            <div class="border-2 border-dashed border-emerald-300 rounded-xl p-2.5 bg-emerald-50/80 text-center">
-              <div class="text-[11px] tracking-widest uppercase font-extrabold text-emerald-800">
-                🌿 CỬA KÍNH RA NỘI KHU & CỬA NỐI VIEW CÂY XANH
-              </div>
+            <div class="border border-slate-300 rounded-lg p-2.5 bg-slate-100 text-center font-bold text-xs text-slate-700 tracking-wider uppercase">
+              CỬA RA VÀO NỐI KHU VIEW CÂY XANH • CỬA KÍNH RA NỘI KHU
             </div>
 
           </div>
@@ -464,7 +405,7 @@
       <!-- Modal Footer -->
       <div class="px-5 py-3 border-t border-slate-100 bg-slate-50 flex items-center justify-between">
         <span class="text-xs text-slate-500">
-          💡 Bạn có thể chạm vào bất kỳ chiếc ghế nào để xem chi tiết
+          Chạm vào từng ô ghế để xem chi tiết
         </span>
         <button id="btn-footer-close-seating" type="button" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold text-xs px-4 py-2 rounded-xl transition">
           Đóng sơ đồ
