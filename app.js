@@ -101,14 +101,20 @@ function loadCurrentRecipient() {
   if (cardImage) {
     cardImage.src = formatImageUrl(currentPerson.link_anh);
     cardImage.onerror = () => {
-      // Fallback nếu ảnh drive hoặc link ngoài chưa public
-      const match = currentPerson.link_anh ? currentPerson.link_anh.match(/\/d\/([a-zA-Z0-9_-]+)/) : null;
-      if (match && !cardImage.dataset.triedFallback) {
-        cardImage.dataset.triedFallback = 'true';
-        cardImage.src = `https://drive.google.com/thumbnail?id=${match[1]}&sz=w800`;
-      } else {
-        cardImage.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80';
+      // 1. Thử tìm file avatar ở thư mục gốc (avatar_[id].jpg)
+      if (!cardImage.dataset.triedRoot) {
+        cardImage.dataset.triedRoot = 'true';
+        cardImage.src = `avatar_${currentPerson.id}.jpg`;
+        return;
       }
+      // 2. Thử trong thư mục con avatars/[id].jpg
+      if (!cardImage.dataset.triedFolder) {
+        cardImage.dataset.triedFolder = 'true';
+        cardImage.src = `avatars/${currentPerson.id}.jpg`;
+        return;
+      }
+      // 3. Fallback nếu không tìm thấy ảnh
+      cardImage.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80';
     };
   }
 
