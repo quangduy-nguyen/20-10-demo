@@ -21,7 +21,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0983322268",
     "link_anh": "avatar_chi_thuy_linh.jpg",
     "loi_chuc": "Nhân ngày Phụ nữ Việt Nam 20/10, Tập thể anh em nam Ban Tài chính Kế toán kính chúc Chị luôn xinh đẹp, rạng rỡ, dồi dào sức khỏe, tràn đầy hạnh phúc và gặp thật nhiều điều tốt đẹp trong cuộc sống!",
-    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_thuy_linh"
+    "link_thiep": "https://thiep-chuc-mung-20-10.vercel.app/?id=chi_thuy_linh"
   },
   {
     "id": "chi_thuy_nga",
@@ -31,7 +31,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0986665222",
     "link_anh": "avatar_chi_thuy_nga.jpg",
     "loi_chuc": "Nhân ngày Phụ nữ Việt Nam 20/10, Tập thể anh em nam Ban Tài chính Kế toán chúc Ms. Nguyễn Thị Thuý Nga luôn xinh tươi, rạng ngời, tràn đầy sức sống, bình an và hạnh phúc!",
-    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_thuy_nga"
+    "link_thiep": "https://thiep-chuc-mung-20-10.vercel.app/?id=chi_thuy_nga"
   },
   {
     "id": "chi_thu_hang",
@@ -41,7 +41,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0983100800",
     "link_anh": "avatar_chi_thu_hang.jpg",
     "loi_chuc": "Nhân ngày Phụ nữ Việt Nam 20/10, Tập thể anh em nam Ban Tài chính Kế toán chúc Ms. Đỗ Thị Thu Hằng luôn xinh tươi, rạng ngời, tràn đầy sức sống, bình an và hạnh phúc!",
-    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_thu_hang"
+    "link_thiep": "https://thiep-chuc-mung-20-10.vercel.app/?id=chi_thu_hang"
   },
   {
     "id": "chi_minh_hong",
@@ -51,7 +51,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0983202568",
     "link_anh": "avatar_chi_minh_hong.jpg",
     "loi_chuc": "Nhân ngày Phụ nữ Việt Nam 20/10, Tập thể anh em nam Ban Tài chính Kế toán chúc Ms. Nguyễn Thị Minh Hồng luôn xinh tươi, rạng ngời, tràn đầy sức sống, bình an và hạnh phúc!",
-    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_minh_hong"
+    "link_thiep": "https://thiep-chuc-mung-20-10.vercel.app/?id=chi_minh_hong"
   },
   {
     "id": "chi_thanh_huong",
@@ -61,7 +61,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0985958899",
     "link_anh": "avatar_chi_thanh_huong.jpg",
     "loi_chuc": "Nhân ngày Phụ nữ Việt Nam 20/10, Tập thể anh em nam Ban Tài chính Kế toán chúc Ms. Trần Thanh Hương luôn xinh tươi, rạng ngời, tràn đầy sức sống, bình an và hạnh phúc!",
-    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_thanh_huong"
+    "link_thiep": "https://thiep-chuc-mung-20-10.vercel.app/?id=chi_thanh_huong"
   },
   {
     "id": "chi_ho_loan",
@@ -71,7 +71,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0964186186",
     "link_anh": "avatar_chi_ho_loan.jpg",
     "loi_chuc": "Nhân ngày Phụ nữ Việt Nam 20/10, Tập thể anh em nam Ban Tài chính Kế toán chúc Ms. Chu Thị Hồ Loan luôn xinh tươi, rạng ngời, tràn đầy sức sống, bình an và hạnh phúc!",
-    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_ho_loan"
+    "link_thiep": "https://thiep-chuc-mung-20-10.vercel.app/?id=chi_ho_loan"
   },
   {
     "id": "chi_minh_thu",
@@ -81,7 +81,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0983000289",
     "link_anh": "avatar_chi_minh_thu.jpg",
     "loi_chuc": "Nhân ngày Phụ nữ Việt Nam 20/10, Tập thể anh em nam Ban Tài chính Kế toán chúc Ms. Hoàng Minh Thu luôn xinh tươi, rạng ngời, tràn đầy sức sống, bình an và hạnh phúc!",
-    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_minh_thu"
+    "link_thiep": "https://thiep-chuc-mung-20-10.vercel.app/?id=chi_minh_thu"
   },
   {
     "id": "chi_quynh_hoa",
@@ -91,17 +91,17 @@ const RECIPIENTS_DATA = [
     "sdt": "0989086986",
     "link_anh": "avatar_chi_quynh_hoa.jpg",
     "loi_chuc": "Nhân ngày Phụ nữ Việt Nam 20/10, Tập thể anh em nam Ban Tài chính Kế toán chúc Ms. Đinh Thị Quỳnh Hoa luôn xinh tươi, rạng ngời, tràn đầy sức sống, bình an và hạnh phúc!",
-    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_quynh_hoa"
+    "link_thiep": "https://thiep-chuc-mung-20-10.vercel.app/?id=chi_quynh_hoa"
   },
   {
-    "id": "em_huong_mai",
+    "id": "chi_huong_mai",
     "ho_ten": "Nguyễn Hương Mai",
     "chuc_danh": "Phòng Kế hoạch và Ngân sách",
     "email": "mainh1@viettel.com.vn",
     "sdt": "0982368368",
     "link_anh": "avatar_em_huong_mai.jpg",
     "loi_chuc": "Nhân ngày Phụ nữ Việt Nam 20/10, Tập thể anh em nam Ban Tài chính Kế toán chúc Ms. Nguyễn Hương Mai luôn xinh tươi, rạng ngời, tràn đầy sức sống, bình an và hạnh phúc!",
-    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=em_huong_mai"
+    "link_thiep": "https://thiep-chuc-mung-20-10.vercel.app/?id=chi_huong_mai"
   },
   {
     "id": "chi_hong_minh",
@@ -111,7 +111,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0989332323",
     "link_anh": "avatar_chi_hong_minh.jpg",
     "loi_chuc": "Nhân ngày Phụ nữ Việt Nam 20/10, Tập thể anh em nam Ban Tài chính Kế toán chúc Ms. Phạm Thị Hồng Minh luôn xinh tươi, rạng ngời, tràn đầy sức sống, bình an và hạnh phúc!",
-    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_hong_minh"
+    "link_thiep": "https://thiep-chuc-mung-20-10.vercel.app/?id=chi_hong_minh"
   },
   {
     "id": "chi_thu_hang_cst",
@@ -121,7 +121,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0983001608",
     "link_anh": "avatar_chi_thu_hang_cst.jpg",
     "loi_chuc": "Nhân ngày Phụ nữ Việt Nam 20/10, Tập thể anh em nam Ban Tài chính Kế toán chúc Ms. Trần Thu Hằng luôn xinh tươi, rạng ngời, tràn đầy sức sống, bình an và hạnh phúc!",
-    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_thu_hang_cst"
+    "link_thiep": "https://thiep-chuc-mung-20-10.vercel.app/?id=chi_thu_hang_cst"
   },
   {
     "id": "chi_thanh_hoa",
@@ -131,7 +131,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0977293866",
     "link_anh": "avatar_chi_thanh_hoa.jpg",
     "loi_chuc": "Nhân ngày Phụ nữ Việt Nam 20/10, Tập thể anh em nam Ban Tài chính Kế toán chúc Ms. Cao Thanh Hoa luôn xinh tươi, rạng ngời, tràn đầy sức sống, bình an và hạnh phúc!",
-    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_thanh_hoa"
+    "link_thiep": "https://thiep-chuc-mung-20-10.vercel.app/?id=chi_thanh_hoa"
   },
   {
     "id": "chi_thanh_nhan",
@@ -141,7 +141,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0983399568",
     "link_anh": "avatar_chi_thanh_nhan.jpg",
     "loi_chuc": "Nhân ngày Phụ nữ Việt Nam 20/10, Tập thể anh em nam Ban Tài chính Kế toán chúc Ms. Nguyễn Thị Thanh Nhàn luôn xinh tươi, rạng ngời, tràn đầy sức sống, bình an và hạnh phúc!",
-    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_thanh_nhan"
+    "link_thiep": "https://thiep-chuc-mung-20-10.vercel.app/?id=chi_thanh_nhan"
   },
   {
     "id": "chi_hong_hanh",
@@ -151,7 +151,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0984537097",
     "link_anh": "avatar_chi_hong_hanh.jpg",
     "loi_chuc": "Nhân ngày Phụ nữ Việt Nam 20/10, Tập thể anh em nam Ban Tài chính Kế toán chúc Ms. Phan Thị Hồng Hạnh luôn xinh tươi, rạng ngời, tràn đầy sức sống, bình an và hạnh phúc!",
-    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_hong_hanh"
+    "link_thiep": "https://thiep-chuc-mung-20-10.vercel.app/?id=chi_hong_hanh"
   },
   {
     "id": "chi_thu_hien",
@@ -161,7 +161,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0984328744",
     "link_anh": "avatar_chi_thu_hien.jpg",
     "loi_chuc": "Nhân ngày Phụ nữ Việt Nam 20/10, Tập thể anh em nam Ban Tài chính Kế toán chúc Ms. Hoàng Thị Thu Hiền luôn xinh tươi, rạng ngời, tràn đầy sức sống, bình an và hạnh phúc!",
-    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_thu_hien"
+    "link_thiep": "https://thiep-chuc-mung-20-10.vercel.app/?id=chi_thu_hien"
   },
   {
     "id": "chi_thanh_van",
@@ -171,17 +171,17 @@ const RECIPIENTS_DATA = [
     "sdt": "0976050206",
     "link_anh": "avatar_chi_thanh_van.jpg",
     "loi_chuc": "Nhân ngày Phụ nữ Việt Nam 20/10, Tập thể anh em nam Ban Tài chính Kế toán chúc Ms. Nguyễn Thị Vân luôn xinh tươi, rạng ngời, tràn đầy sức sống, bình an và hạnh phúc!",
-    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_thanh_van"
+    "link_thiep": "https://thiep-chuc-mung-20-10.vercel.app/?id=chi_thanh_van"
   },
   {
-    "id": "em_lan_anh",
+    "id": "chi_lan_anh",
     "ho_ten": "Nguyễn Lan Anh",
     "chuc_danh": "Phòng Chính sách và Thuế",
     "email": "anhnl@viettel.com.vn",
     "sdt": "0969643838",
     "link_anh": "avatar_em_lan_anh.jpg",
     "loi_chuc": "Nhân ngày Phụ nữ Việt Nam 20/10, Tập thể anh em nam Ban Tài chính Kế toán chúc Ms. Nguyễn Lan Anh luôn xinh tươi, rạng ngời, tràn đầy sức sống, bình an và hạnh phúc!",
-    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=em_lan_anh"
+    "link_thiep": "https://thiep-chuc-mung-20-10.vercel.app/?id=chi_lan_anh"
   },
   {
     "id": "chi_thanh_ha",
@@ -191,7 +191,7 @@ const RECIPIENTS_DATA = [
     "sdt": "0977159818",
     "link_anh": "avatar_chi_thanh_ha.jpg",
     "loi_chuc": "Nhân ngày Phụ nữ Việt Nam 20/10, Tập thể anh em nam Ban Tài chính Kế toán chúc Ms. Trương Thị Thanh Hà luôn xinh tươi, rạng ngời, tràn đầy sức sống, bình an và hạnh phúc!",
-    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_thanh_ha"
+    "link_thiep": "https://thiep-chuc-mung-20-10.vercel.app/?id=chi_thanh_ha"
   },
   {
     "id": "chi_thu_ha",
@@ -201,37 +201,37 @@ const RECIPIENTS_DATA = [
     "sdt": "0966221287",
     "link_anh": "avatar_chi_thu_ha.jpg",
     "loi_chuc": "Nhân ngày Phụ nữ Việt Nam 20/10, Tập thể anh em nam Ban Tài chính Kế toán chúc Ms. Nguyễn Thu Hà luôn xinh tươi, rạng ngời, tràn đầy sức sống, bình an và hạnh phúc!",
-    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_thu_ha"
+    "link_thiep": "https://thiep-chuc-mung-20-10.vercel.app/?id=chi_thu_ha"
   },
   {
-    "id": "em_huyen_trang",
+    "id": "chi_huyen_trang",
     "ho_ten": "Trương Thị Huyền Trang",
     "chuc_danh": "Phòng Kế hoạch và Ngân sách",
     "email": "trangtth2@viettel.com.vn",
     "sdt": "0989110988",
     "link_anh": "avatar_em_huyen_trang.jpg",
     "loi_chuc": "Nhân ngày Phụ nữ Việt Nam 20/10, Tập thể anh em nam Ban Tài chính Kế toán chúc Ms. Trương Thị Huyền Trang luôn xinh tươi, rạng ngời, tràn đầy sức sống, bình an và hạnh phúc!",
-    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=em_huyen_trang"
+    "link_thiep": "https://thiep-chuc-mung-20-10.vercel.app/?id=chi_huyen_trang"
   },
   {
-    "id": "em_thuy_linh",
+    "id": "chi_le_thuy_linh",
     "ho_ten": "Lê Thùy Linh",
     "chuc_danh": "Phòng Giám sát Tài chính",
     "email": "linhlt49@viettel.com.vn",
     "sdt": "0962959969",
     "link_anh": "avatar_em_thuy_linh.jpg",
     "loi_chuc": "Nhân ngày Phụ nữ Việt Nam 20/10, Tập thể anh em nam Ban Tài chính Kế toán chúc Ms. Lê Thùy Linh luôn xinh tươi, rạng ngời, tràn đầy sức sống, bình an và hạnh phúc!",
-    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=em_thuy_linh"
+    "link_thiep": "https://thiep-chuc-mung-20-10.vercel.app/?id=chi_le_thuy_linh"
   },
   {
-    "id": "em_ngoc_huyen",
+    "id": "chi_ngoc_huyen",
     "ho_ten": "Nguyễn Ngọc Huyền",
     "chuc_danh": "Phòng Giám sát Tài chính",
     "email": "huyennn11@viettel.com.vn",
     "sdt": "0363242408",
     "link_anh": "avatar_em_ngoc_huyen.jpg",
     "loi_chuc": "Nhân ngày Phụ nữ Việt Nam 20/10, Tập thể anh em nam Ban Tài chính Kế toán chúc Ms. Nguyễn Ngọc Huyền luôn xinh tươi, rạng ngời, tràn đầy sức sống, bình an và hạnh phúc!",
-    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=em_ngoc_huyen"
+    "link_thiep": "https://thiep-chuc-mung-20-10.vercel.app/?id=chi_ngoc_huyen"
   },
   {
     "id": "chi_viet_hang",
@@ -241,6 +241,6 @@ const RECIPIENTS_DATA = [
     "sdt": "0989389968",
     "link_anh": "avatar_chi_viet_hang.jpg",
     "loi_chuc": "Nhân ngày Phụ nữ Việt Nam 20/10, Tập thể anh em nam Ban Tài chính Kế toán chúc Ms. Nguyễn Thị Việt Hằng luôn xinh tươi, rạng ngời, tràn đầy sức sống, bình an và hạnh phúc!",
-    "link_thiep": "https://20-10-demo-fawn.vercel.app/?id=chi_viet_hang"
+    "link_thiep": "https://thiep-chuc-mung-20-10.vercel.app/?id=chi_viet_hang"
   }
 ];
