@@ -84,8 +84,10 @@ function loadCurrentRecipient() {
 
   if (!currentPerson) return;
 
-  // Cập nhật tên lá thư popup 3s: Chị Nguyễn Thúy Linh (Trưởng ban) hoặc Ms. [Tên đầy đủ] cho các chị em
+  // Cập nhật tên lá thư popup 3s: Chị Nguyễn Thúy Linh (Trưởng ban TCKT) hoặc Ms. [Tên đầy đủ] cho các chị em
   const letterToName = document.getElementById('letter-to-name');
+  const letterToTitle = document.getElementById('letter-to-title');
+
   if (letterToName) {
     if (currentPerson.id === 'chi_thuy_linh') {
       letterToName.textContent = `Chị ${currentPerson.ho_ten}`;
@@ -94,8 +96,18 @@ function loadCurrentRecipient() {
     }
   }
 
+  if (letterToTitle) {
+    if (currentPerson.id === 'chi_thuy_linh') {
+      letterToTitle.textContent = 'Trưởng Ban TCKT';
+      letterToTitle.classList.remove('hidden');
+    } else {
+      letterToTitle.classList.add('hidden');
+    }
+  }
+
   // Điền dữ liệu vào thiệp chi tiết bên trong
   const cardName = document.getElementById('card-person-name');
+  const cardTitle = document.getElementById('card-person-title');
   const cardGreeting = document.getElementById('card-person-greeting');
   const cardImage = document.getElementById('card-person-image');
 
@@ -106,12 +118,22 @@ function loadCurrentRecipient() {
       cardName.textContent = currentPerson.ho_ten;
     }
   }
+
+  if (cardTitle) {
+    if (currentPerson.id === 'chi_thuy_linh') {
+      cardTitle.textContent = 'Trưởng Ban TCKT';
+      cardTitle.classList.remove('hidden');
+    } else {
+      cardTitle.classList.add('hidden');
+    }
+  }
+
   if (cardGreeting) cardGreeting.textContent = currentPerson.loi_chuc;
 
   if (cardImage) {
-    const cacheBuster = '?v=20261012c';
+    const cacheBuster = '?v=20261013a';
     let baseImgUrl = formatImageUrl(currentPerson.link_anh);
-    cardImage.src = baseImgUrl.includes('?') ? `${baseImgUrl}&v=20261012c` : `${baseImgUrl}${cacheBuster}`;
+    cardImage.src = baseImgUrl.includes('?') ? `${baseImgUrl}&v=20261013a` : `${baseImgUrl}${cacheBuster}`;
     
     cardImage.onerror = () => {
       // 1. Thử tìm file avatar ở thư mục gốc (avatar_[id].jpg)

@@ -77,14 +77,19 @@
 
       <div class="space-y-3 py-2">
         <div class="text-sm sm:text-base font-semibold text-slate-500">
-          From: <span class="text-rose-700 font-bold">Anh em TCKT</span>
+          From: <span class="text-rose-700 font-bold">Tập thể anh em Ban TCKT</span>
         </div>
         <div class="h-px w-20 bg-rose-200 mx-auto my-2"></div>
-        <div class="flex items-center justify-center gap-1.5 flex-wrap">
-          <span class="text-sm sm:text-base font-semibold text-slate-500">To:</span>
-          <span id="letter-to-name" class="text-xl sm:text-2xl font-serif-luxury font-extrabold rose-gold-gradient">
-            Ms. Nguyễn Thúy Linh
-          </span>
+        <div class="space-y-1">
+          <div class="flex items-center justify-center gap-1.5 flex-wrap">
+            <span class="text-sm sm:text-base font-semibold text-slate-500">To:</span>
+            <span id="letter-to-name" class="text-xl sm:text-2xl font-serif-luxury font-extrabold rose-gold-gradient">
+              Ms. Nguyễn Thúy Linh
+            </span>
+          </div>
+          <div id="letter-to-title" class="hidden text-xs sm:text-sm font-semibold tracking-wide text-rose-800/90 pt-0.5">
+            Trưởng Ban TCKT
+          </div>
         </div>
       </div>
 
@@ -126,11 +131,14 @@
           </div>
         </div>
 
-        <!-- Họ tên người nhận -->
+        <!-- Họ tên người nhận & chức danh (nếu có) -->
         <div class="mb-6">
           <h2 id="card-person-name" class="font-serif-luxury text-2xl sm:text-3xl font-bold text-rose-950 tracking-tight">
             Nguyễn Thúy Linh
           </h2>
+          <div id="card-person-title" class="hidden text-xs sm:text-sm font-semibold text-rose-700 tracking-wider mt-1.5">
+            Trưởng Ban TCKT
+          </div>
         </div>
 
         <!-- TEXTBOX LỜI CHÚC (ĐẶT THẲNG THỚM, GHIM TRÁI TIM, KHÔNG DÙNG ICON HOA HỒNG) -->
